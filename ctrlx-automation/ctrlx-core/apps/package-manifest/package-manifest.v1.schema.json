@@ -1,0 +1,392 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/apps/package-manifest/package-manifest.v1.schema.json",
+  "type": "object",
+  "title": "Rexroth Package Manifest",
+  "properties": {
+      "version": {
+          "type": "string",
+          "title": "Package manifest version",
+          "description": "Version of the package manifest.",
+          "examples": [
+              "1.0.0",
+              "2.1.0",
+              "1.2.10"
+          ],
+          "pattern": "^(\\d+\\.)(\\d+\\.)(\\d+)$"
+      },
+      "id": {
+          "type": "string",
+          "title": "Identifier of the package",
+          "description": "Unique identifier of the package. Must match the following RegEx: ^[0-9a-ZA-Z]. Must match the identifier defined in the snapcraft.yaml and.",
+          "examples": [
+              "rexroth-solutions",
+              "rexroth-automation",
+              "rexroth-vpnmanager"
+          ]
+      },
+      "services": {
+          "$ref": "#definitions/services"
+      },
+      "menus": {
+          "$ref": "#definitions/menus"
+      },
+      "commands": {
+          "$ref": "#definitions/commands"
+      }
+  },
+  "definitions": {
+      "services": {
+          "type": "object",
+          "title": "Services",
+          "description": "Services contains a set of services a package is providing",
+          "properties": {
+              "proxyMappings": {
+                  "type": "array",
+                  "title": "ProxyMappings defines a set of proxyMapping.",
+                  "items": {
+                      "$ref": "#/definitions/proxyMapping"
+                  }
+              }
+          }
+      },
+      "scopes-declaration": {
+          "type": "array",
+          "title": "Scopes enable to grant users/groups the permission to access specific resources",
+          "items": {
+              "$ref": "#/definitions/setOfScopes"
+          }
+      },
+      "menus": {
+          "type": "object",
+          "title": "Menus",
+          "description": "Menus for the Web Application a package can contribute",
+          "properties": {
+              "sidebar": {
+                  "type": "array",
+                  "title": "Sidebar Menu",
+                  "items": {
+                      "$ref": "#/definitions/entries"
+                  }
+              },
+              "settings": {
+                  "type": "array",
+                  "title": "Settings Menu",
+                  "items": {
+                      "$ref": "#/definitions/entries"
+                  }
+              },
+              "overview": {
+                  "type": "array",
+                  "title": "Overview",
+                  "items": {
+                      "$ref": "#/definitions/entries"
+                  }
+              }
+          }
+      },
+      "entries": {
+          "description": "A navigation entry point of the package",
+          "type": "object",
+          "title": "Link",
+          "oneOf": [
+              {
+                  "required": [
+                      "id",
+                      "title",
+                      "link"
+                  ]
+              },
+              {
+                  "required": [
+                      "id",
+                      "title",
+                      "items"
+                  ]
+              }
+          ],
+          "properties": {
+              "items": {
+                  "type": "array",
+                  "title": "Sublinks",
+                  "description": "Sub entries of the entry point",
+                  "items": {
+                      "$ref": "#/definitions/entries"
+                  }
+              },
+              "link": {
+                  "type": "string",
+                  "title": "Link to the ressource. The link includes the prefix of the service",
+                  "description": "Relative path of the link",
+                  "examples": [
+                      "/solutions"
+                  ]
+              },
+              "id": {
+                  "description": "Identifier of the link. Used to define menu orders.",
+                  "type": "string",
+                  "title": "Id",
+                  "examples": [
+                      "automation"
+                  ]
+              },
+              "title": {
+                  "description": "The text representation of the entry point",
+                  "type": "string",
+                  "title": "Title",
+                  "examples": [
+                      "Automation"
+                  ]
+              },
+              "icon": {
+                  "description": "An optional icon, see... to represent the entry point",
+                  "type": "string",
+                  "title": "Icon",
+                  "examples": [
+                      "bosch-ic-automation"
+                  ]
+              },
+              "permissions": {
+                  "description": "An optional list of permissions to enable the entry point",
+                  "type": "array",
+                  "title": "Permissions",
+                  "items": {
+                      "type": "string",
+                      "title": "Permission",
+                      "examples": [
+                          "automation.r",
+                          "automation.rw"
+                      ],
+                      "pattern": "^(.*)$"
+                  }
+              }
+          }
+      },
+      "commands": {
+          "type": "object",
+          "title": "Commands",
+          "description": "Allows to specify commands that integrate into framework operations, e.g. for persisting data. The sub-elements define the scopes that support command integration.",
+          "properties": {
+              "activeConfiguration": {
+                  "type": "object",
+                  "title": "Active Configuration",
+                  "description": "Commands relating to the active configuration (solutions)",
+                  "properties": {
+                      "save": {
+                          "type": "array",
+                          "title": "Save Commands",
+                          "description": "The commands to be executed in order to save runtime data (control settings) into the file system (active configuration)",
+                          "items": {
+                              "$ref": "#/definitions/command"
+                          }
+                      },
+                      "load": {
+                          "type": "array",
+                          "title": "Load Commands",
+                          "description": "The commands to be executed in order to load runtime data (control settings) from the file system (active configuration)",
+                          "items": {
+                              "$ref": "#/definitions/command"
+                          }
+                      }
+                  }
+              }
+          }
+      },
+      "command": {
+          "title": "Command",
+          "description": "A command object.",
+          "type": "object",
+          "required": [
+              "id",
+              "subject",
+              "execution"
+          ],
+          "properties": {
+              "id": {
+                  "title": "Id",
+                  "description": "The identifier of this command; must be unique within the enclosing scope.",
+                  "type": "string",
+                  "examples": [
+                      "motion"
+                  ]
+              },
+              "subject": {
+                  "title": "Subject",
+                  "description": "Denotes what will be saved or loaded; used to inform users, e.g. in messages like 'Loading motion settings' or 'Cannot load motion settings'",
+                  "type": "string",
+                  "examples": [
+                      "motion settings"
+                  ]
+              },
+              "execution": {
+                  "title": "Execution",
+                  "description": "The request that will be sent in order to execute this command",
+                  "type": "object",
+                  "required": [
+                      "url"
+                  ],
+                  "properties": {
+                      "method": {
+                          "title": "HTTP method",
+                          "description": "The HTTP method called for executing this command; one of 'POST' and 'PUT'; the default is 'POST'.",
+                          "type": "string",
+                          "enum": [
+                              "PUT",
+                              "POST"
+                          ],
+                          "examples": [
+                              "POST"
+                          ],
+                          "default": "POST"
+                      },
+                      "url": {
+                          "title": "URL",
+                          "description": "The URL used for executing this command",
+                          "type": "string",
+                          "examples": [
+                              "/automation/api/v1/motion/cfg/save-all"
+                          ]
+                      }
+                  }
+              }
+          }
+      },
+      "setOfScopes": {
+          "type": "object",
+          "title": "Set of scopes",
+          "description": "A set of scopes declares the scopes which are supported by the web service. The set includes identifer, name, a human-readable description and one or more scopes.",
+          "properties": {
+              "identifier": {
+                  "type": "string",
+                  "title": "The identifier of the scope set",
+                  "description": "The unique identifier of the permission set. Must be derived from the identifier and must not contain spaces. Must be unique.",
+                  "examples": [
+                      "rexroth-solutions.web"
+                  ]
+              },
+              "name": {
+                  "type": "string",
+                  "title": "The name of the scope set",
+                  "description": "The name of the scope set. Should be unique. Used by the identity management frontend to display the scope set.",
+                  "examples": [
+                      "Rexroth Solutions Scopes"
+                  ]
+              },
+              "description": {
+                  "type": "string",
+                  "title": "Description of the scope set",
+                  "description": "The description of the scope set. Used by the identity management frontend to describe the scope set.",
+                  "examples": [
+                      "The Solutions scopes allow to define which accounts or groups are allowed to read/write/modify parameters"
+                  ]
+              },
+              "scopes": {
+                  "type": "array",
+                  "title": "Array of scopes",
+                  "description": "Array of scopes. Each scope describes a specific permission for one or more web server resources, e.g. write to a resource using HTTP PUT",
+                  "items": {
+                      "$ref": "#/definitions/scope"
+                  }
+              }
+          }
+      },
+      "scope": {
+          "type": "object",
+          "title": "Web server scope",
+          "description": "A scope represents a web service resource specific permission and consists of an identifier, a name and a human-readable description.",
+          "properties": {
+              "identifier": {
+                  "type": "string",
+                  "title": "The identifier of the scope",
+                  "description": "The unique identifier of the scope. Must be derived from the id and follow the schema <id>.<service>.<scope_name>.<access_type>",
+                  "examples": [
+                      "rexroth-solutions.web.all.rw (allow read/write access to all resources",
+                      "rexroth-solutions.web.all.r (allow access to all resources on a read-only basis)"
+                  ]
+              },
+              "name": {
+                  "type": "string",
+                  "title": "The name of the scope",
+                  "description": "The name of the scope set. Should be unique. Used by the identity management frontend to display the scope. Should describe the what the permission means.",
+                  "examples": [
+                      "Read/write access (all parameters)",
+                      "Read access (all parameters)",
+                      "Read access (motion parameters)"
+                  ]
+              },
+              "description": {
+                  "type": "string",
+                  "title": "Description of the scope",
+                  "description": "The description of the scope. Used by the identity management frontend to describe the scope set.",
+                  "examples": [
+                      "This permissions allows to read and modify all automation parameters",
+                      "This permissions allows to read all automation parameters",
+                      "This permissions allows to read all motion parameters"
+                  ]
+              }
+          }
+      },
+      "proxyMapping": {
+          "type": "object",
+          "title": "ProxyMapping",
+          "description": "ProxyMapping defines a web service mappings. A service has a name for identification, a relative path where it should be reachable and a socket (network or unix) to bind to",
+          "properties": {
+              "name": {
+                  "type": "string",
+                  "title": "Name",
+                  "description": "A Name for the mapping",
+                  "examples": [
+                      "rexroth-solutions.web"
+                  ]
+              },
+              "url": {
+                  "type": "string",
+                  "title": "Url",
+                  "description": "Relative path the service is requesting",
+                  "examples": [
+                      "/solutions"
+                  ]
+              },
+              "binding": {
+                  "type": "string",
+                  "title": "Binding",
+                  "description": "A network socket, e.g. :5000 or unix socket e.g. unix://rexroth-solutions.web.sock",
+                  "examples": [
+                      ":5000",
+                      "http://localhost:5000",
+                      "unix://rexroth-solutions.web.sock"
+                  ]
+              },
+              "options": {
+                  "type": "array",
+                  "title": "Additional options",
+                  "description": "Additional options of the proxy configuration",
+                  "items": {
+                      "type": "object",
+                      "properties": {
+                          "option": {
+                              "type": "string"
+                          },
+                          "value": {
+                              "type": "string"
+                          }
+                      }
+                  },
+                  "examples": [
+                      {"option": "websocket", "value": ""},
+                      {"option": "max_conns", "value": "2"}
+                  ]
+              },
+              "restricted": {
+                  "type": "string",
+                  "title": "Restricted resources",
+                  "description": "Resources, to which the access shall be restricted, e.g. API URLs",
+                  "examples": [
+                      "/rexroth-solutions/api/v1.0",
+                      "/rexroth-automation/api/v1.0"
+                  ]
+              }
+          }
+      }
+  }
+}

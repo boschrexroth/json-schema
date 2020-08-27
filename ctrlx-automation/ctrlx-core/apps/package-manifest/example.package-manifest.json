@@ -1,0 +1,119 @@
+{
+  "version": "1.0.0",
+  "id": "rexroth-solutions",
+  "services": {
+    "proxyMapping": [
+      {
+        "name": "rexroth-solutions.web",
+        "url": "/rexroth-solutions",
+        "binding": ":5000",
+        "options": [
+          {"option": "websockets", "value": ""},
+          {"option": "max_conns", "value": "2"}
+        ],
+        "restricted": [
+          "/rexroth-solutions/api/v1.0"
+        ]
+      }
+    ]
+  },
+  "scopes-declaration": [
+    {
+      "identifier": "rexroth-solutions.web",
+      "name": "Solutions Scopes",
+      "description": "Scopes for the Solutions resources",
+      "scopes": [
+        {
+          "identifier": "rexroth-solutions.web.all.rw",
+          "name": "Manage Solutions",
+          "description": "Manage and modify all solutions"
+        },
+        {
+          "identifier": "rexroth-solutions.web.all.r",
+          "name": "View solutions",
+          "description": "View (but not modify) solutions"
+        }
+      ]
+    }
+  ],
+  "menus": {
+    "sidebar": [
+      {
+        "id": "solutions",
+        "title": "Solutions",
+        "icon": "bosch-ic-solutions",
+        "permissions": [
+          "solutions.r",
+          "solutions.rw"
+        ],
+        "items": [
+          {
+            "id": "solution-home",
+            "title": "Solutions Home",
+            "link": "/solutions",
+            "permissions": [
+              "solutions.r",
+              "solutions.rw"
+            ]
+          },
+          {
+            "id": "solution-targets",
+            "title": "Targets",
+            "link": "/solutions/targets",
+            "permissions": [
+              "solutions.r",
+              "solutions.rw"
+            ]
+          }
+        ]
+      }
+    ],
+    "settings": [
+      {
+        "id": "solution-settings",
+        "title": "Solution Settings",
+        "icon": "bosch-ic-gear",
+        "link": "/solutions/settings",
+        "permissions": [
+          "solutions.rw"
+        ]
+      }
+    ],
+    "overview": [
+      {
+        "id": "solution-overview",
+        "title": "Solutions",
+        "icon": "bosch-ic-solutions",
+        "link": "/solutions",
+        "permissions": [
+          "solutions.r",
+          "solutions.rw"
+        ]
+      }
+    ]
+  },
+  "commands": {
+    "activeConfiguration": {
+      "save": [
+        {
+          "id": "motion",
+          "subject": "motion settings",
+          "execution": {
+            "method": "POST",
+            "url": "/automation/api/v1/motion/cfg/save-all"
+          }
+        }
+      ],
+      "load": [
+        {
+          "id": "motion",
+          "subject": "motion settings",
+          "execution": {
+            "method": "POST",
+            "url": "/automation/api/v1/motion/cfg/load-all"
+          }
+        }
+      ]
+    }
+  }
+}
