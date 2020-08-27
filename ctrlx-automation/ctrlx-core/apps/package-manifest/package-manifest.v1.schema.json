@@ -18,7 +18,7 @@
       "id": {
           "type": "string",
           "title": "Identifier of the package",
-          "description": "Unique identifier of the package. Must match the following RegEx: ^[0-9a-ZA-Z]. Must match the identifier defined in the snapcraft.yaml and.",
+          "description": "Unique identifier of the package. Must match the following RegEx: ^[0-9a-ZA-Z]. Must match the identifier defined in the snapcraft.yaml.",
           "examples": [
               "rexroth-solutions",
               "rexroth-automation",
@@ -43,7 +43,8 @@
           "properties": {
               "proxyMappings": {
                   "type": "array",
-                  "title": "ProxyMappings defines a set of proxyMapping.",
+                  "title": "Proxy mappings",
+                  "description": "Proxy mappings are used by the reverse proxy to assign specific routes to a server running on a device.",
                   "items": {
                       "$ref": "#/definitions/proxyMapping"
                   }
@@ -52,7 +53,8 @@
       },
       "scopes-declaration": {
           "type": "array",
-          "title": "Scopes enable to grant users/groups the permission to access specific resources",
+          "title": "Scopes provided by the package",
+          "description": "Scopes used in the application to control access to specific ressources. The scope declaration is used by the identity management (IDM) to assign permissions for specific users or groups.",
           "items": {
               "$ref": "#/definitions/setOfScopes"
           }
@@ -60,7 +62,7 @@
       "menus": {
           "type": "object",
           "title": "Menus",
-          "description": "Menus for the Web Application a package can contribute",
+          "description": "Menus and Links a package provides. The declarations will be used by the device admin to generate the corresponding entries in the sidebar or overview.",
           "properties": {
               "sidebar": {
                   "type": "array",
