@@ -3,6 +3,12 @@
 This repository contains json-schema used in applications and services provided by Bosch Rexroth.
 They can be used to validate json files.
 
+## Areas
+
+| Area | Description |
+| ---- | ----------- |
+| [ctrlX CORE](https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/) | ctrlX CORE related json schema |
+
 ## About
 
 Copyright © 2020 Bosch Rexroth AG. All rights reserved.

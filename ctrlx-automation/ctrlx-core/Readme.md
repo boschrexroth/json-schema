@@ -1,7 +1,13 @@
-# json-schema for ctrlX AUTOMATION
+# json-schema for ctrlX CORE
 
-This folder contain json-schema used in the ctrlX AUTOMATION context.
+This folder contain json-schema used in the ctrlX CORE context.
 They can be used to validate json files.
+
+## Schemas
+
+| Schema | Description |
+| ------ | ----------- |
+| [package-manifest.v1.schema.json](https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/apps/package-manifest/package-manifest.v1.schema.json) | The package-manifest contains meta data of a ctrlX CORE App and to seemless integrate it into the ctrlX CORE system |
 
 ## About
 
