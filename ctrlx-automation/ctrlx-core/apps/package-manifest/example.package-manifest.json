@@ -1,38 +1,38 @@
 {
-  "$schema": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/apps/package-manifest/package-manifest.v1.schema.json",
+  "$schema": "./package-manifest.v1.schema.json",
   "version": "1.0.0",
-  "id": "rexroth-solutions",
+  "id": "ctrlx-helloworld",
   "services": {
     "proxyMapping": [
       {
-        "name": "rexroth-solutions.web",
-        "url": "/rexroth-solutions",
-        "binding": ":5000",
+        "name": "ctrlx-helloworld.web",
+        "url": "/ctrlx-helloworld",
+        "binding": "unix://{$SNAP_DATA}/package-run/ctrlx-helloworld/ctrlx-helloworld.web.sock",
         "options": [
           {"option": "websockets", "value": ""},
           {"option": "max_conns", "value": "2"}
         ],
         "restricted": [
-          "/rexroth-solutions/api/v1.0"
+          "/ctrlx-helloworld/api/v1"
         ]
       }
     ]
   },
   "scopes-declaration": [
     {
-      "identifier": "rexroth-solutions.web",
-      "name": "Solutions Scopes",
-      "description": "Scopes for the Solutions resources",
+      "identifier": "ctrlx-helloworld.web",
+      "name": "Helloworld Scopes",
+      "description": "Scopes for the Hello World App",
       "scopes": [
         {
-          "identifier": "rexroth-solutions.web.all.rw",
-          "name": "Manage Solutions",
-          "description": "Manage and modify all solutions"
+          "identifier": "ctrlx-helloworld.web.all.rw",
+          "name": "Manage hello world",
+          "description": "Manage and modify hello world"
         },
         {
-          "identifier": "rexroth-solutions.web.all.r",
-          "name": "View solutions",
-          "description": "View (but not modify) solutions"
+          "identifier": "ctrlx-helloworld.web.all.r",
+          "name": "View hello world",
+          "description": "View (but not modify) hello world"
         }
       ]
     }
@@ -40,30 +40,29 @@
   "menus": {
     "sidebar": [
       {
-        "id": "solutions",
-        "title": "Solutions",
-        "icon": "bosch-ic-solutions",
+        "id": "helloworld",
+        "title": "Hello, World!",
+        "icon": "bosch-ic-world-frame",
         "permissions": [
-          "solutions.r",
-          "solutions.rw"
+          "ctrlx-helloworld.web.all.r",
+          "ctrlx-helloworld.web.all.rw"
         ],
         "items": [
           {
-            "id": "solution-home",
-            "title": "Solutions Home",
-            "link": "/solutions",
+            "id": "helloworld-home",
+            "title": "Overview",
+            "link": "/ctrlx-helloworld",
             "permissions": [
-              "solutions.r",
-              "solutions.rw"
+              "ctrlx-helloworld.web.all.r",
+              "ctrlx-helloworld.web.all.rw"
             ]
           },
           {
-            "id": "solution-targets",
-            "title": "Targets",
-            "link": "/solutions/targets",
+            "id": "helloworld-manage",
+            "title": "Manage",
+            "link": "/ctrlx-helloworld/manage",
             "permissions": [
-              "solutions.r",
-              "solutions.rw"
+              "ctrlx-helloworld.web.all.rw"
             ]
           }
         ]
@@ -71,24 +70,23 @@
     ],
     "settings": [
       {
-        "id": "solution-settings",
-        "title": "Solution Settings",
-        "icon": "bosch-ic-gear",
-        "link": "/solutions/settings",
+        "id": "helloworld-settings",
+        "title": "Hello World!",
+        "link": "/ctrlx-helloworld/settings",
         "permissions": [
-          "solutions.rw"
+          "ctrlx-helloworld.web.all.rw"
         ]
       }
     ],
     "overview": [
       {
-        "id": "solution-overview",
-        "title": "Solutions",
-        "icon": "bosch-ic-solutions",
-        "link": "/solutions",
+        "id": "helloworld-home",
+        "title": "Overview",
+        "link": "/ctrlx-helloworld",
+        "icon": "bosch-ic-world-frame",
         "permissions": [
-          "solutions.r",
-          "solutions.rw"
+          "ctrlx-helloworld.web.all.r",
+          "ctrlx-helloworld.web.all.rw"
         ]
       }
     ]
@@ -97,21 +95,21 @@
     "activeConfiguration": {
       "save": [
         {
-          "id": "motion",
-          "subject": "motion settings",
+          "id": "ctrlx-helloworld",
+          "subject": "Save hello world",
           "execution": {
             "method": "POST",
-            "url": "/automation/api/v1/motion/cfg/save-all"
+            "url": "/ctrlx-helloworld/api/v1/save"
           }
         }
       ],
       "load": [
         {
-          "id": "motion",
-          "subject": "motion settings",
+          "id": "ctrlx-helloworld",
+          "subject": "Load hello world",
           "execution": {
             "method": "POST",
-            "url": "/automation/api/v1/motion/cfg/load-all"
+            "url": "/ctrlx-helloworld/api/v1/load"
           }
         }
       ]
