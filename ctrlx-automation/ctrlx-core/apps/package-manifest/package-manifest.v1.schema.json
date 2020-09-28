@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/apps/package-manifest/package-manifest.v1.schema.json",
   "type": "object",
-  "title": "Rexroth Package Manifest",
+  "title": "ctrlX CORE Package Manifest",
   "properties": {
     "version": {
       "type": "string",
@@ -121,7 +121,7 @@
           "title": "Link to the ressource. The link includes the prefix of the service",
           "description": "Relative path of the link",
           "examples": [
-            "/solutions"
+            "/my-app"
           ]
         },
         "id": {
@@ -129,7 +129,7 @@
           "type": "string",
           "title": "Id",
           "examples": [
-            "automation"
+            "my-app"
           ]
         },
         "title": {
@@ -137,7 +137,7 @@
           "type": "string",
           "title": "Title",
           "examples": [
-            "Automation"
+            "My App"
           ]
         },
         "icon": {
@@ -156,8 +156,8 @@
             "type": "string",
             "title": "Permission",
             "examples": [
-              "automation.r",
-              "automation.rw"
+              "my-app.r",
+              "my-app.rw"
             ],
             "pattern": "^(.*)$"
           }
@@ -259,7 +259,7 @@
           "title": "The identifier of the scope set",
           "description": "The unique identifier of the permission set. Must be derived from the identifier and must not contain spaces. Must be unique.",
           "examples": [
-            "rexroth-solutions.web"
+            "my-app.web"
           ]
         },
         "name": {
@@ -267,16 +267,13 @@
           "title": "The name of the scope set",
           "description": "The name of the scope set. Should be unique. Used by the identity management frontend to display the scope set.",
           "examples": [
-            "Rexroth Solutions Scopes"
+            "My App Scopes"
           ]
         },
         "description": {
           "type": "string",
           "title": "Description of the scope set",
-          "description": "The description of the scope set. Used by the identity management frontend to describe the scope set.",
-          "examples": [
-            "The Solutions scopes allow to define which accounts or groups are allowed to read/write/modify parameters"
-          ]
+          "description": "The description of the scope set. Used by the identity management frontend to describe the scope set."
         },
         "scopes": {
           "type": "array",
@@ -298,8 +295,8 @@
           "title": "The identifier of the scope",
           "description": "The unique identifier of the scope. Must be derived from the id and follow the schema <id>.<service>.<scope_name>.<access_type>",
           "examples": [
-            "rexroth-solutions.web.all.rw (allow read/write access to all resources",
-            "rexroth-solutions.web.all.r (allow access to all resources on a read-only basis)"
+            "my-app.web.all.rw (allow read/write access to all resources",
+            "my-app.web.all.r (allow access to all resources on a read-only basis)"
           ]
         },
         "name": {
@@ -334,7 +331,7 @@
           "title": "Name",
           "description": "A Name for the mapping",
           "examples": [
-            "rexroth-solutions.web"
+            "my-app.web"
           ]
         },
         "url": {
@@ -342,17 +339,17 @@
           "title": "Url",
           "description": "Relative path the service is requesting",
           "examples": [
-            "/solutions"
+            "/my-app"
           ]
         },
         "binding": {
           "type": "string",
           "title": "Binding",
-          "description": "A network socket, e.g. :5000 or unix socket e.g. unix://rexroth-solutions.web.sock",
+          "description": "A network socket, e.g. :5000 or unix socket e.g. unix://{$SNAP_DATA}/package-run/my-app.web.sock",
           "examples": [
             ":5000",
             "http://localhost:5000",
-            "unix://rexroth-solutions.web.sock"
+            "unix://{$SNAP_DATA}/package-run/my-app.web.sock"
           ]
         },
         "options": {
@@ -386,8 +383,8 @@
           "title": "Restricted resources",
           "description": "Resources, to which the access shall be restricted, e.g. API URLs",
           "examples": [
-            "/rexroth-solutions/api/v1.0",
-            "/rexroth-automation/api/v1.0"
+            "/my-app/api/v1.0",
+            "/my-app/api/v1.0"
           ]
         }
       }
