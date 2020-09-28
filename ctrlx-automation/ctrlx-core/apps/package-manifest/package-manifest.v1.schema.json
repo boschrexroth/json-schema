@@ -178,7 +178,7 @@
       "description": "A Command scope, containing multiple commands in form of command requests",
       "type": "object",
       "additionalProperties": {
-        "$ref": "#/definitions/commands"
+        "$ref": "#/definitions/command"
       }
     },
     "command": {
