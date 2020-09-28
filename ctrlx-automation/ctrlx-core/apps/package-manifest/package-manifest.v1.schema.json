@@ -167,34 +167,29 @@
       "commands": {
           "type": "object",
           "title": "Commands",
-          "description": "Allows to specify commands that integrate into framework operations, e.g. for persisting data. The sub-elements define the scopes that support command integration.",
-          "properties": {
-              "activeConfiguration": {
-                  "type": "object",
-                  "title": "Active Configuration",
-                  "description": "Commands relating to the active configuration (solutions)",
-                  "properties": {
-                      "save": {
-                          "type": "array",
-                          "title": "Save Commands",
-                          "description": "The commands to be executed in order to save runtime data (control settings) into the file system (active configuration)",
-                          "items": {
-                              "$ref": "#/definitions/command"
-                          }
-                      },
-                      "load": {
-                          "type": "array",
-                          "title": "Load Commands",
-                          "description": "The commands to be executed in order to load runtime data (control settings) from the file system (active configuration)",
-                          "items": {
-                              "$ref": "#/definitions/command"
-                          }
-                      }
-                  }
-              }
+          "description": "Allows to specify commands that integrate into framework operations, e.g. for activeConfiguration. The sub-elements define the scopes that support command integration.",
+          "properties": {},
+          "additionalProperties": {
+              "$ref": "#/definitions/commandScope"
+          }
+      },
+      "commandScope": {
+          "title": "Command Scope",
+          "description": "A Command scope, containing multiple commands in form of command requests",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/commands"
           }
       },
       "command": {
+        "title": "Command",
+        "description": "A command that is provided and can be executed by another application. A command can have multiple command requests, e.g. to execute the command on multiple services.",
+        "type": "array",
+        "items": {
+            "$ref": "#/definitions/commandRequest"
+        }
+      },
+      "commandRequest": {
           "title": "Command",
           "description": "A command object.",
           "type": "object",
@@ -251,7 +246,8 @@
                       }
                   }
               }
-          }
+          },
+          "additionalProperties": false
       },
       "setOfScopes": {
           "type": "object",
