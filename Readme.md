@@ -7,7 +7,7 @@ They can be used to validate json files.
 
 | Area | Description |
 | ---- | ----------- |
-| [ctrlX CORE](https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/) | ctrlX CORE related json schema |
+| [ctrlX CORE](./ctrlx-automation/ctrlx-core/) | ctrlX CORE related json schema |
 
 ## About
 

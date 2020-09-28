@@ -7,7 +7,7 @@ They can be used to validate json files.
 
 | Schema | Description |
 | ------ | ----------- |
-| [package-manifest.v1.schema.json](https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/apps/package-manifest/package-manifest.v1.schema.json) | The package-manifest contains meta data of a ctrlX CORE App and to seemless integrate it into the ctrlX CORE system |
+| [package-manifest.v1.schema.json](./apps/package-manifest/package-manifest.v1.schema.json) | The package-manifest contains meta data of a ctrlX CORE App and to seemless integrate it into the ctrlX CORE system |
 
 ## About
 
