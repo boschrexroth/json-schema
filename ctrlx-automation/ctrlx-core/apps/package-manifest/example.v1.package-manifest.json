@@ -1,0 +1,118 @@
+{
+  "$schema": "./package-manifest.v1.schema.json",
+  "version": "1.0.0",
+  "id": "ctrlx-helloworld",
+  "services": {
+    "proxyMapping": [
+      {
+        "name": "ctrlx-helloworld.web",
+        "url": "/ctrlx-helloworld",
+        "binding": "unix://{$SNAP_DATA}/package-run/ctrlx-helloworld/ctrlx-helloworld.web.sock",
+        "options": [
+          {"option": "websockets", "value": ""},
+          {"option": "max_conns", "value": "2"}
+        ],
+        "restricted": [
+          "/ctrlx-helloworld/api/v1"
+        ]
+      }
+    ]
+  },
+  "scopes-declaration": [
+    {
+      "identifier": "ctrlx-helloworld.web",
+      "name": "Helloworld Scopes",
+      "description": "Scopes for the Hello World App",
+      "scopes": [
+        {
+          "identifier": "ctrlx-helloworld.web.all.rw",
+          "name": "Manage hello world",
+          "description": "Manage and modify hello world"
+        },
+        {
+          "identifier": "ctrlx-helloworld.web.all.r",
+          "name": "View hello world",
+          "description": "View (but not modify) hello world"
+        }
+      ]
+    }
+  ],
+  "menus": {
+    "sidebar": [
+      {
+        "id": "helloworld",
+        "title": "Hello, World!",
+        "icon": "bosch-ic-world-frame",
+        "permissions": [
+          "ctrlx-helloworld.web.all.r",
+          "ctrlx-helloworld.web.all.rw"
+        ],
+        "items": [
+          {
+            "id": "helloworld-home",
+            "title": "Overview",
+            "link": "/ctrlx-helloworld",
+            "permissions": [
+              "ctrlx-helloworld.web.all.r",
+              "ctrlx-helloworld.web.all.rw"
+            ]
+          },
+          {
+            "id": "helloworld-manage",
+            "title": "Manage",
+            "link": "/ctrlx-helloworld/manage",
+            "permissions": [
+              "ctrlx-helloworld.web.all.rw"
+            ]
+          }
+        ]
+      }
+    ],
+    "settings": [
+      {
+        "id": "helloworld-settings",
+        "title": "Hello World!",
+        "link": "/ctrlx-helloworld/settings",
+        "permissions": [
+          "ctrlx-helloworld.web.all.rw"
+        ]
+      }
+    ],
+    "overview": [
+      {
+        "id": "helloworld-home",
+        "title": "Overview",
+        "link": "/ctrlx-helloworld",
+        "icon": "bosch-ic-world-frame",
+        "permissions": [
+          "ctrlx-helloworld.web.all.r",
+          "ctrlx-helloworld.web.all.rw"
+        ]
+      }
+    ]
+  },
+  "commands": {
+    "activeConfiguration": {
+      "save": [
+        {
+          "id": "ctrlx-helloworld",
+          "subject": "Save hello world",
+          "execution": {
+            "method": "POST",
+            "url": "/ctrlx-helloworld/api/v1/save"
+          }
+        }
+      ],
+      "load": [
+        {
+          "id": "ctrlx-helloworld",
+          "subject": "Load hello world",
+          "execution": {
+            "method": "POST",
+            "url": "/ctrlx-helloworld/api/v1/load"
+          }
+        }
+      ]
+    }
+  }
+}
