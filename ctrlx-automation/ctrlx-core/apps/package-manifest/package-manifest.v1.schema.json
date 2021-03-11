@@ -41,7 +41,7 @@
       "title": "Services",
       "description": "Services contains a set of services a package is providing",
       "properties": {
-        "proxyMappings": {
+        "proxyMapping": {
           "type": "array",
           "title": "Proxy mappings",
           "description": "Proxy mappings are used by the reverse proxy to assign specific routes to a server running on a device.",
