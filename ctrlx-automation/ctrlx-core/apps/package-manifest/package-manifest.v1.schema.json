@@ -379,13 +379,16 @@
           ]
         },
         "restricted": {
-          "type": "string",
+          "type": "array",
           "title": "Restricted resources",
           "description": "Resources, to which the access shall be restricted, e.g. API URLs",
-          "examples": [
-            "/my-app/api/v1.0",
-            "/my-app/api/v1.0"
-          ]
+          "items": {
+            "type": "string",
+            "examples": [
+              "/my-app/api/v1.0",
+              "/my-app/api/v1.0"
+            ]
+          }
         }
       }
     }
