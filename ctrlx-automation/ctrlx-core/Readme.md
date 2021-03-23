@@ -5,9 +5,41 @@ They can be used to validate json files.
 
 ## Schemas
 
-| Schema | Description |
-| ------ | ----------- |
-| [package-manifest.v1.schema.json](./apps/package-manifest/package-manifest.v1.schema.json) | The package-manifest contains meta data of a ctrlX CORE App and to seemless integrate it into the ctrlX CORE system |
+### package-manifest
+
+The package-manifest contains meta data of a ctrlX CORE App and to seemless integrate it into the ctrlX CORE system
+
+<table>
+  <tbody>
+    <tr>
+      <th>Version</th>
+      <th>Implemented</th>
+      <th>Changes</th>
+    </tr>
+    <tr>
+      <td valign="top"><a href="./apps/package-manifest/package-manifest.v1.1.schema.json">package-manifest.v1.1.schema.json</a></td>
+      <td valign="top">v0108</td>
+      <td valign="top">
+        <ul>
+          <li>Documentation part: provide link to further documentation</li>
+          <li>Update json-schema version</li>
+          <li>Introduce url field in commandRequest, execution field is deprecated</li>
+          <li>Target property for links</li>
+          <li>Minor improvements</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top"><a href="./apps/package-manifest/package-manifest.v1.0.schema.json">package-manifest.v1.0.schema.json</a></td>
+      <td valign="top">v0106</td>
+      <td valign="top">
+        <ul>
+          <li>Initial Release</li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ## About
 
