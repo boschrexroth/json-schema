@@ -62,7 +62,7 @@
     "menus": {
       "type": "object",
       "title": "Menus",
-      "description": "Menus and Links a package provides. The declarations will be used by the device admin to generate the corresponding entries in the sidebar or overview.",
+      "description": "Menus and links a package provides. The declarations will be used by the device admin to generate the corresponding entries in the sidebar or overview.",
       "properties": {
         "sidebar": {
           "type": "array",
@@ -175,7 +175,7 @@
     },
     "commandScope": {
       "title": "Command Scope",
-      "description": "A Command scope, containing multiple commands in form of command requests",
+      "description": "A command scope containing multiple commands.",
       "type": "object",
       "additionalProperties": {
         "$ref": "#/definitions/command"
