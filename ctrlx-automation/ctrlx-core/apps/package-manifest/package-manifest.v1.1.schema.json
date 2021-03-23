@@ -130,6 +130,15 @@
             "https://www.google.com/"
           ]
         },
+        "target": {
+          "type": "string",
+          "title": "Target",
+          "description": "Specifies where to show the link. Identical to the target property of an anchor element.",
+          "examples": [
+            "_blank",
+            "my-app"
+          ]
+        },
         "id": {
           "description": "Identifier of the link. Used to define menu orders.",
           "type": "string",
