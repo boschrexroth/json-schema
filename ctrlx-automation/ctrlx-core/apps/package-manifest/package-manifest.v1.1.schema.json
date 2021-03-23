@@ -212,8 +212,7 @@
       "type": "object",
       "required": [
         "id",
-        "subject",
-        "execution"
+        "subject"
       ],
       "properties": {
         "id": {
@@ -232,9 +231,17 @@
             "motion settings"
           ]
         },
+        "url": {
+          "title": "URL",
+          "description": "The request URL. Called as a POST request. URLs starting with a slash are interpreted to be relative to https://<host>. The execution and url elements are mutually exclusive, that is exactly one of them is required.",
+          "type": "string",
+          "examples": [
+            "/automation/api/v1/motion/cfg/save"
+          ]
+        },
         "execution": {
           "title": "Execution",
-          "description": "The request that will be sent in order to execute this command",
+          "description": "The execution element is deprecated. Use url element instead.",
           "type": "object",
           "required": [
             "url"
