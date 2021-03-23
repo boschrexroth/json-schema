@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/apps/package-manifest/package-manifest.v1.schema.json",
   "type": "object",
   "title": "ctrlX CORE Package Manifest",
