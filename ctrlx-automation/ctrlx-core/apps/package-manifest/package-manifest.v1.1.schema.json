@@ -36,21 +36,12 @@
     },
     "documentation": {
       "$ref": "#definitions/documentation"
+    },
+    "configuration": {
+      "$ref": "#definitions/configuration"
     }
   },
-  "configuration": {
-    "type": "object",
-    "description": "Configuration topics",
-    "properties": {
-      "appDirectories": {
-        "type": "array",
-        "description": "Describes app directories and specifies access to them inside the configuration",
-        "items": {
-          "$ref": "#/definitions/appDirectory"
-        }
-      }
-    }
-  },
+
   "definitions": {
     "services": {
       "type": "object",
@@ -428,47 +419,68 @@
           }
         }
       }
-    }
-  },
-  "document": {
-    "type": "object",
-    "title": "Document",
-    "description": "Specifies a reference to a document",
-    "properties": {
-      "type": {
-        "type": "string",
-        "title": "Type of the document",
-        "description": "Type of the document. Can be used for assignment purposes, e.g.",
-        "enum": [
-          "api"
-        ],
-        "examples": [
-          "api"
-        ]
-      },
-      "name": {
-        "type": "string",
-        "title": "Name of the document",
-        "description": "Name or title of the document. Can be used in headlines, e.g.",
-        "examples": [
-          "My-App API"
-        ]
-      },
-      "url": {
-        "type": "string",
-        "title": "URL of the document",
-        "description": "Specifies the path to the document resource.",
-        "examples": [
-          "/doc/api/my-app"
-        ]
-      },
-      "description": {
-        "type": "string",
-        "title": "Description of the document",
-        "description": "Short description of the content of the document.",
-        "examples": [
-          "Provides my-app related functionalities on ctrlX devices."
-        ]
+    },
+    "documentation": {
+      "type": "array",
+      "title": "Documentation",
+      "description": "Contains documents like API references, e.g.",
+      "items": {
+        "$ref": "#/definitions/document"
+      }
+    },
+    "document": {
+      "type": "object",
+      "title": "Document",
+      "description": "Specifies a reference to a document",
+      "properties": {
+        "type": {
+          "type": "string",
+          "title": "Type of the document",
+          "description": "Type of the document. Can be used for assignment purposes, e.g.",
+          "enum": [
+            "api"
+          ],
+          "examples": [
+            "api"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "title": "Name of the document",
+          "description": "Name or title of the document. Can be used in headlines, e.g.",
+          "examples": [
+            "My-App API"
+          ]
+        },
+        "url": {
+          "type": "string",
+          "title": "URL of the document",
+          "description": "Specifies the path to the document resource.",
+          "examples": [
+            "/doc/api/my-app"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "title": "Description of the document",
+          "description": "Short description of the content of the document.",
+          "examples": [
+            "Provides my-app related functionalities on ctrlX devices."
+          ]
+        }
+      }
+    },
+    "configuration": {
+      "type": "object",
+      "description": "Configuration topics",
+      "properties": {
+        "appDirectories": {
+          "type": "array",
+          "description": "Describes app directories and specifies access to them inside the configuration",
+          "items": {
+            "$ref": "#/definitions/appDirectory"
+          }
+        }
       }
     },
     "appDirectory": {
