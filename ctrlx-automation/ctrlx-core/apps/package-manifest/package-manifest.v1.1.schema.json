@@ -38,6 +38,19 @@
       "$ref": "#definitions/documentation"
     }
   },
+  "configuration": {
+    "type": "object",
+    "description": "Configuration topics",
+    "properties": {
+      "appDirectories": {
+        "type": "array",
+        "description": "Describes app directories and specifies access to them inside the configuration",
+        "items": {
+          "$ref": "#/definitions/appDirectory"
+        }
+      }
+    }
+  },
   "definitions": {
     "services": {
       "type": "object",
@@ -456,6 +469,64 @@
         "examples": [
           "Provides my-app related functionalities on ctrlX devices."
         ]
+      }
+    },
+    "appDirectory": {
+      "type": "object",
+      "title": "App directory",
+      "description": "Describes an app directory and specifies access to it inside the configuration. The root app directory should be a top-level directory inside a configuration.",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Name",
+          "description": "Name including path of the directory",
+          "examples": [
+            "my-app",
+            "my-app/cool-feature"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "title": "Description",
+          "description": "Short description of the content or purpose of the directory",
+          "examples": [
+            "My app",
+            "My cool feature"
+          ]
+        },
+        "icon": {
+          "type": "string",
+          "title": "Icon",
+          "description": "Icon",
+          "examples": [
+            "my-symbolic-icon"
+          ]
+        },
+        "scopes": {
+          "type": "array",
+          "title": "Scopes",
+          "description": "Each single scope grants access to the current directory and its subdirectories. Maybe overridden by subdirectories.",
+          "items": {
+            "type": "string",
+            "title": "Scope",
+            "description": "A scope grants access to the current directory and its subdirectories. Maybe overridden by subdirectories.",
+            "examples": [
+              "edit_oem_scripts",
+              "edit_system_scripts"
+            ]
+          }
+        },
+        "copyOnLoad": {
+          "type": "boolean",
+          "title": "Copy on load",
+          "description": "Final step on loading a configuration. If true, copy operation is done by the Solutions snap; otherwise, by snap itself. Valid for current directory as well as sub directories unless overwritten by sub directories.",
+          "examples": [
+            "true"
+          ]
+        }
       }
     }
   }
