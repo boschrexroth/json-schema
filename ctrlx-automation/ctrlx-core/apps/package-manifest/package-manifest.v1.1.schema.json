@@ -121,7 +121,10 @@
           "title": "Link to the ressource. The link includes the prefix of the service",
           "description": "Relative path of the link",
           "examples": [
-            "/my-app"
+            "/my-app",
+            "/my-app?access_token=${bearertoken}",
+            "http://${hostname}:1234/",
+            "https://www.google.com/"
           ]
         },
         "id": {
@@ -157,7 +160,9 @@
             "title": "Permission",
             "examples": [
               "my-app.r",
-              "my-app.rw"
+              "my-app.rw",
+              "my-app.cool-feature.r",
+              "my-app.cool-feature.rw"
             ],
             "pattern": "^(.*)$"
           }
@@ -241,7 +246,7 @@
               "description": "The URL used for executing this command",
               "type": "string",
               "examples": [
-                "/automation/api/v1/motion/cfg/save-all"
+                "/automation/api/v1/motion/cfg/save"
               ]
             }
           }
@@ -295,8 +300,8 @@
           "title": "The identifier of the scope",
           "description": "The unique identifier of the scope. Must be derived from the id and follow the schema <id>.<service>.<scope_name>.<access_type>",
           "examples": [
-            "my-app.web.all.rw (allow read/write access to all resources",
-            "my-app.web.all.r (allow access to all resources on a read-only basis)"
+            "my-app.cool-feature.rw (allow read/write access to all resources",
+            "my-app.cool-feature.r (allow access to all resources on a read-only basis)"
           ]
         },
         "name": {
