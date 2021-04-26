@@ -32,6 +32,9 @@
         "rexroth-vpnmanager"
       ]
     },
+    "scopes-declaration": {
+      "$ref": "#definitions/scopes-declaration"
+    },
     "services": {
       "$ref": "#definitions/services"
     },
