@@ -476,7 +476,7 @@
           "title": "URL of the document",
           "description": "Specifies the path to the document resource.",
           "examples": [
-            "/doc/api/my-app"
+            "/my-app/doc/api"
           ]
         },
         "description": {
@@ -557,7 +557,7 @@
           "title": "Copy on load",
           "description": "Final step on loading a configuration. If true, copy operation is done by the Solutions snap; otherwise, by snap itself. Valid for current directory as well as sub directories unless overwritten by sub directories.",
           "examples": [
-            "true"
+            true
           ]
         }
       }
