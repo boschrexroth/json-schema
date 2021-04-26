@@ -3,7 +3,14 @@
   "$id": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/apps/package-manifest/package-manifest.v1.schema.json",
   "type": "object",
   "title": "ctrlX CORE Package Manifest",
+  "additionalProperties": false,
   "properties": {
+    "$schema": {
+      "type": "string",
+      "title": "Definition of schema",
+      "description": "Definition of schema, should point to a valid package-manifest schema definition, e.g.: https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/apps/package-manifest/package-manifest.v1.schema.json",
+      "default": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/apps/package-manifest/package-manifest.v1.schema.json"
+    },
     "version": {
       "type": "string",
       "title": "Package manifest version",
@@ -45,6 +52,7 @@
   "definitions": {
     "services": {
       "type": "object",
+      "additionalProperties": false,
       "title": "Services",
       "description": "Services contains a set of services a package is providing",
       "properties": {
@@ -68,6 +76,7 @@
     },
     "menus": {
       "type": "object",
+      "additionalProperties": false,
       "title": "Menus",
       "description": "Menus and links a package provides. The declarations will be used by the device admin to generate the corresponding entries in the sidebar or overview.",
       "properties": {
@@ -97,6 +106,7 @@
     "entries": {
       "description": "A navigation entry point of the package",
       "type": "object",
+      "additionalProperties": false,
       "title": "Link",
       "oneOf": [
         {
@@ -247,6 +257,7 @@
           "title": "Execution",
           "description": "The execution element is deprecated. Use url element instead.",
           "type": "object",
+          "additionalProperties": false,
           "required": [
             "url"
           ],
@@ -279,6 +290,7 @@
     },
     "setOfScopes": {
       "type": "object",
+      "additionalProperties": false,
       "title": "Set of scopes",
       "description": "A set of scopes declares the scopes which are supported by the web service. The set includes identifer, name, a human-readable description and one or more scopes.",
       "properties": {
@@ -315,6 +327,7 @@
     },
     "scope": {
       "type": "object",
+      "additionalProperties": false,
       "title": "Web server scope",
       "description": "A scope represents a web service resource specific permission and consists of an identifier, a name and a human-readable description.",
       "properties": {
@@ -351,6 +364,7 @@
     },
     "proxyMapping": {
       "type": "object",
+      "additionalProperties": false,
       "title": "ProxyMapping",
       "description": "ProxyMapping defines a web service mappings. A service has a name for identification, a relative path where it should be reachable and a socket (network or unix) to bind to",
       "properties": {
@@ -386,6 +400,7 @@
           "description": "Additional options of the proxy configuration",
           "items": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "option": {
                 "type": "string"
@@ -430,6 +445,7 @@
     },
     "document": {
       "type": "object",
+      "additionalProperties": false,
       "title": "Document",
       "description": "Specifies a reference to a document",
       "properties": {
@@ -472,6 +488,7 @@
     },
     "configuration": {
       "type": "object",
+      "additionalProperties": false,
       "description": "Configuration topics",
       "properties": {
         "appDirectories": {
@@ -485,6 +502,7 @@
     },
     "appDirectory": {
       "type": "object",
+      "additionalProperties": false,
       "title": "App directory",
       "description": "Describes an app directory and specifies access to it inside the configuration. The root app directory should be a top-level directory inside a configuration.",
       "required": [
