@@ -32,6 +32,16 @@
         "rexroth-vpnmanager"
       ]
     },
+    "real-time": {
+      "type": "boolean",
+      "title": "Real-time requirements of the app",
+      "description": "Real-time indicates whenether the services of the app requires real-time capabilities of the system and is using advanced real-time features, e.g. ctrlX Automation Core task scheduling.",
+      "examples": [
+        true,
+        false
+      ],
+      "default": true
+    },
     "scopes-declaration": {
       "$ref": "#definitions/scopes-declaration"
     },
