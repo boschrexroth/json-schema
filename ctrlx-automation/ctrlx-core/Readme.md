@@ -7,7 +7,11 @@ They can be used to validate json files.
 
 ### package-manifest
 
+Reference: https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/apps/package-manifest/package-manifest.v1.schema.json
+
 The package-manifest contains meta data of a ctrlX CORE App and to seemless integrate it into the ctrlX CORE system
+
+#### Changelog
 
 <table>
   <tbody>
