@@ -29,7 +29,8 @@
       "examples": [
         "rexroth-solutions",
         "rexroth-automation",
-        "rexroth-vpnmanager"
+        "rexroth-vpnmanager",
+        "ctrlx-node-red"
       ]
     },
     "real-time": {
