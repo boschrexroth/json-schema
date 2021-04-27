@@ -14,7 +14,7 @@
     "version": {
       "type": "string",
       "title": "Package manifest version",
-      "description": "Version of the package manifest. (XCR-deviceadmin-V0106)",
+      "description": "Version of the package manifest.",
       "examples": [
         "1.0.0",
         "2.1.0",
@@ -25,7 +25,7 @@
     "id": {
       "type": "string",
       "title": "Identifier of the package",
-      "description": "Unique identifier of the package. Must match the following RegEx: ^[0-9a-ZA-Z]. Must match the identifier defined in the snapcraft.yaml. (XCR-deviceadmin-V0106)",
+      "description": "Unique identifier of the package. Must match the following RegEx: ^[0-9a-ZA-Z]. Must match the identifier defined in the snapcraft.yaml.",
       "examples": [
         "rexroth-solutions",
         "rexroth-automation",
@@ -67,12 +67,12 @@
       "type": "object",
       "additionalProperties": false,
       "title": "Services",
-      "description": "Services contains a set of services a package is providing. (XCR-deviceadmin-V0106)",
+      "description": "Services contains a set of services a package is providing",
       "properties": {
         "proxyMapping": {
           "type": "array",
           "title": "Proxy mappings",
-          "description": "Proxy mappings are used by the reverse proxy to assign specific routes to a server running on a device. (XCR-deviceadmin-V0106)",
+          "description": "Proxy mappings are used by the reverse proxy to assign specific routes to a server running on a device.",
           "items": {
             "$ref": "#/definitions/proxyMapping"
           }
@@ -82,7 +82,7 @@
     "scopes-declaration": {
       "type": "array",
       "title": "Scopes provided by the package",
-      "description": "Scopes used in the application to control access to specific ressources. The scope declaration is used by the identity management (IDM) to assign permissions for specific users or groups. (XCR-deviceadmin-V0106)",
+      "description": "Scopes used in the application to control access to specific ressources. The scope declaration is used by the identity management (IDM) to assign permissions for specific users or groups.",
       "items": {
         "$ref": "#/definitions/setOfScopes"
       }
@@ -91,12 +91,11 @@
       "type": "object",
       "additionalProperties": false,
       "title": "Menus",
-      "description": "Menus and links a package provides. The declarations will be used by the device admin to generate the corresponding entries in the sidebar or overview. (XCR-deviceadmin-V0106)",
+      "description": "Menus and links a package provides. The declarations will be used by the device admin to generate the corresponding entries in the sidebar or overview.",
       "properties": {
         "sidebar": {
           "type": "array",
           "title": "Sidebar Menu",
-          "description": "Menu entries for the sidebar menu. (XCR-deviceadmin-V0106)",
           "items": {
             "$ref": "#/definitions/entries"
           }
@@ -104,7 +103,6 @@
         "settings": {
           "type": "array",
           "title": "Settings Menu",
-          "description": "Menu entries for the settings menu. (XCR-deviceadmin-V0106)",
           "items": {
             "$ref": "#/definitions/entries"
           }
@@ -112,7 +110,6 @@
         "overview": {
           "type": "array",
           "title": "Overview",
-          "description": "Menu entries for the overview. (XCR-deviceadmin-V0106)",
           "items": {
             "$ref": "#/definitions/entries"
           }
@@ -120,7 +117,7 @@
       }
     },
     "entries": {
-      "description": "A navigation entry point of the package. (XCR-deviceadmin-V0106)",
+      "description": "A navigation entry point of the package",
       "type": "object",
       "additionalProperties": false,
       "title": "Link",
@@ -144,7 +141,7 @@
         "items": {
           "type": "array",
           "title": "Sublinks",
-          "description": "Sub entries of the entry point. (XCR-deviceadmin-V0106)",
+          "description": "Sub entries of the entry point",
           "items": {
             "$ref": "#/definitions/entries"
           }
@@ -152,7 +149,7 @@
         "link": {
           "type": "string",
           "title": "Link to the ressource. The link includes the prefix of the service",
-          "description": "Relative path of the link. (XCR-deviceadmin-V0106)",
+          "description": "Relative path of the link",
           "examples": [
             "/my-app",
             "/my-app?access_token=${bearertoken}",
@@ -163,14 +160,14 @@
         "target": {
           "type": "string",
           "title": "Target",
-          "description": "Specifies where to show the link. Identical to the target property of an anchor element. (XCR-deviceadmin-V0108)",
+          "description": "Specifies where to show the link. Identical to the target property of an anchor element.",
           "examples": [
             "_blank",
             "my-app"
           ]
         },
         "id": {
-          "description": "Identifier of the link. Used to define menu orders. (XCR-deviceadmin-V0106)",
+          "description": "Identifier of the link. Used to define menu orders.",
           "type": "string",
           "title": "Id",
           "examples": [
@@ -178,7 +175,7 @@
           ]
         },
         "title": {
-          "description": "The text representation of the entry point. (XCR-deviceadmin-V0106)",
+          "description": "The text representation of the entry point",
           "type": "string",
           "title": "Title",
           "examples": [
@@ -186,7 +183,7 @@
           ]
         },
         "icon": {
-          "description": "An optional icon, see... to represent the entry point. (XCR-deviceadmin-V0106)",
+          "description": "An optional icon, see... to represent the entry point",
           "type": "string",
           "title": "Icon",
           "examples": [
@@ -194,7 +191,7 @@
           ]
         },
         "permissions": {
-          "description": "An optional list of permissions to enable the entry point. (XCR-deviceadmin-V0106)",
+          "description": "An optional list of permissions to enable the entry point",
           "type": "array",
           "title": "Permissions",
           "items": {
@@ -214,7 +211,7 @@
     "commands": {
       "type": "object",
       "title": "Commands",
-      "description": "Allows to specify commands that integrate into framework operations, e.g. for activeConfiguration. The sub-elements define the scopes that support command integration. (XCR-deviceadmin-V0106)",
+      "description": "Allows to specify commands that integrate into framework operations, e.g. for activeConfiguration. The sub-elements define the scopes that support command integration.",
       "properties": {},
       "additionalProperties": {
         "$ref": "#/definitions/commandScope"
@@ -222,7 +219,7 @@
     },
     "commandScope": {
       "title": "Command Scope",
-      "description": "A command scope containing multiple commands. (XCR-deviceadmin-V0106)",
+      "description": "A command scope containing multiple commands.",
       "type": "object",
       "additionalProperties": {
         "$ref": "#/definitions/command"
@@ -230,7 +227,7 @@
     },
     "command": {
       "title": "Command",
-      "description": "A command that is provided and can be executed by another application. A command can have multiple command requests, e.g. to execute the command on multiple services. (XCR-deviceadmin-V0106)",
+      "description": "A command that is provided and can be executed by another application. A command can have multiple command requests, e.g. to execute the command on multiple services.",
       "type": "array",
       "items": {
         "$ref": "#/definitions/commandRequest"
@@ -238,7 +235,7 @@
     },
     "commandRequest": {
       "title": "Command",
-      "description": "A command object. (XCR-deviceadmin-V0106)",
+      "description": "A command object.",
       "type": "object",
       "required": [
         "id",
@@ -247,7 +244,7 @@
       "properties": {
         "id": {
           "title": "Id",
-          "description": "The identifier of this command; must be unique within the enclosing scope. (XCR-deviceadmin-V0106)",
+          "description": "The identifier of this command; must be unique within the enclosing scope.",
           "type": "string",
           "examples": [
             "motion"
@@ -255,7 +252,7 @@
         },
         "subject": {
           "title": "Subject",
-          "description": "Denotes what will be saved or loaded; used to inform users, e.g. in messages like 'Loading motion settings' or 'Cannot load motion settings'. (XCR-deviceadmin-V0106)",
+          "description": "Denotes what will be saved or loaded; used to inform users, e.g. in messages like 'Loading motion settings' or 'Cannot load motion settings'",
           "type": "string",
           "examples": [
             "motion settings"
@@ -263,7 +260,7 @@
         },
         "url": {
           "title": "URL",
-          "description": "The request URL. Called as a POST request. URLs starting with a slash are interpreted to be relative to https://<host>. The execution and url elements are mutually exclusive, that is exactly one of them is required. (XCR-deviceadmin-V0106)",
+          "description": "The request URL. Called as a POST request. URLs starting with a slash are interpreted to be relative to https://<host>. The execution and url elements are mutually exclusive, that is exactly one of them is required.",
           "type": "string",
           "examples": [
             "/automation/api/v1/motion/cfg/save"
@@ -308,12 +305,12 @@
       "type": "object",
       "additionalProperties": false,
       "title": "Set of scopes",
-      "description": "A set of scopes declares the scopes which are supported by the web service. The set includes identifer, name, a human-readable description and one or more scopes. (XCR-deviceadmin-V0106)",
+      "description": "A set of scopes declares the scopes which are supported by the web service. The set includes identifer, name, a human-readable description and one or more scopes.",
       "properties": {
         "identifier": {
           "type": "string",
           "title": "The identifier of the scope set",
-          "description": "The unique identifier of the permission set. Must be derived from the identifier and must not contain spaces. Must be unique. (XCR-deviceadmin-V0106)",
+          "description": "The unique identifier of the permission set. Must be derived from the identifier and must not contain spaces. Must be unique.",
           "examples": [
             "my-app.web"
           ]
@@ -321,7 +318,7 @@
         "name": {
           "type": "string",
           "title": "The name of the scope set",
-          "description": "The name of the scope set. Should be unique. Used by the identity management frontend to display the scope set. (XCR-deviceadmin-V0106)",
+          "description": "The name of the scope set. Should be unique. Used by the identity management frontend to display the scope set.",
           "examples": [
             "My App Scopes"
           ]
@@ -329,12 +326,12 @@
         "description": {
           "type": "string",
           "title": "Description of the scope set",
-          "description": "The description of the scope set. Used by the identity management frontend to describe the scope set. (XCR-deviceadmin-V0106)"
+          "description": "The description of the scope set. Used by the identity management frontend to describe the scope set."
         },
         "scopes": {
           "type": "array",
           "title": "Array of scopes",
-          "description": "Array of scopes. Each scope describes a specific permission for one or more web server resources, e.g. write to a resource using HTTP PUT. (XCR-deviceadmin-V0106)",
+          "description": "Array of scopes. Each scope describes a specific permission for one or more web server resources, e.g. write to a resource using HTTP PUT",
           "items": {
             "$ref": "#/definitions/scope"
           }
@@ -345,12 +342,12 @@
       "type": "object",
       "additionalProperties": false,
       "title": "Web server scope",
-      "description": "A scope represents a web service resource specific permission and consists of an identifier, a name and a human-readable description. (XCR-deviceadmin-V0106)",
+      "description": "A scope represents a web service resource specific permission and consists of an identifier, a name and a human-readable description.",
       "properties": {
         "identifier": {
           "type": "string",
           "title": "The identifier of the scope",
-          "description": "The unique identifier of the scope. Must be derived from the id and follow the schema <id>.<service>.<scope_name>.<access_type>. (XCR-deviceadmin-V0106)",
+          "description": "The unique identifier of the scope. Must be derived from the id and follow the schema <id>.<service>.<scope_name>.<access_type>",
           "examples": [
             "my-app.cool-feature.rw (allow read/write access to all resources",
             "my-app.cool-feature.r (allow access to all resources on a read-only basis)"
@@ -359,7 +356,7 @@
         "name": {
           "type": "string",
           "title": "The name of the scope",
-          "description": "The name of the scope set. Should be unique. Used by the identity management frontend to display the scope. Should describe the what the permission means. (XCR-deviceadmin-V0106)",
+          "description": "The name of the scope set. Should be unique. Used by the identity management frontend to display the scope. Should describe the what the permission means.",
           "examples": [
             "Read/write access (all parameters)",
             "Read access (all parameters)",
@@ -369,7 +366,7 @@
         "description": {
           "type": "string",
           "title": "Description of the scope",
-          "description": "The description of the scope. Used by the identity management frontend to describe the scope set. (XCR-deviceadmin-V0106)",
+          "description": "The description of the scope. Used by the identity management frontend to describe the scope set.",
           "examples": [
             "This permissions allows to read and modify all automation parameters",
             "This permissions allows to read all automation parameters",
@@ -382,12 +379,12 @@
       "type": "object",
       "additionalProperties": false,
       "title": "ProxyMapping",
-      "description": "ProxyMapping defines a web service mappings. A service has a name for identification, a relative path where it should be reachable and a socket (network or unix) to bind to. (XCR-deviceadmin-V0106)",
+      "description": "ProxyMapping defines a web service mappings. A service has a name for identification, a relative path where it should be reachable and a socket (network or unix) to bind to",
       "properties": {
         "name": {
           "type": "string",
           "title": "Name",
-          "description": "A Name for the mapping. (XCR-deviceadmin-V0106)",
+          "description": "A Name for the mapping",
           "examples": [
             "my-app.web"
           ]
@@ -395,7 +392,7 @@
         "url": {
           "type": "string",
           "title": "Url",
-          "description": "Relative path the service is requesting. (XCR-deviceadmin-V0106)",
+          "description": "Relative path the service is requesting",
           "examples": [
             "/my-app"
           ]
@@ -403,7 +400,7 @@
         "binding": {
           "type": "string",
           "title": "Binding",
-          "description": "A network socket, e.g. :5000 or unix socket e.g. unix://{$SNAP_DATA}/package-run/my-app.web.sock. (XCR-deviceadmin-V0106)",
+          "description": "A network socket, e.g. :5000 or unix socket e.g. unix://{$SNAP_DATA}/package-run/my-app.web.sock",
           "examples": [
             ":5000",
             "http://localhost:5000",
@@ -413,7 +410,7 @@
         "options": {
           "type": "array",
           "title": "Additional options",
-          "description": "Additional options of the proxy configuration. (XCR-deviceadmin-V0106)",
+          "description": "Additional options of the proxy configuration",
           "items": {
             "type": "object",
             "additionalProperties": false,
@@ -440,7 +437,7 @@
         "restricted": {
           "type": "array",
           "title": "Restricted resources",
-          "description": "Resources, to which the access shall be restricted, e.g. API URLs. (XCR-deviceadmin-V0106)",
+          "description": "Resources, to which the access shall be restricted, e.g. API URLs",
           "items": {
             "type": "string",
             "examples": [
@@ -454,7 +451,7 @@
     "documentation": {
       "type": "array",
       "title": "Documentation",
-      "description": "Contains documents like API references. (XCR-deviceadmin-V0108)",
+      "description": "Contains documents like API references, e.g.",
       "items": {
         "$ref": "#/definitions/document"
       }
@@ -463,12 +460,12 @@
       "type": "object",
       "additionalProperties": false,
       "title": "Document",
-      "description": "Specifies a reference to a document. (XCR-deviceadmin-V0108)",
+      "description": "Specifies a reference to a document",
       "properties": {
         "type": {
           "type": "string",
           "title": "Type of the document",
-          "description": "Type of the document. Can be used for assignment purposes. (XCR-deviceadmin-V0108)",
+          "description": "Type of the document. Can be used for assignment purposes, e.g.",
           "enum": [
             "api"
           ],
@@ -479,7 +476,7 @@
         "name": {
           "type": "string",
           "title": "Name of the document",
-          "description": "Name or title of the document. Can be used in headlines, e.g.. (XCR-deviceadmin-V0108)",
+          "description": "Name or title of the document. Can be used in headlines, e.g.",
           "examples": [
             "My-App API"
           ]
@@ -487,7 +484,7 @@
         "url": {
           "type": "string",
           "title": "URL of the document",
-          "description": "Specifies the path to the document resource. (XCR-deviceadmin-V0108)",
+          "description": "Specifies the path to the document resource.",
           "examples": [
             "/my-app/doc/api"
           ]
@@ -495,7 +492,7 @@
         "description": {
           "type": "string",
           "title": "Description of the document",
-          "description": "Short description of the content of the document. (XCR-deviceadmin-V0108)",
+          "description": "Short description of the content of the document.",
           "examples": [
             "Provides my-app related functionalities on ctrlX devices."
           ]
@@ -505,11 +502,11 @@
     "configuration": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Configuration topics. (XCR-deviceadmin-V0108)",
+      "description": "Configuration topics",
       "properties": {
         "appDirectories": {
           "type": "array",
-          "description": "Describes app directories and specifies access to them inside the configuration. (XCR-deviceadmin-V0108)",
+          "description": "Describes app directories and specifies access to them inside the configuration",
           "items": {
             "$ref": "#/definitions/appDirectory"
           }
@@ -520,7 +517,7 @@
       "type": "object",
       "additionalProperties": false,
       "title": "App directory",
-      "description": "Describes an app directory and specifies access to it inside the configuration. The root app directory should be a top-level directory inside a configuration. (XCR-deviceadmin-V0108)",
+      "description": "Describes an app directory and specifies access to it inside the configuration. The root app directory should be a top-level directory inside a configuration.",
       "required": [
         "name"
       ],
@@ -528,7 +525,7 @@
         "name": {
           "type": "string",
           "title": "Name",
-          "description": "Name including path of the directory. (XCR-deviceadmin-V0108)",
+          "description": "Name including path of the directory",
           "examples": [
             "my-app",
             "my-app/cool-feature"
@@ -537,7 +534,7 @@
         "description": {
           "type": "string",
           "title": "Description",
-          "description": "Short description of the content or purpose of the directory. (XCR-deviceadmin-V0108)",
+          "description": "Short description of the content or purpose of the directory",
           "examples": [
             "My app",
             "My cool feature"
@@ -546,7 +543,7 @@
         "icon": {
           "type": "string",
           "title": "Icon",
-          "description": "Icon (XCR-deviceadmin-V0108)",
+          "description": "Icon",
           "examples": [
             "my-symbolic-icon"
           ]
@@ -554,11 +551,11 @@
         "scopes": {
           "type": "array",
           "title": "Scopes",
-          "description": "Each single scope grants access to the current directory and its subdirectories. Maybe overridden by subdirectories. (XCR-deviceadmin-V0108)",
+          "description": "Each single scope grants access to the current directory and its subdirectories. Maybe overridden by subdirectories.",
           "items": {
             "type": "string",
             "title": "Scope",
-            "description": "A scope grants access to the current directory and its subdirectories. Maybe overridden by subdirectories. (XCR-deviceadmin-V0108)",
+            "description": "A scope grants access to the current directory and its subdirectories. Maybe overridden by subdirectories.",
             "examples": [
               "edit_oem_scripts",
               "edit_system_scripts"
@@ -568,7 +565,7 @@
         "copyOnLoad": {
           "type": "boolean",
           "title": "Copy on load",
-          "description": "Final step on loading a configuration. If true, copy operation is done by the Solutions snap; otherwise, by snap itself. Valid for current directory as well as sub directories unless overwritten by sub directories. (XCR-deviceadmin-V0108)",
+          "description": "Final step on loading a configuration. If true, copy operation is done by the Solutions snap; otherwise, by snap itself. Valid for current directory as well as sub directories unless overwritten by sub directories.",
           "examples": [
             true
           ]
