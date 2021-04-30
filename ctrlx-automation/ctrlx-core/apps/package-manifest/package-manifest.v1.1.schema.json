@@ -60,6 +60,14 @@
     },
     "configuration": {
       "$ref": "#definitions/configuration"
+    },
+    "certificatestores": {
+      "type": "array",
+      "title": "List of certificate stores",
+      "description": "Certficate stores of your application",
+      "items": {
+        "$ref": "#/definitions/certificateStore"
+      }
     }
   },
 
@@ -570,6 +578,32 @@
           "examples": [
             true
           ]
+        }
+      }
+    },
+    "certificateStore": {
+      "type": "object",
+      "title": "Store for Certificates and Keys",
+      "description": "certificate store enables your application to manage certificates and keys using Device Admin",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "Id of your store",
+          "description": "Id of your store, should contain snap name as prefix, e.g. ctrlx-helloworld.certificates",
+          "example": "ctrlx-helloworld.certificates"
+        },
+        "title": {
+          "type": "string",
+          "title": "Title of certificate store",
+          "description": "Title of your certificate store that is displayed in ctrlX Device Admin UI",
+          "example": "Hello World"
+        },
+        "description": {
+          "type": "string",
+          "title": "Description of your certificate store",
+          "description": "Describes the content and usage of the certificates in the store",
+          "example": "Certficates & Keys to connect to the World"
         }
       }
     }
