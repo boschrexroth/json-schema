@@ -38,6 +38,7 @@ The package-manifest contains meta data of a ctrlX CORE App and to seemless inte
           <li>Update json-schema version</li>
           <li>Introduce url field in commandRequest, execution field is deprecated</li>
           <li>Target property for links</li>
+          <li>Introduce certificate store for central certificate & key management</li>
           <li>Minor improvements</li>
         </ul>
       </td>
