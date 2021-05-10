@@ -33,7 +33,7 @@ Any use of the source code and related documents of this repository in applicati
 
 ## About
 
-Copyright © 2020 Bosch Rexroth AG. All rights reserved.
+Copyright © 2020-2021 Bosch Rexroth AG. All rights reserved.
 
 <https://www.boschrexroth.com>
 
@@ -46,7 +46,7 @@ GERMANY
 
 MIT License
 
-Copyright (c) 2020, Bosch Rexroth AG
+Copyright (c) 2020-2021, Bosch Rexroth AG
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

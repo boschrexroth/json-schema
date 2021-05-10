@@ -2,6 +2,28 @@
   "$schema": "./package-manifest.v1.schema.json",
   "version": "1.0.0",
   "id": "ctrlx-helloworld",
+  "configuration": {
+    "appDirectories": [
+      {
+        "name": "my-app",
+        "description": "My cool feature",
+        "scopes": [
+          "edit_oem_scripts",
+          "edit_system_scripts"
+        ],
+        "copyOnLoad": true,
+        "icon": "my-symbolic-icon"
+      }
+    ]
+  },
+  "documentation": [
+    {
+      "name": "My-App API",
+      "description": "Provides my-app related functionalities on ctrlX devices.",
+      "type": "api",
+      "url": "/my-app/doc/api"
+    }
+  ],
   "services": {
     "proxyMapping": [
       {
@@ -114,5 +136,12 @@
         }
       ]
     }
-  }
+  },
+  "certificatestores": [
+    {
+      "id": "ctrlx-helloworld.certificates",
+      "title": "Hello World Certificate Store",
+      "description": "Certficates & Keys to connect to the World"
+    }
+  ]
 }
