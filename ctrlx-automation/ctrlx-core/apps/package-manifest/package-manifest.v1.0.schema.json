@@ -26,13 +26,13 @@
       ]
     },
     "services": {
-      "$ref": "#definitions/services"
+      "$ref": "#/definitions/services"
     },
     "menus": {
-      "$ref": "#definitions/menus"
+      "$ref": "#/definitions/menus"
     },
     "commands": {
-      "$ref": "#definitions/commands"
+      "$ref": "#/definitions/commands"
     }
   },
   "definitions": {

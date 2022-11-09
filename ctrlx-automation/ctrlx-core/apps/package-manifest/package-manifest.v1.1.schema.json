@@ -44,22 +44,22 @@
       "default": true
     },
     "scopes-declaration": {
-      "$ref": "#definitions/scopes-declaration"
+      "$ref": "#/definitions/scopes-declaration"
     },
     "services": {
-      "$ref": "#definitions/services"
+      "$ref": "#/definitions/services"
     },
     "menus": {
-      "$ref": "#definitions/menus"
+      "$ref": "#/definitions/menus"
     },
     "commands": {
-      "$ref": "#definitions/commands"
+      "$ref": "#/definitions/commands"
     },
     "documentation": {
-      "$ref": "#definitions/documentation"
+      "$ref": "#/definitions/documentation"
     },
     "configuration": {
-      "$ref": "#definitions/configuration"
+      "$ref": "#/definitions/configuration"
     },
     "certificatestores": {
       "type": "array",
