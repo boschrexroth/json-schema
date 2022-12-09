@@ -5,7 +5,7 @@ They can be used to validate json files.
 
 ## Schemas
 
-### fossinfo
+### apps/fossinfo
 
 Reference: https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/apps/fossinfo/fossinfo.v1.schema.json
 
@@ -14,11 +14,17 @@ The fossinfo file of an app is used to extend open source component list of the 
 - HINT: The fossinfo file is expected at: `package-assets/<package-name>/<package-name>.fossinfo.json`.
 - IMPORTANT compatibility issue: In controls with app.deviceadmin <= 1.8, the final fossinfo file must only contain the components array as root element.
 
-### package-manifest
+### apps/package-manifest
 
 Reference: https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/apps/package-manifest/package-manifest.v1.schema.json
 
 The package-manifest contains meta data of a ctrlX CORE App and to seemless integrate it into the ctrlX CORE system
+
+### solutions/configuration
+
+Reference: https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/solutions/configuration.v1.schema.json
+
+The configuration file contains meta data of a ctrlX CORE configuration, e.g. access rights for appDirectories.
 
 #### Changelog
 
