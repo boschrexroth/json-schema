@@ -33,15 +33,15 @@
         "ctrlx-node-red"
       ]
     },
-    "real-time": {
+    "required": {
       "type": "boolean",
-      "title": "Real-time requirements of the app",
-      "description": "Real-time indicates whenether the services of the app requires real-time capabilities of the system and is using advanced real-time features, e.g. ctrlX Automation Core task scheduling.",
+      "title": "App is required app for system and not removable",
+      "description": "Required marks an app as non-removable. This app isn't a system app by default but required for the functionality",
       "examples": [
         true,
         false
       ],
-      "default": true
+      "default": false
     },
     "scopes-declaration": {
       "$ref": "#/definitions/scopes-declaration"
@@ -68,6 +68,9 @@
       "items": {
         "$ref": "#/definitions/certificateStore"
       }
+    },
+    "apps": {
+      "$ref": "#/definitions/apps"
     }
   },
   "definitions": {
@@ -518,6 +521,20 @@
           "items": {
             "$ref": "#/definitions/appDirectory"
           }
+        },
+        "appPrivateFiles": {
+          "type": "array",
+          "description": "Defines files which are ignored on saving and loading. The files are matched case-insensitively using regular expressions. Since XCR-V-0112.",
+          "items": {
+            "type": "string",
+            "title": "Regular expression",
+            "description": "A regular expression following the RE2 syntax (https://golang.org/s/re2syntax)",
+            "examples": [
+              "^my-app/[^/]+\\.bak$",
+              "^my-app/tmp/",
+              "^my-app/tmp"
+            ]
+          }
         }
       }
     },
@@ -536,8 +553,7 @@
           "description": "Path of the app directory. Subdirectories are separated with /, no leading or trailing /",
           "examples": [
             "my-app",
-            "my-app/subdir1",
-            "my-app/subdir2"
+            "my-app/cool-feature"
           ]
         },
         "description": {
@@ -546,8 +562,7 @@
           "description": "Short description of the content of the directory. Will be displayed as part of a configuration.",
           "examples": [
             "My app",
-            "My cool feature 1",
-            "My cool feature 2"
+            "My cool feature"
           ]
         },
         "icon": {
@@ -555,14 +570,23 @@
           "title": "Icon",
           "description": "An optional icon which represents the app.",
           "examples": [
-            "bosch-ic-robot",
-            "bosch-ic-directory"
+            "my-icon"
           ]
         },
         "copyOnLoad": {
           "type": "boolean",
           "title": "Copy on load",
           "description": "An app is responsible for persisting its configuration state to the app data folder, even for the load command. With copyOnLoad, the app is able to delegate this task to the Solutions app.",
+          "examples": [
+            true,
+            false
+          ],
+          "default": false
+        },
+        "writeProtected": {
+          "type": "boolean",
+          "title": "Write-protection of app directories",
+          "description": "An app can protect its directories in the active configuration against write-access, e.g. via WebDAV. Since XCR-V-0112.",
           "examples": [
             true,
             false
@@ -594,6 +618,40 @@
           "title": "Description of your certificate store",
           "description": "Describes the content and usage of the certificates in the store",
           "example": "Certficates & Keys to connect to the World"
+        }
+      }
+    },
+    "apps": {
+      "type": "object",
+      "title": "Configurations for specific rexroth apps",
+      "description": "Contains configurations for specific rexroth apps",
+      "additionalProperties": false,
+      "properties": {
+        "rexroth-remoteagent": {
+          "$ref": "#/definitions/rexroth-remoteagent"
+        }
+      }
+    },
+    "rexroth-remoteagent": {
+      "type": "object",
+      "title": "Commands for remote device administration",
+      "description": "Contains allowed commands for remote device administration",
+      "additionalProperties": false,
+      "properties": {
+        "commands": {
+          "type": "array",
+          "title": "Remote device administration commands",
+          "description": "Remote device administration commands are used to execute commands on the device from the Nexeed Device Portal",
+          "items": {
+            "type": "string"
+          },
+          "examples": [
+            [
+              "BACKUP",
+              "RESTORE",
+              "REBOOT"
+            ]
+          ]
         }
       }
     }

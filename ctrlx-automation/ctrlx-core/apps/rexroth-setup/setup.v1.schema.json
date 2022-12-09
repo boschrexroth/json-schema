@@ -1,0 +1,1367 @@
+{
+  "$id": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/apps/rexroth-setup/setup.v1.schema.json",
+  "$ref": "#/definitions/ctrlx-setup",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "additionalProperties": false,
+  "definitions": {
+    "app": {
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "deprecationMessage": "This property has no effect and can be removed",
+          "type": "boolean"
+        },
+        "version": {
+          "title": "The version of the app",
+          "type": "string"
+        },
+        "$path": {
+          "$ref": "#/definitions/path"
+        }
+      },
+      "required": [
+        "version"
+      ],
+      "title": "An app",
+      "type": "object"
+    },
+    "path": {
+      "title": "Path to a file or folder resource",
+      "description": "Relative to ctrlx-setup.json, case insensitive, no leading ´/´, path separator is ´/´",
+      "type": "string"
+    },
+    "certificateManagement": {
+      "additionalProperties": false,
+      "description": "Certificates and keys of known applications",
+      "properties": {
+        "applications": {
+          "additionalProperties": false,
+          "patternProperties": {
+            "^[-_a-zA-Z0-9.]+": {
+              "oneOf": [
+                {
+                  "$ref": "#/definitions/certificateManagement.application"
+                },
+                {
+                  "$ref": "#/definitions/schema.remove.marker"
+                }
+              ]
+            }
+          },
+          "title": "Known applications by application id",
+          "type": "object"
+        },
+        "pkis": {
+          "additionalProperties": false,
+          "patternProperties": {
+            "^[-_a-zA-Z0-9.:/]+": {
+              "title": "Uri for renewing certificates",
+              "oneOf": [
+                {
+                  "$ref": "#/definitions/certificateManagement.pki"
+                },
+                {
+                  "$ref": "#/definitions/schema.remove.marker"
+                }
+              ]
+            }
+          },
+          "title": "pki entries",
+          "type": "object"
+        }
+      },
+      "title": "Certificates and keys",
+      "type": "object"
+    },
+    "certificateManagement.application": {
+      "additionalProperties": false,
+      "description": "Application with certificates or certificate keys",
+      "properties": {
+        "certificates": {
+          "$ref": "#/definitions/certificateManagement.application.certificate.entries",
+          "title": "Certificates of the application"
+        },
+        "keys": {
+          "$ref": "#/definitions/certificateManagement.application.certificate.entries",
+          "title": "Keys of the application"
+        }
+      },
+      "title": "Known application",
+      "type": "object"
+    },
+    "certificateManagement.pki": {
+      "additionalProperties": false,
+      "description": "Declaration of an public key infrastructure server",
+      "properties": {
+        "protocol": {
+          "title": "protocol of the public key infrastructure server"
+        },
+        "serverCertId": {
+          "title": "Server certificate identifier of the public key infrastructure server"
+        },
+        "uriIr": {
+          "title": "Uri for creating a certificate. If not set uriCr is used"
+        }
+      },
+      "title": "public key infrastructure server",
+      "type": "object"
+    },
+    "certificateManagement.application.certificate.entries": {
+      "description": "Categories are used to group certificates or keys by ca, trusted, rejected. Own certificates are stored under the serial number of the device.",
+      "additionalProperties": {
+        "$ref": "#/definitions/certificateManagement.certificate.entry.map",
+        "description": "Category own: To apply the entry to the device, the serial number must match the name of the entry."
+      },
+      "properties": {
+        "ca": {
+          "$ref": "#/definitions/certificateManagement.certificate.entry.map",
+          "description": "Category ca"
+        },
+        "rejected": {
+          "$ref": "#/definitions/certificateManagement.certificate.entry.map",
+          "description": "Category rejected"
+        },
+        "trusted": {
+          "$ref": "#/definitions/certificateManagement.certificate.entry.map",
+          "description": "Category trusted"
+        }
+      },
+      "title": "Categories of certificates or keys",
+      "type": "object"
+    },
+    "certificateManagement.certificate.entry": {
+      "additionalProperties": false,
+      "description": "Content of a certificate or key",
+      "properties": {
+        "$path": {
+          "$ref": "#/definitions/path"
+        }
+      },
+      "title": "Certificate or key",
+      "type": "object"
+    },
+    "certificateManagement.certificate.entry.map": {
+      "additionalProperties": false,
+      "patternProperties": {
+        "^[ -_a-zA-Z0-9.]+$": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/certificateManagement.certificate.entry"
+            },
+            {
+              "$ref": "#/definitions/schema.remove.marker"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "configurations": {
+      "additionalProperties": false,
+      "properties": {
+        "active": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/configurations.active"
+            },
+            {
+              "$ref": "#/definitions/schema.remove.marker"
+            }
+          ]
+        },
+        "archive": {
+          "$ref": "#/definitions/configurations.archive"
+        }
+      },
+      "description": "Archived configurations and configuration to load",
+      "type": "object"
+    },
+    "configurations.active": {
+      "additionalProperties": false,
+      "properties": {
+        "$path": {
+          "$ref": "#/definitions/path"
+        }
+      },
+      "description": "Configuration to load",
+      "type": "object"
+    },
+    "configurations.archive": {
+      "additionalProperties": false,
+      "patternProperties": {
+        "^[ -_a-zA-Z0-9.]+$": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/configurations.archive.entry"
+            },
+            {
+              "$ref": "#/definitions/schema.remove.marker"
+            }
+          ]
+        }
+      },
+      "description": "List of archived configurations by configuration name",
+      "type": "object"
+    },
+    "configurations.archive.entry": {
+      "additionalProperties": false,
+      "properties": {
+        "$path": {
+          "$ref": "#/definitions/path"
+        }
+      },
+      "description": "Configuration name",
+      "type": "object"
+    },
+    "connectivity": {
+      "additionalProperties": false,
+      "properties": {
+        "bridge": {
+          "additionalProperties": false,
+          "patternProperties": {
+            "^[A-Za-z0-9_-]+": {
+              "oneOf": [
+                {
+                  "$ref": "#/definitions/connectivity.bridge"
+                },
+                {
+                  "$ref": "#/definitions/schema.remove.marker"
+                }
+              ]
+            }
+          },
+          "title": "Network bridge interfaces, e.g. bridge0",
+          "type": "object"
+        },
+        "ethernet": {
+          "additionalProperties": false,
+          "patternProperties": {
+            "^[A-Za-z0-9_-]+": {
+              "oneOf": [
+                {
+                  "$ref": "#/definitions/connectivity.ethernet"
+                },
+                {
+                  "$ref": "#/definitions/schema.remove.marker"
+                }
+              ]
+            }
+          },
+          "title": "Ethernet interfaces, e.g. eth0",
+          "type": "object"
+        },
+        "discoveryServices": {
+          "additionalProperties": false,
+          "title": "Network discovery services",
+          "type": "object",
+          "properties": {
+            "llmnr": {
+              "$ref": "#/definitions/connectivity.discoveryService"
+            },
+            "mdns": {
+              "$ref": "#/definitions/connectivity.discoveryService"
+            },
+            "upnp": {
+              "$ref": "#/definitions/connectivity.discoveryService"
+            }
+          }
+        },
+        "wifi": {
+          "additionalProperties": false,
+          "patternProperties": {
+            "^[A-Za-z0-9_-]+": {
+              "oneOf": [
+                {
+                  "$ref": "#/definitions/connectivity.wifi"
+                },
+                {
+                  "$ref": "#/definitions/schema.remove.marker"
+                }
+              ]
+            }
+          },
+          "title": "Wi-Fi interfaces, e.g. wlan0",
+          "type": "object"
+        }
+      },
+      "title": "Connectivity settings of network interfaces",
+      "type": "object"
+    },
+    "connectivity.bridge": {
+      "additionalProperties": false,
+      "properties": {
+        "bridgedInterfaces": {
+          "$ref": "#/definitions/connectivity.itf.bridgedInterfaces"
+        },
+        "dhcp": {
+          "$ref": "#/definitions/connectivity.itf.dhcp"
+        },
+        "enabled": {
+          "$ref": "#/definitions/connectivity.itf.enabled"
+        },
+        "ipForwardingEnabled": {
+          "$ref": "#/definitions/connectivity.itf.ipForwardingEnabled"
+        },
+        "ipv4": {
+          "$ref": "#/definitions/connectivity.itf.ipv4"
+        },
+        "ipv6": {
+          "$ref": "#/definitions/connectivity.itf.ipv6"
+        },
+        "routing": {
+          "$ref": "#/definitions/connectivity.itf.routing"
+        },
+        "security": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/connectivity.itf.wired.security.ieee8021x__eap-tls"
+            },
+            {
+              "$ref": "#/definitions/schema.remove.marker"
+            }
+          ]
+        },
+        "useExternalSettings": {
+          "$ref": "#/definitions/connectivity.itf.useExternalSettings"
+        }
+      },
+      "title": "Network bridge interface settings",
+      "type": "object"
+    },
+    "connectivity.ethernet": {
+      "additionalProperties": false,
+      "properties": {
+        "dhcp": {
+          "$ref": "#/definitions/connectivity.itf.dhcp"
+        },
+        "enabled": {
+          "$ref": "#/definitions/connectivity.itf.enabled"
+        },
+        "ipForwardingEnabled": {
+          "$ref": "#/definitions/connectivity.itf.ipForwardingEnabled"
+        },
+        "ipv4": {
+          "$ref": "#/definitions/connectivity.itf.ipv4"
+        },
+        "ipv6": {
+          "$ref": "#/definitions/connectivity.itf.ipv6"
+        },
+        "routing": {
+          "$ref": "#/definitions/connectivity.itf.routing"
+        },
+        "security": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/connectivity.itf.wired.security.ieee8021x__eap-tls"
+            },
+            {
+              "$ref": "#/definitions/schema.remove.marker"
+            }
+          ]
+        },
+        "useExternalSettings": {
+          "$ref": "#/definitions/connectivity.itf.useExternalSettings"
+        }
+      },
+      "title": "Ethernet interface settings",
+      "type": "object"
+    },
+    "connectivity.itf.bridgedInterfaces": {
+      "items": {
+        "pattern": "^[A-Za-z0-9_-]+",
+        "title": "Bridged network interface",
+        "type": "string"
+      },
+      "title": "List of bridged network interfaces, e.g. [\"eth0\", \"eth1\"]",
+      "type": "array"
+    },
+    "connectivity.itf.dhcp": {
+      "additionalProperties": false,
+      "properties": {
+        "clientIdentifier": {
+          "description": "Select \"mac\" if a Windows DHCP server with IPv4 address reservation is used; otherwise, \"rfc4361\".",
+          "oneOf": [
+            {
+              "const": "mac"
+            },
+            {
+              "const": "rfc4361"
+            }
+          ],
+          "title": "DHCP client identifier"
+        }
+      },
+      "title": "DHCP client settings",
+      "type": "object"
+    },
+    "connectivity.itf.enabled": {
+      "description": "If true, enable the network interface.",
+      "type": "boolean"
+    },
+    "connectivity.itf.ipForwardingEnabled": {
+      "description": "If true, forward IP packages to another peer (network interface).",
+      "type": "boolean"
+    },
+    "connectivity.itf.ipv4": {
+      "additionalProperties": false,
+      "properties": {
+        "addresses": {
+          "description": "List of static IPv4 addresses in CIDR notation, e.g. [\"192.168.0.13/24\", \"192.168.0.14/24\"]",
+          "items": {
+            "description": "Static IPv4 address in CIDR notation, e.g. 192.168.0.13/24",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "dhcpEnabled": {
+          "description": "If true, enable IPv4 DHCP client.",
+          "type": "boolean"
+        },
+        "dnsServers": {
+          "description": "List of DNS server IPv4 addresses, e.g. [\"9.9.9.9\", \"149.112.112.112\"]",
+          "items": {
+            "description": "DNS server IPv4 address, e.g. 9.9.9.9",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "gateway": {
+          "description": "IPv4 address of the gateway host, e.g. 192.168.0.1",
+          "type": "string"
+        },
+        "linkLocal": {
+          "$ref": "#/definitions/connectivity.itf.linkLocal",
+          "description": "If enabled, the network interface gets an additional IP address within the range 192.168.0.0/16. Functionality should only be used for ad-hoc or isolated networks."
+        }
+      },
+      "title": "IPv4 settings",
+      "type": "object"
+    },
+    "connectivity.itf.ipv6": {
+      "additionalProperties": false,
+      "properties": {
+        "addresses": {
+          "description": "List of static IPv6 addresses in CIDR notation, e.g. [\"fe80::1262:e5ff:fe8d:f768/24\", \"fe80::81e2:348c:232d:963a/24\"]",
+          "items": {
+            "description": "Static IPv6 address in CIDR notation, e.g. fe80::1262:e5ff:fe8d:f768/24",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "dhcpEnabled": {
+          "description": "If true, enable IPv6 DHCP client.",
+          "type": "boolean"
+        },
+        "dnsServers": {
+          "description": "List of DNS server IPv6 addresses, e.g. [\"2620:fe::fe\", \"2620:fe::9\"]",
+          "items": {
+            "description": "DNS server IPv6 address, e.g. 2620:fe::fe",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "gateway": {
+          "description": "IPv6 address of the gateway host, e.g. fe80::1cc2:736f:635d:1833",
+          "type": "string"
+        }
+      },
+      "title": "IPv6 settings",
+      "type": "object"
+    },
+    "connectivity.itf.linkLocal": {
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "description": "If true, enables link-local functionality. Should only be used for ad-hoc or isolated networks.",
+          "type": "boolean"
+        }
+      },
+      "title": "Link local settings",
+      "type": "object"
+    },
+    "connectivity.itf.route": {
+      "additionalProperties": false,
+      "properties": {
+        "destination": {
+          "description": "Destination network IPv4 or IPv6 address in CIDR notation, e.g. 192.168.1.0/24",
+          "type": "string"
+        },
+        "gateway": {
+          "description": "IPv4 or IPv6 address of the gateway host, e.g. 192.168.0.1",
+          "type": "string"
+        },
+        "metric": {
+          "description": "Metric, used by the router to make routing decisions",
+          "type": "number"
+        }
+      },
+      "title": "Network route settings",
+      "type": "object"
+    },
+    "connectivity.itf.routing": {
+      "additionalProperties": false,
+      "properties": {
+        "routes": {
+          "items": {
+            "$ref": "#/definitions/connectivity.itf.route"
+          },
+          "title": "List of network routes",
+          "type": "array"
+        }
+      },
+      "title": "Network routing settings",
+      "type": "object"
+    },
+    "connectivity.discoveryService": {
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "description": "If true, enable service.",
+          "type": "boolean"
+        }
+      },
+      "title": "Network service",
+      "type": "object"
+    },
+    "connectivity.itf.useExternalSettings": {
+      "description": "If true, use network interface settings set by other instances like apps; if false, use current settings.",
+      "type": "boolean"
+    },
+    "connectivity.itf.wifi.network": {
+      "additionalProperties": false,
+      "properties": {
+        "autoConnect": {
+          "description": "If true, enables automatic reconnection to the network.",
+          "type": "boolean"
+        },
+        "security": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/connectivity.itf.wifi.security.open-wifi"
+            },
+            {
+              "$ref": "#/definitions/connectivity.itf.wifi.security.wpa2__psk"
+            },
+            {
+              "$ref": "#/definitions/connectivity.itf.wifi.security.wpa2__eap-tls"
+            },
+            {
+              "$ref": "#/definitions/schema.remove.marker"
+            }
+          ]
+        }
+      },
+      "title": "Wi-Fi network",
+      "type": "object"
+    },
+    "connectivity.itf.wifi.security.open-wifi": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "open-wifi"
+        }
+      },
+      "title": "Open Wi-Fi (no security)",
+      "type": "object"
+    },
+    "connectivity.itf.wifi.security.wpa2__eap-tls": {
+      "additionalProperties": false,
+      "properties": {
+        "caCertificate": {
+          "description": "CA certificate, e.g. ca.pem, registered in \"Certificates & Keys - Network security\".",
+          "type": "string"
+        },
+        "clientCertificate": {
+          "description": "Client certificate, e.g. client.pem, registered in \"Certificates & Keys - Network security\".",
+          "type": "string"
+        },
+        "identity": {
+          "description": "Identity of the peer registered on the remote server",
+          "type": "string"
+        },
+        "privateKey": {
+          "description": "Client private key, e.g. key.pem, registered in \"Certificates & Keys - Network security\".",
+          "type": "string"
+        },
+        "privateKeyPassword": {
+          "description": "Password for client private key decryption (only if key is password protected)",
+          "type": "string"
+        },
+        "type": {
+          "const": "wpa2__eap-tls"
+        }
+      },
+      "title": "WPA/WPA2 Enterprise (TLS)",
+      "type": "object"
+    },
+    "connectivity.itf.wifi.security.wpa2__psk": {
+      "additionalProperties": false,
+      "properties": {
+        "password": {
+          "type": "string"
+        },
+        "type": {
+          "const": "wpa2__psk"
+        }
+      },
+      "title": "WPA/WPA2 Personal (PSK)",
+      "type": "object"
+    },
+    "connectivity.itf.wired.security.ieee8021x__eap-tls": {
+      "additionalProperties": false,
+      "properties": {
+        "caCertificate": {
+          "description": "CA certificate, e.g. ca.pem, registered in \"Certificates & Keys - Network security\".",
+          "type": "string"
+        },
+        "clientCertificate": {
+          "description": "Client certificate, e.g. client.pem, registered in \"Certificates & Keys - Network security\".",
+          "type": "string"
+        },
+        "enabled": {
+          "description": "Enables network security functionalities if set to true.",
+          "type": "boolean"
+        },
+        "identity": {
+          "description": "Identity of the peer registered on the remote server",
+          "type": "string"
+        },
+        "privateKey": {
+          "description": "Client private key, e.g. key.pem, registered in \"Certificates & Keys - Network security\".",
+          "type": "string"
+        },
+        "privateKeyPassword": {
+          "description": "Password for client private key decryption (only if key is password protected)",
+          "type": "string"
+        },
+        "type": {
+          "const": "ieee8021x__eap-tls"
+        }
+      },
+      "title": "Network security settings",
+      "type": "object"
+    },
+    "connectivity.wifi": {
+      "additionalProperties": false,
+      "properties": {
+        "dhcp": {
+          "$ref": "#/definitions/connectivity.itf.dhcp"
+        },
+        "enabled": {
+          "$ref": "#/definitions/connectivity.itf.enabled"
+        },
+        "ipForwardingEnabled": {
+          "$ref": "#/definitions/connectivity.itf.ipForwardingEnabled"
+        },
+        "ipv4": {
+          "$ref": "#/definitions/connectivity.itf.ipv4"
+        },
+        "ipv6": {
+          "$ref": "#/definitions/connectivity.itf.ipv6"
+        },
+        "network": {
+          "additionalProperties": false,
+          "patternProperties": {
+            "^[A-Za-z0-9_-]+": {
+              "oneOf": [
+                {
+                  "$ref": "#/definitions/connectivity.itf.wifi.network"
+                },
+                {
+                  "$ref": "#/definitions/schema.remove.marker"
+                }
+              ]
+            }
+          },
+          "title": "Wi-Fi networks (SSIDs)",
+          "type": "object"
+        },
+        "routing": {
+          "$ref": "#/definitions/connectivity.itf.routing"
+        },
+        "useExternalSettings": {
+          "$ref": "#/definitions/connectivity.itf.useExternalSettings"
+        }
+      },
+      "title": "Wi-Fi interface settings",
+      "type": "object"
+    },
+    "ctrlx-setup": {
+      "additionalProperties": false,
+      "description": "The root element of a ctrlx-setup file",
+      "properties": {
+        "$schema": {
+          "description": "The schema definition of the file",
+          "title": "Schema definition",
+          "type": "string"
+        },
+        "$name": {
+          "description": "Name of the setup",
+          "type": "string"
+        },
+        "$version": {
+          "description": "Version of the setup",
+          "type": "string"
+        },
+        "$description": {
+          "description": "Description of the setup",
+          "type": "string"
+        },
+        "certificateManagement": {
+          "$ref": "#/definitions/certificateManagement"
+        },
+        "configurations": {
+          "$ref": "#/definitions/configurations"
+        },
+        "connectivity": {
+          "$ref": "#/definitions/connectivity"
+        },
+        "dateTime": {
+          "$ref": "#/definitions/datetime"
+        },
+        "hosts": {
+          "$ref": "#/definitions/hosts"
+        },
+        "identityManagement": {
+          "$ref": "#/definitions/identityManagement"
+        },
+        "typePlate": {
+          "$ref": "#/definitions/typePlate"
+        },
+        "systemInfo": {
+          "$ref": "#/definitions/systemInfo"
+        },
+        "licenseManagement": {
+          "$ref": "#/definitions/licenseManagement"
+        },
+        "packageManagement": {
+          "$ref": "#/definitions/packageManagement"
+        },
+        "proxy": {
+          "$ref": "#/definitions/proxy"
+        },
+        "ssh": {
+          "$ref": "#/definitions/ssh"
+        },
+        "system": {
+          "$ref": "#/definitions/system"
+        }
+      },
+      "title": "ctrlx-setup root",
+      "type": "object"
+    },
+    "datetime": {
+      "additionalProperties": false,
+      "properties": {
+        "ntpServers": {
+          "description": "Hostnames or IP addresses of NTP servers",
+          "items": {
+            "type": "string"
+          },
+          "title": "List of NTP servers",
+          "type": "array"
+        },
+        "timeSynchronization": {
+          "description": "True if NTP synchronization is enabled",
+          "title": "NTP synchronization",
+          "type": "boolean"
+        },
+        "timezone": {
+          "description": "One of the timezones, e.g. Europe/Berlin",
+          "title": "Timezone settings",
+          "type": "string"
+        }
+      },
+      "title": "Date time settings",
+      "type": "object"
+    },
+    "hosts": {
+      "description": "Assigns hostnames to IP addresses, see also unix etc/hosts",
+      "items": {
+        "$ref": "#/definitions/hosts.entry"
+      },
+      "title": "List of host entries",
+      "type": "array"
+    },
+    "hosts.entry": {
+      "additionalProperties": false,
+      "properties": {
+        "address": {
+          "title": "IP address",
+          "type": "string"
+        },
+        "aliases": {
+          "items": {
+            "title": "Alternate hostname",
+            "type": "string"
+          },
+          "title": "List of aliases",
+          "type": "array"
+        },
+        "hostname": {
+          "type": "string"
+        }
+      },
+      "title": "Host entry",
+      "type": "object"
+    },
+    "identityManagement": {
+      "additionalProperties": false,
+      "properties": {
+        "easyServiceAccess": {
+          "description": "True to enable easy service access",
+          "type": "boolean"
+        },
+        "groups": {
+          "$ref": "#/definitions/identityManagement.groups"
+        },
+        "ldapConfiguration": {
+          "$ref": "#/definitions/identityManagement.ldapConfiguration"
+        },
+        "loginBanner": {
+          "description": "Login banner text",
+          "type": "string"
+        },
+        "passwordPolicies": {
+          "$ref": "#/definitions/identityManagement.passwordPolicies"
+        },
+        "radiusConfiguration": {
+          "$ref": "#/definitions/identityManagement.radiusConfiguration"
+        },
+        "remoteAuthConfig": {
+          "$ref": "#/definitions/identityManagement.remoteAuthConfig"
+        },
+        "sessionPolicies": {
+          "$ref": "#/definitions/identityManagement.sessionPolicies"
+        },
+        "users": {
+          "$ref": "#/definitions/identityManagement.users"
+        }
+      },
+      "title": "Users and permissions",
+      "type": "object"
+    },
+    "identityManagement.group": {
+      "additionalProperties": false,
+      "properties": {
+        "permissions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "List of permissions granted to group members",
+          "type": "array"
+        }
+      },
+      "title": "Group definition",
+      "type": "object"
+    },
+    "identityManagement.groups": {
+      "additionalProperties": false,
+      "patternProperties": {
+        "^[a-zA-Z0-9]+": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/identityManagement.group"
+            },
+            {
+              "$ref": "#/definitions/schema.remove.marker"
+            }
+          ]
+        }
+      },
+      "title": "List of group definitions by name",
+      "type": "object"
+    },
+    "identityManagement.ldapConfiguration": {
+      "additionalProperties": false,
+      "properties": {
+        "baseDN": {
+          "type": "string"
+        },
+        "groupFilter": {
+          "type": "string"
+        },
+        "groupMembershipAttribute": {
+          "type": "string"
+        },
+        "host": {
+          "title": "Server IP address or hostname",
+          "type": "string"
+        },
+        "port": {
+          "title": "Server port",
+          "type": "string"
+        },
+        "readOnlyUser": {
+          "title": "Read-only user",
+          "type": "string"
+        },
+        "readOnlyUserPassword": {
+          "title": "Read-only password",
+          "type": "string"
+        },
+        "serverType": {
+          "description": "Active Directory or Open LDAP",
+          "type": "string"
+        },
+        "skipServerCertificateVerification": {
+          "type": "boolean"
+        },
+        "useTLS": {
+          "type": "boolean"
+        },
+        "userFilter": {
+          "type": "string"
+        },
+        "usernameAttribute": {
+          "type": "string"
+        }
+      },
+      "title": "Remote auth configuration",
+      "type": "object"
+    },
+    "identityManagement.passwordPolicies": {
+      "additionalProperties": false,
+      "properties": {
+        "enforcePasswordHistory": {
+          "description": "Enforce password history",
+          "type": "number"
+        },
+        "minimumLowercaseChars": {
+          "description": "Minimum lowercase chars (a-z)",
+          "type": "number"
+        },
+        "minimumNumericChars": {
+          "description": "Minimum numeric chars (0-9)",
+          "type": "number"
+        },
+        "minimumPasswordLength": {
+          "description": "Minimum password length",
+          "type": "number"
+        },
+        "minimumSpecialChars": {
+          "description": "Minimum special chars (!\"§$%&/()=\\*+'#;,.:-_)",
+          "type": "number"
+        },
+        "minimumUppercaseChars": {
+          "description": "Minimum uppercase chars (A-Z)",
+          "type": "number"
+        },
+        "mustNotContainUsername": {
+          "description": "Password must not contain username",
+          "type": "boolean"
+        },
+        "passwordExpiration": {
+          "description": "Password expiration time (days)",
+          "type": "number"
+        }
+      },
+      "title": "Password policies",
+      "type": "object"
+    },
+    "identityManagement.radiusConfiguration": {
+      "additionalProperties": false,
+      "properties": {
+        "authProtocol": {
+          "title": "Authentication protocol",
+          "type": "string"
+        },
+        "groupsVSA": {
+          "title": "Groups attribute ID",
+          "type": "integer"
+        },
+        "ip": {
+          "title": "Server IP address",
+          "type": "string"
+        },
+        "port": {
+          "title": "Server port",
+          "type": "string"
+        },
+        "protocol": {
+          "title": "Transport layer protocol",
+          "type": "string"
+        },
+        "secret": {
+          "title": "Client secret",
+          "type": "string"
+        },
+        "vendorId": {
+          "title": "Vendor ID",
+          "type": "integer"
+        }
+      },
+      "title": "Remote auth configuration",
+      "type": "object"
+    },
+    "identityManagement.remoteAuthConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "description": "True if remote authentication is enabled",
+          "type": "boolean"
+        },
+        "service": {
+          "description": "Selects LDAP or RADIUS authentication",
+          "type": "string"
+        }
+      },
+      "title": "Remote auth configuration",
+      "type": "object"
+    },
+    "identityManagement.sessionPolicies": {
+      "additionalProperties": false,
+      "properties": {
+        "failedLoginTimeout": {
+          "description": "Wait time after too many login failures in seconds",
+          "title": "Failed login timeout in seconds",
+          "type": "number"
+        },
+        "maxLoginAttempts": {
+          "description": "Maximum number of subsequent failed logins without waiting time (0 for unlimited)",
+          "type": "number"
+        },
+        "maxSessionsPerUser": {
+          "description": "Maximum number of sessions per user (0 for unlimited)",
+          "type": "number"
+        },
+        "sessionInactiveTimeout": {
+          "description": "Logout after period of inactivity in seconds (0 for unlimited)",
+          "title": "Session inactive timeout in seconds",
+          "type": "number"
+        },
+        "sessionTimeout": {
+          "description": "Logout unconditionally after period of time in seconds (0 for unlimited)",
+          "title": "Session timeout in seconds",
+          "type": "number"
+        }
+      },
+      "title": "Session policies",
+      "type": "object"
+    },
+    "identityManagement.user": {
+      "additionalProperties": false,
+      "description": "User definition",
+      "properties": {
+        "enabled": {
+          "description": "True if user is allowed to login",
+          "type": "boolean"
+        },
+        "forcePasswordChange": {
+          "description": "True if user must modify the password",
+          "type": "boolean"
+        },
+        "groups": {
+          "description": "Sorted list of groups the user is member of",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "initialPassword": {
+          "description": "The initial password is only used when creating a user. ForcePasswordChange should be set to ensure that the user will change the password during next login. If the initialPassword is not set, the admin needs to set a password interactively. The initialPassword cannot be read from the device.",
+          "title": "Initial password for a new user",
+          "type": "string"
+        },
+        "permissions": {
+          "description": "Permissions assigned directly to the user without using groups.",
+          "items": {
+            "type": "string"
+          },
+          "title": "A sorted list of permissions",
+          "type": "array"
+        },
+        "sessionPolicies": {
+          "$ref": "#/definitions/identityManagement.sessionPolicies"
+        },
+        "useGlobalSessionPolicies": {
+          "description": "True if global session policies are used instead of user-specific sessionPolicies",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "identityManagement.users": {
+      "additionalProperties": false,
+      "patternProperties": {
+        "^[a-zA-Z0-9]+": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/identityManagement.user"
+            },
+            {
+              "$ref": "#/definitions/schema.remove.marker"
+            }
+          ]
+        }
+      },
+      "title": "List of users by name",
+      "type": "object"
+    },
+    "licenseManagement.capabilityFiles": {
+      "additionalProperties": {
+        "description": "Use serial number as key for device-specific capability files.",
+        "title": "Device-specific capability file.",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "$path": {
+            "$ref": "#/definitions/path"
+          }
+        }
+      },
+      "description": "Capability files to apply to the device. Use $path to define a capability file or use <serial-no>:{ } to define device-specific capability files.",
+      "type": "object",
+      "properties": {
+        "$path": {
+          "description": "Capability file to apply, if no device-specific capability file defined",
+          "$ref": "#/definitions/path"
+        }
+      }
+    },
+    "licenseManagement": {
+      "additionalProperties": false,
+      "properties": {
+        "capabilityFiles": {
+          "$ref": "#/definitions/licenseManagement.capabilityFiles"
+        },
+        "capabilities": {
+          "description": "Currently applied capability information of the device (readonly)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/licenseManagement.capability"
+          }
+        }
+      },
+      "title": "license management information",
+      "type": "object"
+    },
+    "licenseManagement.capability": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Name of the license"
+        },
+        "version": {
+          "type": "string",
+          "title": "Current version of the application that ask for a license"
+        },
+        "count": {
+          "type": "integer",
+          "title": "Quantity of the capability"
+        },
+        "isPermanent": {
+          "type": "boolean"
+        },
+        "startDate": {
+          "type": "string",
+          "title": "ETA in RFC 3339 format"
+        },
+        "finalExpirationDate": {
+          "type": "string",
+          "title": "ETA in RFC 3339 format"
+        }
+      },
+      "title": "license management information",
+      "type": "object"
+    },
+    "typePlate": {
+      "title": "readonly typePlate information",
+      "type": "object",
+      "properties": {
+        "Manufacturer": {
+          "type": "string"
+        },
+        "MaterialIndex": {
+          "type": "string"
+        },
+        "MaterialNumber": {
+          "type": "string"
+        },
+        "ProductName": {
+          "type": "string"
+        },
+        "SerialNumber": {
+          "title": "unique identifier of the device",
+          "type": "string"
+        },
+        "StoreBrandId": {
+          "type": "string"
+        },
+        "StoreModelId": {
+          "type": "string"
+        },
+        "StoreSerialId": {
+          "type": "string"
+        },
+        "TypeCode": {
+          "type": "string"
+        },
+        "Version": {
+          "type": "string"
+        }
+      }
+    },
+    "systemInfo": {
+      "title": "readonly system info",
+      "type": "object",
+      "properties": {
+        "Architecture": {
+          "type": "string"
+        },
+        "MacAddress": {
+          "type": "string"
+        },
+        "OperatingSystem": {
+          "type": "string"
+        },
+        "OsVersion": {
+          "type": "string"
+        },
+        "Virtualized": {
+          "type": "string"
+        }
+      }
+    },
+    "packageManagement": {
+      "additionalProperties": false,
+      "properties": {
+        "installedApps": {
+          "$ref": "#/definitions/packageManagement.installedApps"
+        }
+      },
+      "title": "PackageManagement settings",
+      "type": "object"
+    },
+    "packageManagement.installedApps": {
+      "additionalProperties": false,
+      "patternProperties": {
+        "^[a-zA-Z0-9-]+": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/app"
+            },
+            {
+              "$ref": "#/definitions/schema.remove.marker"
+            }
+          ]
+        }
+      },
+      "title": "List of apps by name",
+      "type": "object"
+    },
+    "proxy": {
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "description": "True if proxy settings are enabled",
+          "type": "boolean"
+        },
+        "http": {
+          "$ref": "#/definitions/proxy.server"
+        },
+        "https": {
+          "$ref": "#/definitions/proxy.server"
+        },
+        "noProxy": {
+          "description": "Comma-separated list of host patterns, e.g. *.bosch.com,localhost",
+          "title": "Patterns describing hosts for which to bypass the proxy",
+          "type": "string"
+        }
+      },
+      "title": "Proxy settings",
+      "type": "object"
+    },
+    "proxy.server": {
+      "additionalProperties": false,
+      "properties": {
+        "authentication": {
+          "description": "True if proxy authentication is enabled",
+          "type": "boolean"
+        },
+        "password": {
+          "description": "Password to authenticate with (write-only)",
+          "type": "string"
+        },
+        "url": {
+          "description": "Absolute URL of server including port, e.g. https://proxy.bosch.com:443",
+          "type": "string"
+        },
+        "username": {
+          "description": "Username to authenticate with",
+          "type": "string"
+        }
+      },
+      "title": "Proxy server settings",
+      "type": "object"
+    },
+    "schema.remove.marker": {
+      "description": "Named elements can be removed by replacing the value with null",
+      "title": "Remove marker",
+      "type": "null"
+    },
+    "ssh": {
+      "additionalProperties": false,
+      "properties": {
+        "banner": {
+          "description": "Banner text shown on login",
+          "type": "string"
+        },
+        "clientAliveInterval": {
+          "description": "Session timeout in seconds (0 for unlimited time)",
+          "type": "number"
+        },
+        "enabled": {
+          "description": "True if SSH is enabled",
+          "type": "boolean"
+        },
+        "maxAuthTries": {
+          "description": "Maximum number of authentication attempts per connection",
+          "type": "number"
+        },
+        "maxSessions": {
+          "description": "Maximum number of open sessions per connection",
+          "type": "number"
+        },
+        "maxStartups": {
+          "description": "Maximum number of concurrent unauthenticated connections",
+          "type": "number"
+        }
+      },
+      "title": "SSH settings",
+      "type": "object"
+    },
+    "system": {
+      "additionalProperties": false,
+      "properties": {
+        "hostname": {
+          "description": "Must start with character or digit, can contain characters, digits and hyphens. Maximum length is 64 characters.",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9-]{0,63}$",
+          "title": "Hostname of the ctrlX device",
+          "type": "string"
+        },
+        "theming": {
+          "$ref": "#/definitions/system.theming"
+        }
+      },
+      "title": "System settings",
+      "type": "object"
+    },
+    "system.theming": {
+      "additionalProperties": false,
+      "properties": {
+        "app": {
+          "description": "App containing a theme, e.g. rexroth-deviceadmin",
+          "type": "string"
+        },
+        "theme": {
+          "description": "Theme within the app, e.g. default",
+          "type": "string"
+        }
+      },
+      "title": "Theme provided by an app",
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/solutions/configuration.v1.schema.json",
+  "type": "object",
+  "title": "ctrlX CORE Configuration",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "title": "Link to configuration schema",
+      "description": "Configuration schema defines the structure of configuration.json files"
+    },
+    "description": {
+      "type": "string",
+      "title": "Short description of the configuration"
+    },
+    "device": {
+      "type": "string",
+      "title": "Device name",
+      "description": "Name of the device where the configuration has been saved or loaded",
+      "examples": [
+        "ctrlX-CORE-1"
+      ]
+    },
+    "user": {
+      "type": "string",
+      "title": "Username",
+      "description": "Name of the logged-in user who has saved or loaded the configuration",
+      "examples": [
+        "boschrexroth"
+      ]
+    },
+    "apps": {
+      "$ref": "#definitions/apps"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "apps": {
+      "type": "array",
+      "title": "List of enabled apps",
+      "description": "Apps with their versions and associated directories that are enabled when saving or loading the configuration",
+      "items": {
+        "$ref": "#definitions/app"
+      }
+    },
+    "app": {
+      "type": "object",
+      "title": "App",
+      "description": "Enabled app",
+      "required": [
+        "name",
+        "version"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Name of the app",
+          "examples": [
+            "rexroth-motion"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "title": "Display title of the app",
+          "examples": [
+            "Motion"
+          ]
+        },
+        "version": {
+          "type": "string",
+          "title": "Version of the app (typically a semantic version)",
+          "examples": [
+            "1.6.0"
+          ]
+        },
+        "appDirectories": {
+          "$ref": "#definitions/appDirectories"
+        }
+      },
+      "additionalProperties": false
+    },
+    "appDirectories": {
+      "type": "array",
+      "title": "List of directories owned by the app",
+      "description": "Describes the app directories contained in a configuration",
+      "items": {
+        "$ref": "#definitions/appDirectory"
+      }
+    },
+    "appDirectory": {
+      "type": "object",
+      "title": "App directory",
+      "description": "Describes an app directory stored as part of a configuration",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Path of the app directory in the configuration",
+          "description": "Path of the app directory. Subdirectories are separated with /, no leading or trailing /",
+          "examples": [
+            "motion",
+            "motion/axis",
+            "motion/kinematics"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "title": "Title",
+          "description": "Short description of the content of the directory. Will be displayed as part of a configuration.",
+          "examples": [
+            "Motion",
+            "Motion - Axes",
+            "Motion - Kinematics"
+          ]
+        },
+        "icon": {
+          "type": "string",
+          "title": "Icon",
+          "description": "An optional icon which represents the app.",
+          "examples": [
+            "bosch-ic-robot",
+            "bosch-ic-directory"
+          ]
+        },
+        "copyOnLoad": {
+          "type": "boolean",
+          "title": "Copy on load",
+          "description": "An app is responsible for persisting its configuration state to the app data folder. With copyOnLoad, the app is able to delegate this task to the Solutions app.",          
+          "examples": [
+            true,
+            false
+          ],
+          "default": false
+        }
+      },
+      "additionalProperties": false
+
+    }
+  }
+}

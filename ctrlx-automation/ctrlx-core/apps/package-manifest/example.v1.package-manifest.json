@@ -7,13 +7,14 @@
       {
         "name": "my-app",
         "description": "My cool feature",
-        "scopes": [
-          "edit_oem_scripts",
-          "edit_system_scripts"
-        ],
+        "icon": "my-icon",
         "copyOnLoad": true,
-        "icon": "my-symbolic-icon"
+        "writeProtected": true
       }
+    ],
+    "appPrivateFiles": [
+      "^my-app/[^/]+\\.bak$",
+      "^my-app/tmp"
     ]
   },
   "documentation": [
@@ -118,21 +119,15 @@
       "save": [
         {
           "id": "ctrlx-helloworld",
-          "subject": "Save hello world",
-          "execution": {
-            "method": "POST",
-            "url": "/ctrlx-helloworld/api/v1/save"
-          }
+          "subject": "hello world",
+          "url": "/ctrlx-helloworld/api/v1/save"
         }
       ],
       "load": [
         {
           "id": "ctrlx-helloworld",
-          "subject": "Load hello world",
-          "execution": {
-            "method": "POST",
-            "url": "/ctrlx-helloworld/api/v1/load"
-          }
+          "subject": "hello world",
+          "url": "/ctrlx-helloworld/api/v1/load"
         }
       ]
     }
@@ -143,5 +138,14 @@
       "title": "Hello World Certificate Store",
       "description": "Certficates & Keys to connect to the World"
     }
-  ]
+  ],
+  "apps": {
+    "rexroth-remoteagent": {
+      "commands": [
+        "BACKUP",
+        "RESTORE",
+        "REBOOT"
+    ]}
+  },
+  "required": false
 }

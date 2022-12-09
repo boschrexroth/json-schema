@@ -1,0 +1,54 @@
+{
+  "$schema": "./configuration.v1.schema.json",
+  "description": "Picker project",
+  "device": "ctrlX-CORE-1",
+  "user": "boschrexroth",
+  "apps": [
+    {
+      "name": "rexroth-automationcore",
+      "title": "Automation Core",
+      "version": "1.8.0",
+      "appDirectories": [
+        {
+          "name": "script",
+          "description": "Python scripts"
+        },
+        {
+          "name": "scheduler",
+          "description": "Scheduler settings"
+        }
+      ]
+    },
+    {
+      "name": "rexroth-motion",
+      "title": "Motion",
+      "version": "1.8.0",
+      "appDirectories": [
+        {
+          "name": "motion/Axis",
+          "description": "Axes configuration"
+        },
+        {
+          "name": "motion/Kinematics",
+          "description": "Kinematics configuration"
+        }
+      ]
+    },
+    {
+      "name": "rexroth-plc",
+      "title": "PLC",
+      "version": "1.8.0",
+      "appDirectories": [
+        {
+          "name": "plc",
+          "description": "PLC program"
+        }
+      ]
+    },
+    {
+      "name": "rexroth-solutions",
+      "title": "Solutions",
+      "version": "1.8.0"
+    }
+  ]
+}
