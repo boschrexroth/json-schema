@@ -31,9 +31,29 @@ The configuration file contains meta data of a ctrlX CORE configuration, e.g. ac
 <table>
   <tbody>
     <tr>
-      <th>Version</th>
+      <th>Version</th>  
       <th>Implemented</th>
       <th>Changes</th>
+    </tr>
+    <tr>
+      <td valign="top"><a href="./apps/package-manifest/package-manifest.v1.3.schema.json">package-manifest.v1.3.schema.json</a></td>
+      <td valign="top">v0120</td>
+      <td valign="top">
+        <ul>
+          <li>Proxy mapping supports including caddyfile</li>
+          <li>Apps can declare dependencies</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+    <tr>
+      <td valign="top"><a href="./apps/package-manifest/package-manifest.v1.2.schema.json">package-manifest.v1.2.schema.json</a></td>
+      <td valign="top">v0118</td>
+      <td valign="top">
+        <ul>
+          <li>App directory supports private files</li>
+        </ul>
+      </td>
     </tr>
     <tr>
       <td valign="top"><a href="./apps/package-manifest/package-manifest.v1.1.schema.json">package-manifest.v1.1.schema.json</a></td>
