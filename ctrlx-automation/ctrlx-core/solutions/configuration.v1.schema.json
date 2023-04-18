@@ -1,46 +1,13 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/solutions/configuration.v1.schema.json",
-  "type": "object",
-  "title": "ctrlX CORE Configuration",
-  "properties": {
-    "$schema": {
-      "type": "string",
-      "title": "Link to configuration schema",
-      "description": "Configuration schema defines the structure of configuration.json files"
-    },
-    "description": {
-      "type": "string",
-      "title": "Short description of the configuration"
-    },
-    "device": {
-      "type": "string",
-      "title": "Device name",
-      "description": "Name of the device where the configuration has been saved or loaded",
-      "examples": [
-        "ctrlX-CORE-1"
-      ]
-    },
-    "user": {
-      "type": "string",
-      "title": "Username",
-      "description": "Name of the logged-in user who has saved or loaded the configuration",
-      "examples": [
-        "boschrexroth"
-      ]
-    },
-    "apps": {
-      "$ref": "#definitions/apps"
-    }
-  },
-  "additionalProperties": false,
   "definitions": {
     "apps": {
       "type": "array",
       "title": "List of enabled apps",
       "description": "Apps with their versions and associated directories that are enabled when saving or loading the configuration",
       "items": {
-        "$ref": "#definitions/app"
+        "$ref": "#/definitions/app"
       }
     },
     "app": {
@@ -74,7 +41,7 @@
           ]
         },
         "appDirectories": {
-          "$ref": "#definitions/appDirectories"
+          "$ref": "#/definitions/appDirectories"
         }
       },
       "additionalProperties": false
@@ -84,7 +51,7 @@
       "title": "List of directories owned by the app",
       "description": "Describes the app directories contained in a configuration",
       "items": {
-        "$ref": "#definitions/appDirectory"
+        "$ref": "#/definitions/appDirectory"
       }
     },
     "appDirectory": {
@@ -136,7 +103,39 @@
         }
       },
       "additionalProperties": false
-
     }
-  }
+  },
+  "type": "object",
+  "title": "ctrlX CORE Configuration",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "title": "Link to configuration schema",
+      "description": "Configuration schema defines the structure of configuration.json files"
+    },
+    "description": {
+      "type": "string",
+      "title": "Short description of the configuration"
+    },
+    "device": {
+      "type": "string",
+      "title": "Device name",
+      "description": "Name of the device where the configuration has been saved or loaded",
+      "examples": [
+        "ctrlX-CORE-1"
+      ]
+    },
+    "user": {
+      "type": "string",
+      "title": "Username",
+      "description": "Name of the logged-in user who has saved or loaded the configuration",
+      "examples": [
+        "boschrexroth"
+      ]
+    },
+    "apps": {
+      "$ref": "#/definitions/apps"
+    }
+  },
+  "additionalProperties": false
 }

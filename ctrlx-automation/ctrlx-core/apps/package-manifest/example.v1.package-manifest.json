@@ -31,12 +31,30 @@
         "name": "ctrlx-helloworld.web",
         "url": "/ctrlx-helloworld",
         "binding": "unix://{$SNAP_DATA}/package-run/ctrlx-helloworld/ctrlx-helloworld.web.sock",
+        "caddyfile": "./caddyfile",
         "options": [
           {"option": "websockets", "value": ""},
           {"option": "max_conns", "value": "2"}
         ],
         "restricted": [
-          "/ctrlx-helloworld/api/v1"
+          "/ctrlx-helloworld/api/v1",
+          {
+            "path": "/my-app/api/v1.0",
+            "except": [
+              "/my-app/api/v1.0/except-path-1",
+              "/my-app/api/v1.0/except-path-2"
+            ],
+            "headersForwarding": [
+              "X-Auth-Name",
+              "X-Auth-ID",
+              "X-Auth-Scopes",
+              "X-Auth-Expires",
+              "X-Auth-Issued",
+              "X-Auth-PlcHandle",
+              "X-Auth-RemoteAuth",
+              "X-Auth-Nonce"
+            ]
+          }
         ]
       }
     ]
@@ -147,5 +165,8 @@
         "REBOOT"
     ]}
   },
-  "required": false
+  "required": false,
+  "dependsOn": {
+    "rexroth-deviceadmin": "~1.20.0"
+  }
 }
