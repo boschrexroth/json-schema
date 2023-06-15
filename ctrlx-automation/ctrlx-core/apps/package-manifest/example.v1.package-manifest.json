@@ -33,8 +33,14 @@
         "binding": "unix://{$SNAP_DATA}/package-run/ctrlx-helloworld/ctrlx-helloworld.web.sock",
         "caddyfile": "./caddyfile",
         "options": [
-          {"option": "websockets", "value": ""},
-          {"option": "max_conns", "value": "2"}
+          {
+            "option": "websockets",
+            "value": ""
+          },
+          {
+            "option": "max_conns",
+            "value": "2"
+          }
         ],
         "restricted": [
           "/ctrlx-helloworld/api/v1",
@@ -68,12 +74,14 @@
         {
           "identifier": "ctrlx-helloworld.web.all.rw",
           "name": "Manage hello world",
-          "description": "Manage and modify hello world"
+          "description": "Manage and modify hello world",
+          "i18n": "scopes.manage"
         },
         {
           "identifier": "ctrlx-helloworld.web.all.r",
           "name": "View hello world",
-          "description": "View (but not modify) hello world"
+          "description": "View (but not modify) hello world",
+          "i18n": "scopes.view"
         }
       ]
     }
@@ -163,7 +171,8 @@
         "BACKUP",
         "RESTORE",
         "REBOOT"
-    ]}
+      ]
+    }
   },
   "required": false,
   "dependencies": {

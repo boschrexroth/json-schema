@@ -85,6 +85,12 @@
     }
   },
   "$defs": {
+    "i18nTag": {
+      "type": "string",
+      "title": "i18n Tag",
+      "pattern": "^(.*)$",
+      "description": "can be used to supply translations of properties of the object this tag is applied to. The defined tag value must be unique in the scope of the package-manifest."
+    },
     "services": {
       "type": "object",
       "additionalProperties": false,
@@ -227,6 +233,9 @@
             ],
             "pattern": "^(.*)$"
           }
+        },
+        "i18n": {
+          "$ref": "#/$defs/i18nTag"
         }
       }
     },
@@ -394,6 +403,9 @@
             "This permissions allows to read all automation parameters",
             "This permissions allows to read all motion parameters"
           ]
+        },
+        "i18n": {
+          "$ref": "#/$defs/i18nTag"
         }
       }
     },
