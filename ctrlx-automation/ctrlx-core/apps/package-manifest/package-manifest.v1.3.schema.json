@@ -72,8 +72,16 @@
     "apps": {
       "$ref": "#/$defs/apps"
     },
-    "dependsOn": {
-      "$ref": "#/$defs/dependencies"
+    "dependencies": {
+      "type": "object",
+      "additionalProperties": false,
+      "title": "App dependencies",
+      "summary": "Dependencies required by the app providing the package-manifest",
+      "properties": {
+        "dependsOn": {
+          "$ref": "#/$defs/dependencies"
+        }
+      }
     }
   },
   "$defs": {

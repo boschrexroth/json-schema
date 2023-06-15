@@ -166,7 +166,9 @@
     ]}
   },
   "required": false,
-  "dependsOn": {
-    "rexroth-deviceadmin": "~1.20.0"
+  "dependencies": {
+    "dependsOn": {
+      "rexroth-deviceadmin": "~1.20.0"
+    }
   }
 }
