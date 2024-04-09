@@ -1,15 +1,15 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/apps/package-manifest/package-manifest.v1.schema.json",
+  "$id": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-os/apps/package-manifest/package-manifest.v1.schema.json",
   "type": "object",
-  "title": "ctrlX CORE Package Manifest",
+  "title": "ctrlX OS Package Manifest",
   "additionalProperties": false,
   "properties": {
     "$schema": {
       "type": "string",
       "title": "Definition of schema",
-      "description": "Definition of schema, should point to a valid package-manifest schema definition, e.g.: https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/apps/package-manifest/package-manifest.v1.schema.json",
-      "default": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/apps/package-manifest/package-manifest.v1.schema.json"
+      "description": "Definition of schema, should point to a valid package-manifest schema definition, e.g.: https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-os/apps/package-manifest/package-manifest.v1.schema.json",
+      "default": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-os/apps/package-manifest/package-manifest.v1.schema.json"
     },
     "version": {
       "type": "string",

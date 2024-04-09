@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema",
-    "$id": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/apps/fossinfo/fossinfo.v1.schema.json",
+    "$id": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-os/apps/fossinfo/fossinfo.v1.schema.json",
     "anyOf": [
         {
             "$ref": "#definitions/component"

@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=./ctrlx-hw.v1.schema.json
+# rexroth hardware description
+meta:
+ id: hardware-variant-description
+ specification: '1.3'
+name: ctrlX X3 Hardware Description
+description: |
+  ctrlX X3 -- control hardware within budget
+typeplate:
+  ethernet-mac-0: /sys/firmware/devicetree/base/rexroth,ethernet-mac-0
+  port-name-0: /sys/firmware/devicetree/base/rexroth,port-name-0
+  ethernet-mac-1: /sys/firmware/devicetree/base/rexroth,ethernet-mac-1
+  port-name-1: /sys/firmware/devicetree/base/rexroth,port-name-1
+  ethernet-mac-2: /sys/firmware/devicetree/base/rexroth,ethernet-mac-2
+  port-name-2: /sys/firmware/devicetree/base/rexroth,port-name-2
+  serial-number-0: /sys/firmware/devicetree/base/serial-number
+  serial-number-1: /sys/firmware/devicetree/base/serial-number-1
+  serial-number-2: /sys/firmware/devicetree/base/serial-number-2
+  material-number-0: /sys/firmware/devicetree/base/rexroth,material-number
+  typecode-0: /sys/firmware/devicetree/base/rexroth,typecode
+  material-index-0: /sys/firmware/devicetree/base/rexroth,material-index
+  hardware-revision-0: /sys/firmware/devicetree/base/rexroth,hardware-revision
+watchdog:
+  identity: ctrlx-watchdog
+actions:
+  prepare-update:
+    input:
+      - target
+    command:
+      flash-rescue ${target}
+    type: on-demand

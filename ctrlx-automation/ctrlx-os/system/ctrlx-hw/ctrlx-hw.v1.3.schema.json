@@ -1,0 +1,200 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "ctrlX OS Hardware Variant Description",
+    "description": "The ctrlX OS Hardware Variant Description allows ctrlX OS Hardware Vendors to connect hardware specific features to the ctrlX OS system, e.g. by defining FPGA handoff conventions.",
+    "additionalProperties": false,
+    "properties": {
+        "meta": {
+            "$ref": "#/$defs/Meta"
+        },
+        "name": {
+            "type": "string",
+            "title": "Short name of the hardware variant description"
+        },
+        "description": {
+            "type": "string",
+            "title": "Long descrition of the hardware variant description",
+            "description": "Should contain information about the hardware variant(s) this description is valid for."
+        },
+        "watchdog": {
+            "$ref": "#/$defs/Watchdog"
+        },
+        "typeplate": {
+            "$ref": "#/$defs/Typeplate"
+        },
+        "match": {
+            "$ref": "#/$defs/Match"
+        },
+        "actions": {
+            "type": "object",
+            "additionalProperties": {
+                "$ref": "#/$defs/Action"
+            }
+        }
+    },
+    "$defs": {
+        "Meta": {
+            "type": "object",
+            "title": "Meta Information of the yaml specification",
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "title": "The yaml schema id",
+                    "const": "hardware-variant-description"
+                },
+                "specification": {
+                    "type": "string",
+                    "title": "Specification Version",
+                    "const": "1.3"
+                }
+            }
+        },
+        "Watchdog": {
+            "type": "object",
+            "title": "Hardware Watchdog",
+            "description": "Defines the linux hardware watchdog framework for the hardware variant",
+            "additionalProperties": false,
+            "properties": {
+                "identity": {
+                    "type": "string",
+                    "title": "Linux watchdog framework identity to be used"
+                }
+            }
+        },
+        "Typeplate": {
+            "type": "object",
+            "title": "Typeplate",
+            "description": "Defines the typeplate format for the hardware variant",
+            "additionalProperties": {
+                "oneOf": [
+                    {
+                        "$ref": "#/$defs/TypeplateRaw"
+                    },
+                    {
+                        "$ref": "#/$defs/TypeplateShorthand"
+                    }
+                ]
+            }
+        },
+        "TypeplateShorthand": {
+            "type": "string",
+            "title": "Shorthand syntax",
+            "description": "Location name"
+        },
+        "TypeplateRaw": {
+            "type": "object",
+            "title": "Raw typeplate format",
+            "properties": {
+                "raw": {
+                    "type": "object",
+                    "title": "Raw typeplate format representation",
+                    "additionalProperties": false,
+                    "properties": {
+                        "format": {
+                            "type": "string",
+                            "enum": [
+                                "typeplate-entry",
+                                "typeplate-data"
+                            ]
+                        },
+                        "location": {
+                            "type": "string",
+                            "title": "Format specificated location of information"
+                        },
+                        "access-type": {
+                            "type": "string",
+                            "enum": [
+                                "file",
+                                "i2c",
+                                "smbios"
+                            ],
+                            "default": "file"
+                        },
+                        "bus-name": {
+                            "type": "string",
+                            "title": "To narrow down location wildcard"
+                        }
+                    }
+                }
+            }
+        },
+        "Match": {
+            "type": "array",
+            "title": "List to match against typeplate entries",
+            "description": "The list match should be considered successful, if any object in the list matches the typeplate. The object match should be considered successful, if all properties in the object match the corresponding typeplate entries.",
+            "items": {
+                "type": "object",
+                "additionalProperties": {
+                    "type": "string"
+                }
+            }
+        },
+        "Action": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "title": "Short display name of the action, for use in diagnose."
+                },
+                "description": {
+                    "type": "string",
+                    "title": "Long description of the action, for use in UI."
+                },
+                "shell": {
+                    "type": "bool",
+                    "title": "Use shell to run action, default false ."
+                },
+                "after": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "title": "For sorting call chain."
+                },
+                "command": {
+                    "type": "string",
+                    "title": "Command to run directly or script to run in the specified shell.",
+                    "description": "Command should be found in PATH or relative to connected package-assets folder. Return value convention: 0: continue call next commando in chain; 1: no error but stop call chain; >1: error code for generate diagnose entry. Any error message should be passed through stderr."
+                },
+                "post-actions": {
+                    "type": "array",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "pattern": "^reboot.*"
+                            }
+                        ]
+                    }
+                },
+                "input": {
+                    "type": "array",
+                    "description": "Provides a list of named variables needed in `command`.",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "type": {
+                    "title": "Type of the action",
+                    "anyOf": [
+                        {
+                            "description": "boot - Runs as part of boot process, default if absent.",
+                            "const": "boot"
+                        },
+                        {
+                            "description": "u-boot-overrides - Runs as hush in u-boot during boot process.",
+                            "const": "u-boot-overrides"
+                        },
+                        {
+                            "description": "on-demand - Interactively requested by a user or management system, e.g. using API or Device Admin",
+                            "const": "on-demand"
+                        }
+                    ]
+
+                }
+            }
+        }
+    }
+}

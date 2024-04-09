@@ -1,15 +1,15 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/apps/package-manifest/package-manifest.v1.schema.json",
+  "$id": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-os/apps/package-manifest/package-manifest.v1.schema.json",
   "type": "object",
-  "title": "ctrlX CORE Package Manifest",
+  "title": "ctrlX OS Package Manifest",
   "additionalProperties": false,
   "properties": {
     "$schema": {
       "type": "string",
       "title": "Definition of schema",
-      "description": "Definition of schema, should point to a valid package-manifest schema definition, e.g.: https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/apps/package-manifest/package-manifest.v1.schema.json",
-      "default": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/apps/package-manifest/package-manifest.v1.schema.json"
+      "description": "Definition of schema, should point to a valid package-manifest schema definition, e.g.: https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-os/apps/package-manifest/package-manifest.v1.schema.json",
+      "default": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-os/apps/package-manifest/package-manifest.v1.schema.json"
     },
     "version": {
       "type": "string",
@@ -33,44 +33,64 @@
         "ctrlx-node-red"
       ]
     },
-    "real-time": {
+    "required": {
       "type": "boolean",
-      "title": "Real-time requirements of the app",
-      "description": "Real-time indicates whenether the services of the app requires real-time capabilities of the system and is using advanced real-time features, e.g. ctrlX Automation Core task scheduling.",
+      "title": "App is required app for system and not removable",
+      "description": "Required marks an app as non-removable. This app isn't a system app by default but required for the functionality",
       "examples": [
         true,
         false
       ],
-      "default": true
+      "default": false
     },
     "scopes-declaration": {
-      "$ref": "#/definitions/scopes-declaration"
+      "$ref": "#/$defs/scopes-declaration"
     },
     "services": {
-      "$ref": "#/definitions/services"
+      "$ref": "#/$defs/services"
     },
     "menus": {
-      "$ref": "#/definitions/menus"
+      "$ref": "#/$defs/menus"
     },
     "commands": {
-      "$ref": "#/definitions/commands"
+      "$ref": "#/$defs/commands"
     },
     "documentation": {
-      "$ref": "#/definitions/documentation"
+      "$ref": "#/$defs/documentation"
     },
     "configuration": {
-      "$ref": "#/definitions/configuration"
+      "$ref": "#/$defs/configuration"
     },
     "certificatestores": {
       "type": "array",
       "title": "List of certificate stores",
       "description": "Certficate stores of your application",
       "items": {
-        "$ref": "#/definitions/certificateStore"
+        "$ref": "#/$defs/certificateStore"
+      }
+    },
+    "apps": {
+      "$ref": "#/$defs/apps"
+    },
+    "dependencies": {
+      "type": "object",
+      "additionalProperties": false,
+      "title": "App dependencies",
+      "summary": "Dependencies required by the app providing the package-manifest",
+      "properties": {
+        "dependsOn": {
+          "$ref": "#/$defs/dependencies"
+        }
       }
     }
   },
-  "definitions": {
+  "$defs": {
+    "i18nTag": {
+      "type": "string",
+      "title": "i18n Tag",
+      "pattern": "^(.*)$",
+      "description": "can be used to supply translations of properties of the object this tag is applied to. The defined tag value must be unique in the scope of the package-manifest."
+    },
     "services": {
       "type": "object",
       "additionalProperties": false,
@@ -82,7 +102,7 @@
           "title": "Proxy mappings",
           "description": "Proxy mappings are used by the reverse proxy to assign specific routes to a server running on a device.",
           "items": {
-            "$ref": "#/definitions/proxyMapping"
+            "$ref": "#/$defs/proxyMapping"
           }
         }
       }
@@ -92,7 +112,7 @@
       "title": "Scopes provided by the package",
       "description": "Scopes used in the application to control access to specific ressources. The scope declaration is used by the identity management (IDM) to assign permissions for specific users or groups.",
       "items": {
-        "$ref": "#/definitions/setOfScopes"
+        "$ref": "#/$defs/setOfScopes"
       }
     },
     "menus": {
@@ -105,21 +125,21 @@
           "type": "array",
           "title": "Sidebar Menu",
           "items": {
-            "$ref": "#/definitions/entries"
+            "$ref": "#/$defs/entries"
           }
         },
         "settings": {
           "type": "array",
           "title": "Settings Menu",
           "items": {
-            "$ref": "#/definitions/entries"
+            "$ref": "#/$defs/entries"
           }
         },
         "overview": {
           "type": "array",
           "title": "Overview",
           "items": {
-            "$ref": "#/definitions/entries"
+            "$ref": "#/$defs/entries"
           }
         }
       }
@@ -151,7 +171,7 @@
           "title": "Sublinks",
           "description": "Sub entries of the entry point",
           "items": {
-            "$ref": "#/definitions/entries"
+            "$ref": "#/$defs/entries"
           }
         },
         "link": {
@@ -213,6 +233,9 @@
             ],
             "pattern": "^(.*)$"
           }
+        },
+        "i18n": {
+          "$ref": "#/$defs/i18nTag"
         }
       }
     },
@@ -222,7 +245,7 @@
       "description": "Allows to specify commands that integrate into framework operations, e.g. for activeConfiguration. The sub-elements define the scopes that support command integration.",
       "properties": {},
       "additionalProperties": {
-        "$ref": "#/definitions/commandScope"
+        "$ref": "#/$defs/commandScope"
       }
     },
     "commandScope": {
@@ -230,7 +253,7 @@
       "description": "A command scope containing multiple commands.",
       "type": "object",
       "additionalProperties": {
-        "$ref": "#/definitions/command"
+        "$ref": "#/$defs/command"
       }
     },
     "command": {
@@ -238,7 +261,7 @@
       "description": "A command that is provided and can be executed by another application. A command can have multiple command requests, e.g. to execute the command on multiple services.",
       "type": "array",
       "items": {
-        "$ref": "#/definitions/commandRequest"
+        "$ref": "#/$defs/commandRequest"
       }
     },
     "commandRequest": {
@@ -341,7 +364,7 @@
           "title": "Array of scopes",
           "description": "Array of scopes. Each scope describes a specific permission for one or more web server resources, e.g. write to a resource using HTTP PUT",
           "items": {
-            "$ref": "#/definitions/scope"
+            "$ref": "#/$defs/scope"
           }
         }
       }
@@ -380,6 +403,9 @@
             "This permissions allows to read all automation parameters",
             "This permissions allows to read all motion parameters"
           ]
+        },
+        "i18n": {
+          "$ref": "#/$defs/i18nTag"
         }
       }
     },
@@ -415,6 +441,14 @@
             "unix://{$SNAP_DATA}/package-run/my-app.web.sock"
           ]
         },
+        "caddyfile": {
+          "type": "string",
+          "title": "Customized caddy file",
+          "description": "Path to customized caddy file, which should be included in the original caddy file",
+          "examples": [
+            "./caddyfile"
+          ]
+        },
         "options": {
           "type": "array",
           "title": "Additional options",
@@ -447,12 +481,57 @@
           "title": "Restricted resources",
           "description": "Resources, to which the access shall be restricted, e.g. API URLs",
           "items": {
-            "type": "string",
-            "examples": [
-              "/my-app/api/v1.0",
-              "/my-app/api/v1.0"
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "description": "Path, to which the access shall be restricted"
+                  },
+                  "except": {
+                    "type": "array",
+                    "description": "Excepted subpaths, to which the access is not restricted",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "headersForwarding": {
+                    "type": "array",
+                    "description": "Headers, which are created by idmconnector and forwarded to endpoint",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": ["path"]
+              },
+              { 
+                "type": "string",
+                "description": "Path, which is restricted by identity manager"
+              }
             ]
-          }
+          },  
+          "examples": [
+            "/my-app-1/api/v1.0",
+            {
+              "path": "/my-app-2/api/v1.0",
+              "except": [
+                "/my-app-2/api/v1.0/except-path-1",
+                "/my-app-2/api/v1.0/except-path-2"
+              ],
+              "headersForwarding": [
+                "X-Auth-Name",
+                "X-Auth-ID",
+                "X-Auth-Scopes",
+                "X-Auth-Expires",
+                "X-Auth-Issued",
+                "X-Auth-PlcHandle",
+                "X-Auth-RemoteAuth",
+                "X-Auth-Nonce"
+              ]
+            }
+          ]         
         }
       }
     },
@@ -461,7 +540,7 @@
       "title": "Documentation",
       "description": "Contains documents like API references, e.g.",
       "items": {
-        "$ref": "#/definitions/document"
+        "$ref": "#/$defs/document"
       }
     },
     "document": {
@@ -516,7 +595,21 @@
           "type": "array",
           "description": "Describes app directories and specifies access to them inside the configuration",
           "items": {
-            "$ref": "#/definitions/appDirectory"
+            "$ref": "#/$defs/appDirectory"
+          }
+        },
+        "appPrivateFiles": {
+          "type": "array",
+          "description": "Defines files which are ignored on saving and loading. The files are matched case-insensitively using regular expressions. Since XCR-V-0112.",
+          "items": {
+            "type": "string",
+            "title": "Regular expression",
+            "description": "A regular expression following the RE2 syntax (https://golang.org/s/re2syntax)",
+            "examples": [
+              "^my-app/[^/]+\\.bak$",
+              "^my-app/tmp/",
+              "^my-app/tmp"
+            ]
           }
         }
       }
@@ -536,8 +629,7 @@
           "description": "Path of the app directory. Subdirectories are separated with /, no leading or trailing /",
           "examples": [
             "my-app",
-            "my-app/subdir1",
-            "my-app/subdir2"
+            "my-app/cool-feature"
           ]
         },
         "description": {
@@ -546,8 +638,7 @@
           "description": "Short description of the content of the directory. Will be displayed as part of a configuration.",
           "examples": [
             "My app",
-            "My cool feature 1",
-            "My cool feature 2"
+            "My cool feature"
           ]
         },
         "icon": {
@@ -555,8 +646,7 @@
           "title": "Icon",
           "description": "An optional icon which represents the app.",
           "examples": [
-            "bosch-ic-robot",
-            "bosch-ic-directory"
+            "my-icon"
           ]
         },
         "copyOnLoad": {
@@ -568,6 +658,16 @@
             false
           ],
           "default": false
+        },
+        "writeProtected": {
+          "type": "boolean",
+          "title": "Write-protection of app directories",
+          "description": "An app can protect its directories in the active configuration against write-access, e.g. via WebDAV. Since XCR-V-0112.",
+          "examples": [
+            true,
+            false
+          ],
+          "default": true
         }
       }
     },
@@ -594,6 +694,53 @@
           "title": "Description of your certificate store",
           "description": "Describes the content and usage of the certificates in the store",
           "example": "Certficates & Keys to connect to the World"
+        }
+      }
+    },
+    "apps": {
+      "type": "object",
+      "title": "Configurations for specific rexroth apps",
+      "description": "Contains configurations for specific rexroth apps",
+      "additionalProperties": false,
+      "properties": {
+        "rexroth-remoteagent": {
+          "$ref": "#/$defs/rexroth-remoteagent"
+        }
+      }
+    },
+    "rexroth-remoteagent": {
+      "type": "object",
+      "title": "Commands for remote device administration",
+      "description": "Contains allowed commands for remote device administration",
+      "additionalProperties": false,
+      "properties": {
+        "commands": {
+          "type": "array",
+          "title": "Remote device administration commands",
+          "description": "Remote device administration commands are used to execute commands on the device from the Nexeed Device Portal",
+          "items": {
+            "type": "string"
+          },
+          "examples": [
+            [
+              "BACKUP",
+              "RESTORE",
+              "REBOOT"
+            ]
+          ]
+        }
+      }
+    },
+    "dependencies": {
+      "type": "object",
+      "additionalProperties": false,
+      "title": "Map containing dependencies of the app",
+      "description": "Defines all dependencies of the app. The map key is the unique app id. Only direct dependencies should be modeled here.",
+      "patternProperties": {
+        "^[a-z0-9-]*[a-z][a-z0-9-]*$": {
+          "type": "string",
+          "title": "Version range defined as string",
+          "description": "Definition of the version range using npmjs syntax, see https://semver.npmjs.com/ for more details."
         }
       }
     }

@@ -1,7 +1,7 @@
 {
   "$schema": "./configuration.v1.schema.json",
   "description": "Picker project",
-  "device": "ctrlX-CORE-1",
+  "device": "ctrlX-OS-1",
   "user": "boschrexroth",
   "apps": [
     {

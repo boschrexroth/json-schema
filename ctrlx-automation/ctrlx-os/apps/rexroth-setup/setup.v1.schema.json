@@ -1,5 +1,5 @@
 {
-  "$id": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/apps/rexroth-setup/setup.v1.schema.json",
+  "$id": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-os/apps/rexroth-setup/setup.v1.schema.json",
   "$ref": "#/definitions/ctrlx-setup",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "additionalProperties": false,
@@ -103,7 +103,7 @@
       ]
     },
     "path": {
-      "title": "path to a file or folder in the setup archive",
+      "title": "path to a file or folder in the backup archive",
       "description": "no leading ´/´, folder separated with ´/´",
       "type": "string"
     },
@@ -152,11 +152,18 @@
     },
     "certificateManagement.application": {
       "additionalProperties": false,
-      "description": "Application with certificates or certificate keys",
+      "description": "Application with certificates, certificate keys, certificate revocation lists and pkcs12 containers",
       "properties": {
-        "name": {
-          "title": "Name of the application or service",
-          "type": "string"
+        "certificateRevocationLists": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/certificateManagement.certificate.entry.map"
+            },
+            {
+              "$ref": "#/definitions/schema.remove.marker"
+            }
+          ],
+          "title": "Certificate revocation lists of the application"
         },
         "certificates": {
           "$ref": "#/definitions/certificateManagement.application.certificate.entries",
@@ -165,6 +172,21 @@
         "keys": {
           "$ref": "#/definitions/certificateManagement.application.certificate.entries",
           "title": "Keys of the application"
+        },
+        "name": {
+          "title": "Name of the application or service",
+          "type": "string"
+        },
+        "pkcs12Containers": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/certificateManagement.certificate.entry.map"
+            },
+            {
+              "$ref": "#/definitions/schema.remove.marker"
+            }
+          ],
+          "title": "PKCS12 containers of the application"
         }
       },
       "title": "Known application",
@@ -174,18 +196,61 @@
       "additionalProperties": false,
       "description": "Declaration of an public key infrastructure server",
       "properties": {
-        "protocol": {
-          "title": "protocol of the public key infrastructure server"
+        "authentication": {
+          "$ref": "#/definitions/certificateManagement.pki.authentication"
         },
-        "serverCertId": {
+        "authenticationType": {
+          "title": "Type of authentication. Availability of specific authentication methods depends on protocol type.",
+          "oneOf": [
+            {
+              "const": "none"
+            },
+            {
+              "const": "challenge"
+            }
+          ]
+        },
+        "options": {
+          "title": "additional options",
+          "type": "object"
+        },
+        "protocol": {
+          "title": "protocol of the public key infrastructure server.",
+          "oneOf": [
+            {
+              "const": "CMP"
+            },
+            {
+              "const": "SCEP"
+            }
+          ]
+        },
+        "serverCertificate": {
           "title": "Server certificate identifier of the public key infrastructure server"
         },
         "uriIr": {
           "title": "Uri for creating a certificate. If not set uriCr is used"
         }
       },
+      "required": [
+        "protocol"
+      ],
       "title": "public key infrastructure server",
       "type": "object"
+    },
+    "certificateManagement.pki.authentication": {
+      "title": "Authentication information depending on the authenticationType",
+      "type": "object",
+      "properties": {
+        "challenge": {
+          "title": "A challenge can be a password or a pre-shared key for authentication",
+          "type": "string"
+        },
+        "encryptedChallenge": {
+          "title": "Encrypted challenge can be exchanged with a password",
+          "type": "string"
+        }
+      }
     },
     "certificateManagement.application.certificate.entries": {
       "description": "Categories are used to group certificates or keys by ca, trusted, rejected. Own certificates are stored under the serial number of the device.",
@@ -213,13 +278,13 @@
     },
     "certificateManagement.certificate.entry": {
       "additionalProperties": false,
-      "description": "Content of a certificate or key",
+      "description": "Content of a certificate, key, certificate revocation list or pkcs12 container",
       "properties": {
         "$path": {
           "$ref": "#/definitions/path"
         }
       },
-      "title": "Certificate or key",
+      "title": "Certificate, key, certificate revocation list or pkcs12 container",
       "type": "object"
     },
     "certificateManagement.certificate.entry.map": {
@@ -252,7 +317,14 @@
           ]
         },
         "archive": {
-          "$ref": "#/definitions/configurations.archive"
+          "oneOf": [
+            {
+              "$ref": "#/definitions/configurations.archive"
+            },
+            {
+              "$ref": "#/definitions/schema.remove.marker"
+            }
+          ]
         }
       },
       "description": "Archived configurations and configuration to load",
@@ -469,7 +541,7 @@
           "type": "string"
         },
         "encryptedPassword": {
-          "description": "The encrypted password value, if the setup has been created using a password.",
+          "description": "The encrypted password value, if the backup has been created using a password.",
           "type": "string"
         },
         "password": {
@@ -788,7 +860,7 @@
       "additionalProperties": false,
       "properties": {
         "encryptedPassword": {
-          "description": "The encrypted password value, if the setup has been created using a password.",
+          "description": "The encrypted password value, if the backup has been created using a password.",
           "type": "string"
         },
         "password": {
@@ -887,7 +959,7 @@
           "type": "string"
         },
         "encryptedPassword": {
-          "description": "The encrypted password value, if the setup has been created using a password.",
+          "description": "The encrypted password value, if the backup has been created using a password.",
           "type": "string"
         },
         "password": {
@@ -1013,7 +1085,7 @@
           "type": "string"
         },
         "encryptedPassword": {
-          "description": "The encrypted password value, if the setup has been created using a password.",
+          "description": "The encrypted password value, if the backup has been created using a password.",
           "type": "string"
         },
         "password": {
@@ -1109,7 +1181,7 @@
     },
     "ctrlx-setup": {
       "additionalProperties": false,
-      "description": "The root element of a ctrlx-setup file",
+      "description": "The root element of a ctrlx-backup file",
       "properties": {
         "$schema": {
           "description": "The schema definition of the file",
@@ -1117,19 +1189,19 @@
           "type": "string"
         },
         "$name": {
-          "description": "Name of the setup",
+          "description": "Name of the backup",
           "type": "string"
         },
         "$version": {
-          "description": "Version of the setup",
+          "description": "Version of the backup",
           "type": "string"
         },
         "$passwordHash": {
-          "description": "Autogenerated value to verify the password when applying the setup. If the entry exists, the password of the user is verified before applying the setup.",
+          "description": "Autogenerated value to verify the password when applying the backup. If the entry exists, the password of the user is verified before applying the backup.",
           "type": "string"
         },
         "$description": {
-          "description": "Description of the setup",
+          "description": "Description of the backup",
           "type": "string"
         },
         "apps": {
@@ -1175,7 +1247,7 @@
           "$ref": "#/definitions/system"
         }
       },
-      "title": "ctrlx-setup root",
+      "title": "ctrlx-backup root",
       "type": "object"
     },
     "datetime": {
@@ -1332,7 +1404,7 @@
           "type": "string"
         },
         "encryptedPassword": {
-          "description": "The encrypted password value, if the setup has been created using a password.",
+          "description": "The encrypted password value, if the backup has been created using a password.",
           "type": "string"
         },
         "serverType": {
@@ -1539,6 +1611,10 @@
         "sessionPolicies": {
           "$ref": "#/definitions/identityManagement.sessionPolicies"
         },
+        "settings": {
+          "description": "User-specific settings.",
+          "type": "string"
+        },
         "useGlobalSessionPolicies": {
           "description": "True if global session policies are used instead of user-specific sessionPolicies",
           "type": "boolean"
@@ -1693,6 +1769,10 @@
       "properties": {
         "installedApps": {
           "$ref": "#/definitions/packageManagement.installedApps"
+        },
+        "allowUnknownApps": {
+          "description": "For security reasons, your device prevents the installation of unsigned apps. You can change this setting at your own risk. You will loose warranty for the device. It allows the installation of unsigned third-party apps. Default: false",
+          "type": "boolean"
         }
       },
       "title": "PackageManagement settings",
@@ -1745,7 +1825,7 @@
           "type": "boolean"
         },
         "encryptedPassword": {
-          "description": "The encrypted password value, if the setup has been created using a password.",
+          "description": "The encrypted password value, if the backup has been created using a password.",
           "type": "string"
         },
         "password": {

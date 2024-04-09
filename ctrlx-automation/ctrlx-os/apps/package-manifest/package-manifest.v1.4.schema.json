@@ -1,15 +1,15 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/apps/package-manifest/package-manifest.v1.schema.json",
+  "$id": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-os/apps/package-manifest/package-manifest.v1.schema.json",
   "type": "object",
-  "title": "ctrlX CORE Package Manifest",
+  "title": "ctrlX OS Package Manifest",
   "additionalProperties": false,
   "properties": {
     "$schema": {
       "type": "string",
       "title": "Definition of schema",
-      "description": "Definition of schema, should point to a valid package-manifest schema definition, e.g.: https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/apps/package-manifest/package-manifest.v1.schema.json",
-      "default": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-core/apps/package-manifest/package-manifest.v1.schema.json"
+      "description": "Definition of schema, should point to a valid package-manifest schema definition, e.g.: https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-os/apps/package-manifest/package-manifest.v1.schema.json",
+      "default": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-os/apps/package-manifest/package-manifest.v1.schema.json"
     },
     "version": {
       "type": "string",
@@ -82,6 +82,12 @@
           "$ref": "#/$defs/dependencies"
         }
       }
+    },
+    "licenses": {
+      "$ref": "#/$defs/licenses"
+    },
+    "uiExtensions": {
+      "$ref": "#/$defs/uiExtensions"
     }
   },
   "$defs": {
@@ -141,6 +147,13 @@
           "items": {
             "$ref": "#/$defs/entries"
           }
+        },
+        "system": {
+          "type": "array",
+          "title": "System Menu",
+          "items": {
+            "$ref": "#/$defs/entries"
+          }
         }
       }
     },
@@ -150,13 +163,6 @@
       "additionalProperties": false,
       "title": "Link",
       "oneOf": [
-        {
-          "required": [
-            "id",
-            "title",
-            "link"
-          ]
-        },
         {
           "required": [
             "id",
@@ -210,12 +216,28 @@
             "My App"
           ]
         },
+        "description": {
+          "description": "The description of the entry point",
+          "type": "string",
+          "title": "Description",
+          "examples": [
+            "My App providing cool features"
+          ]
+        },
         "icon": {
           "description": "An optional icon, see... to represent the entry point",
           "type": "string",
           "title": "Icon",
           "examples": [
             "bosch-ic-automation"
+          ]
+        },
+        "category": {
+          "description": "The category the entry point belongs to",
+          "type": "string",
+          "title": "Category",
+          "examples": [
+            "0_my_apps"
           ]
         },
         "permissions": {
@@ -287,6 +309,17 @@
           "type": "string",
           "examples": [
             "motion settings"
+          ]
+        },
+        "after": {
+          "type": "array",
+          "description": "Defines a list of command identifiers whose commands if present will always be executed before this command.",
+          "items": {
+            "type": "string"
+          },
+          "examples": [
+            "scheduler",
+            "trace"
           ]
         },
         "url": {
@@ -366,6 +399,9 @@
           "items": {
             "$ref": "#/$defs/scope"
           }
+        },
+        "i18n": {
+          "$ref": "#/$defs/i18nTag"
         }
       }
     },
@@ -504,14 +540,16 @@
                     }
                   }
                 },
-                "required": ["path"]
+                "required": [
+                  "path"
+                ]
               },
-              { 
+              {
                 "type": "string",
                 "description": "Path, which is restricted by identity manager"
               }
             ]
-          },  
+          },
           "examples": [
             "/my-app-1/api/v1.0",
             {
@@ -531,7 +569,7 @@
                 "X-Auth-Nonce"
               ]
             }
-          ]         
+          ]
         }
       }
     },
@@ -583,6 +621,9 @@
           "examples": [
             "Provides my-app related functionalities on ctrlX devices."
           ]
+        },
+        "i18n": {
+          "$ref": "#/$defs/i18nTag"
         }
       }
     },
@@ -668,6 +709,17 @@
             false
           ],
           "default": true
+        },
+        "scopes": {
+          "type": "array",
+          "title": "Array of scopes",
+          "description": "Array of scopes. Each scope describes a specific permission for one or more web server resources, e.g. write to a resource using HTTP PUT",
+          "items": {
+            "$ref": "#/$defs/scope"
+          }
+        },
+        "i18n": {
+          "$ref": "#/$defs/i18nTag"
         }
       }
     },
@@ -694,6 +746,37 @@
           "title": "Description of your certificate store",
           "description": "Describes the content and usage of the certificates in the store",
           "example": "Certficates & Keys to connect to the World"
+        },
+        "scopesR": {
+          "type": "array",
+          "title": "Scopes for viewing the certificate store",
+          "description": "A list of scopes that allow the user to have read access to this certificate store",
+          "items": {
+            "type": "string",
+            "title": "Permission",
+            "examples": [
+              "my-app.r",
+              "my-app.cool-feature.r"
+            ],
+            "pattern": "^(.*)$"
+          }
+        },
+        "scopesRWX": {
+          "type": "array",
+          "title": "Scopes for managing the certificate store",
+          "description": "A list of scopes that allow the user to have full access to this certificate store",
+          "items": {
+            "type": "string",
+            "title": "Permission",
+            "examples": [
+              "my-app.rw",
+              "my-app.cool-feature.rw"
+            ],
+            "pattern": "^(.*)$"
+          }
+        },
+        "i18n": {
+          "$ref": "#/$defs/i18nTag"
         }
       }
     },
@@ -705,6 +788,9 @@
       "properties": {
         "rexroth-remoteagent": {
           "$ref": "#/$defs/rexroth-remoteagent"
+        },
+        "rexroth-setup": {
+          "$ref": "#/$defs/rexroth-setup"
         }
       }
     },
@@ -731,6 +817,51 @@
         }
       }
     },
+    "rexroth-setup": {
+      "type": "object",
+      "description": "Provides information for ctrlX Setup regarding the current app, e.g. settings to be saved and restored.",
+      "properties": {
+        "settings": {
+          "type": "array",
+          "description": "App settings to be saved and restored by ctrlX Setup",
+          "items": {
+            "$ref": "#/$defs/setupSetting"
+          }
+        }
+      }
+    },
+    "setupSetting": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the setting. Must be unique within the app's settings list. Serves as key in the ctrlx-setup.json file. Required for all types except 'snapshot'. Note that the name '$path' is reserved.",
+          "example": "myAppSetting"
+        },
+        "description": {
+          "type": "string",
+          "description": "Short localized description of the setting.",
+          "example": "Description of myAppSetting"
+        },
+        "url": {
+          "type": "string",
+          "description": "URL used to read (GET) and update (PUT) the setting. A URL starting with a slash is interpreted to be relative to https: //<host>. Required for all types except 'snapshot'.",
+          "example": "/myapp/api/v1/my-app-setting"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of the setting. One of 'text', 'json', 'file', 'encryptedFile' and 'snapshot'. The default is 'text'.",
+          "enum": [
+            "text",
+            "json",
+            "file",
+            "encryptedFile",
+            "snapshot"
+          ],
+          "example": "json"
+        }
+      }
+    },
     "dependencies": {
       "type": "object",
       "additionalProperties": false,
@@ -741,6 +872,228 @@
           "type": "string",
           "title": "Version range defined as string",
           "description": "Definition of the version range using npmjs syntax, see https://semver.npmjs.com/ for more details."
+        }
+      }
+    },
+    "license": {
+      "type": "object",
+      "additionalProperties": false,
+      "title": "",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Identifier of the license",
+          "examples": [
+            "SWL_XCR_ENGINEERING_4H"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "title": "Human readable title of the firewall",
+          "examples": [
+            "ctrlX OS - Firewall License"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "title": "Description of the license",
+          "examples": [
+            "Unlock the firewall functionality"
+          ]
+        },
+        "required": {
+          "type": "boolean",
+          "title": "Indicates if an licenses is required to operate the application or unlocks optional functionalities",
+          "examples": [
+            true
+          ]
+        },
+        "i18n": {
+          "$ref": "#/$defs/i18nTag"
+        }
+      }
+    },
+    "licenses": {
+      "type": "array",
+      "title": "Contains license informations for specific rexroth apps",
+      "description": "Licenses are used to control the functionality of the package. Missing licenses results in no or not full availibility",
+      "items": {
+        "$ref": "#/$defs/license"
+      }
+    },
+    "uiExtensions": {
+      "type": "object",
+      "title": "Contains ui extensions for the home screen",
+      "additionalProperties": false,
+      "description": "",
+      "properties": {
+        "header": {
+          "$ref": "#/$defs/uiExtensionHeaderItems"
+        },
+        "dashboard": {
+          "$ref": "#/$defs/uiExtensionDashboardItems"
+        }
+      }
+    },
+    "uiExtensionHeaderItems": {
+      "type": "array",
+      "title": "Header items",
+      "description": "Web components that should be displayed in the global header.",
+      "items": {
+        "$ref": "#/$defs/uiExtensionHeaderItem"
+      }
+    },
+    "uiExtensionHeaderItem": {
+      "type": "object",
+      "title": "",
+      "additionalProperties": false,
+      "description": "",
+      "properties": {
+        "order": {
+          "type": "integer",
+          "title": "Order",
+          "description": "Order of the item in the header. Lower numbers are displayed first.",
+          "examples": [
+            1,
+            2,
+            3
+          ]
+        },
+        "src": {
+          "type": "string",
+          "title": "Source",
+          "description": "The url of the web component's implementation file.",
+          "examples": [
+            "widgets.js"
+          ]
+        },
+        "tag": {
+          "type": "string",
+          "title": "Tag",
+          "description": "The tag name that creates a new instance of the web component.",
+          "examples": [
+            "my-widget"
+          ]
+        }
+      }
+    },
+    "uiExtensionDashboardItems": {
+      "type": "array",
+      "title": "Dashboard items",
+      "description": "Web components that should be displayed in the dashboard.",
+      "items": {
+        "$ref": "#/$defs/dashboardWidgetExtension"
+      }
+    },
+    "dashboardWidgetExtension": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "order": {
+          "type": "integer",
+          "title": "Order",
+          "description": "Order of the item in the header. Lower numbers are displayed first.",
+          "examples": [
+            1,
+            2,
+            3
+          ]
+        },
+        "src": {
+          "type": "string",
+          "title": "Source",
+          "description": "The url of the web component's implementation file.",
+          "examples": [
+            "widgets.js"
+          ]
+        },
+        "tag": {
+          "type": "string",
+          "title": "Tag",
+          "description": "The tag name that creates a new instance of the web component.",
+          "examples": [
+            "my-widget"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "description": "The widget's title as shown in the widget catalog.",
+          "example": "Axes",
+          "readOnly": true
+        },
+        "description": {
+          "type": "string",
+          "description": "The widget's description as shown in the widget catalog.",
+          "example": "Shows the status of your axes",
+          "readOnly": true
+        },
+        "icon": {
+          "type": "string",
+          "description": "The icon to be displayed in the widget catalog.",
+          "example": "Bosch-Ic-settings",
+          "readOnly": true
+        },
+        "image": {
+          "type": "string",
+          "description": "The path to the image to be displayed in the widget catalog.",
+          "example": "/motion/axes.svg",
+          "readOnly": true
+        },
+        "initialSize": {
+          "description": "The widget's initial grid size",
+          "$ref": "#/$defs/dashboardWidgetSize"
+        },
+        "minSize": {
+          "description": "The widget's minimum grid size",
+          "$ref": "#/$defs/dashboardWidgetSize"
+        },
+        "maxSize": {
+          "description": "The widget's maximum grid size",
+          "$ref": "#/$defs/dashboardWidgetSize"
+        },
+        "permissions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of permissions to view or interact with the widget.",
+          "example": [
+            "rexroth-deviceadmin.package-manager.r",
+            "rexroth-deviceadmin.package-manager.rw"
+          ],
+          "readOnly": true
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of categories the widget is displayed",
+          "example": [
+            "System",
+            "Other Category"
+          ]
+        },
+        "i18n": {
+          "$ref": "#/$defs/i18nTag"
+        }
+      }
+    },
+    "dashboardWidgetSize": {
+      "type": "object",
+      "properties": {
+        "cols": {
+          "type": "number",
+          "description": "Number of columns in the dashboard grid.",
+          "example": 3,
+          "readOnly": true
+        },
+        "rows": {
+          "type": "number",
+          "description": "Number of rows in the dashboard grid.",
+          "example": 3,
+          "readOnly": true
         }
       }
     }
