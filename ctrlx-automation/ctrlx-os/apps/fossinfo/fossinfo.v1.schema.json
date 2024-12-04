@@ -3,13 +3,13 @@
     "$id": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-os/apps/fossinfo/fossinfo.v1.schema.json",
     "anyOf": [
         {
-            "$ref": "#definitions/component"
+            "$ref": "#/$defs/component"
         },
         {
-            "$ref": "#definitions/components"
+            "$ref": "#/$defs/components"
         }
     ],
-    "definitions": {
+    "$defs": {
         "components": {
             "description": "root element of fossinfo.json files",
             "type": "object",
@@ -24,7 +24,7 @@
                     "title": "List of OSS components",
                     "description": "IMPORTANT compatibility issue: In controls with app.deviceadmin <= 1.8, the final fossinfo file must only contain this array.",
                     "items": {
-                        "$ref": "#definitions/component"
+                        "$ref": "#/$defs/component"
                     }
                 }
             },
@@ -60,7 +60,7 @@
                     "pattern": "^\\S.*\\S$"
                 },
                 "copyright": {
-                    "$ref": "#definitions/copyright"
+                    "$ref": "#/$defs/copyright"
                 },
                 "licenses": {
                     "title": "OSS component licenses",
@@ -68,7 +68,7 @@
                     "type": "array",
                     "minLength": 1,
                     "items": {
-                        "$ref": "#definitions/license"
+                        "$ref": "#/$defs/license"
                     }
                 },
                 "usages": {
@@ -77,18 +77,18 @@
                     "type": "array",
                     "items": {
                         "usage": {
-                            "$ref": "#definitions/usage"
+                            "$ref": "#/$defs/usage"
                         },
                         "integrationMechanism": {
-                            "$ref": "#definitions/integrationMechanism"
+                            "$ref": "#/$defs/integrationMechanism"
                         }
                     }
                 },
                 "usage": {
-                    "$ref": "#definitions/usage"
+                    "$ref": "#/$defs/usage"
                 },
                 "integrationMechanism": {
-                    "$ref": "#definitions/integrationMechanism"
+                    "$ref": "#/$defs/integrationMechanism"
                 }
             },
             "required": [

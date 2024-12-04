@@ -1,0 +1,18 @@
+{
+    "$schema": "https://boschrexroth.com/app-validation/portlist-description.v1.schema.json",
+    "$id": "https://boschrexroth.com/app-validation/portlist-description.v1.json",
+    "type": "object",
+    "title": "Port Description",
+    "description": "All used Ports shall be described in more detail below. Ports with an outgoing connection do not need to be described. Hint: Debug-interface ports must be closed in release versions.",
+    "ports": [
+      {
+        "number": 0,
+        "purpose": "Describe clearly for what purpose you need the going in port, e.g. `A local MQTT broker is used for communication between the App and an external Snaps on the ctrlX OS. Running on localhost only. It shall not be visible externally.`",
+        "application-protocol": "MQTT",
+        "binding": "localhost",
+        "routing": "external",
+        "service-name": "<third-party-snap-name>.<service>",
+        "default-state": "open"
+      }
+    ]
+  }

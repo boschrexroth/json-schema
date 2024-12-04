@@ -1,0 +1,7 @@
+# yaml-language-server: $schema=./ctrlx-hw.v1.schema.json
+meta:
+  id: hardware-variant-description
+  specification: '1.4'
+name: ctrlX OS hardware definition
+description: |
+  ctrlX OS -- control hardware on steroids

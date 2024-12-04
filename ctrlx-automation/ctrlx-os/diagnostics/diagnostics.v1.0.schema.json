@@ -1,0 +1,88 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-os/diagnostics/diagnostics.v1.schema.json",
+    "title": "ctrlX OS Diagnostic File Format",
+    "description": "JSON schema for ctrlX OS diagnostic file format",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "mainDiagnostics"
+    ],
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "description": "The schema that the JSON document uses"
+        },
+        "product": {
+            "type": "string",
+            "description": "Product associated to the diagnostics",
+            "example": "XCR-V-0206"
+        },
+        "component": {
+            "type": "string",
+            "description": "Component associated to the diagnostics"
+        },
+        "mainDiagnostics": {
+            "type": "object",
+            "description": "All main diagnostics (including their related detailed diagnostics)",
+            "patternProperties": {
+                "^[\\dA-F]{8}$": {
+                    "$ref": "#/$defs/mainDiagnostic"
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "$defs": {
+        "mainDiagnostic": {
+            "type": "object",
+            "required": [
+                "text"
+            ],
+            "properties": {
+                "text": {
+                    "type": "string",
+                    "description": "Text of the main diagnostic",
+                    "example": "Security: Change in user management"
+                },
+                "version": {
+                    "type": "integer",
+                    "description": "Version of the main diagnostics starting with 1",
+                    "default": 1,
+                    "example": 1
+                },
+                "detailedDiagnostics": {
+                    "type": "object",
+                    "description": "All detailed diagnostics that belong to this main diagnostics",
+                    "patternProperties": {
+                        "^[\\dA-F]{8}$": {
+                            "$ref": "#/$defs/detailedDiagnostic"
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            },
+            "additionalProperties": false
+        },
+        "detailedDiagnostic": {
+            "type": "object",
+            "required": [
+                "text"
+            ],
+            "properties": {
+                "text": {
+                    "type": "string",
+                    "description": "Text of the detailed diagnostics",
+                    "example": "New user created"
+                },
+                "version": {
+                    "description": "Version of the detailed diagnostics starting with 1",
+                    "type": "integer",
+                    "default": 1,
+                    "example": 1
+                }
+            },
+            "additionalProperties": false            
+        }
+    }
+  }

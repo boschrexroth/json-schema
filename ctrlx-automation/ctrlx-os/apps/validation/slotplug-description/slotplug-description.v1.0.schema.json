@@ -1,0 +1,148 @@
+{
+    "definitions": {},
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://boschrexroth.com/app-validation/slotplug-description.v1.schema.json",
+    "title": "Root",
+    "type": "object",
+    "required": [
+      "$schema",
+      "$id",
+      "type",
+      "title",
+      "description",
+      "slots",
+      "plugs"
+    ],
+    "properties": {
+      "$schema": {
+        "$id": "#root/$schema",
+        "title": "$schema",
+        "type": "string",
+        "default": "",
+        "examples": [
+          "http://json-schema.org/draft-07/schema#"
+        ],
+        "pattern": "^.*$"
+      },
+      "$id": {
+        "$id": "#root/$id",
+        "title": "$id",
+        "type": "string",
+        "default": "",
+        "examples": [
+          "https://boschrexroth/app-validation/slotplug-description.json"
+        ],
+        "pattern": "^.*$"
+      },
+      "type": {
+        "$id": "#root/type",
+        "title": "Type",
+        "type": "string",
+        "default": "",
+        "examples": [
+          ""
+        ],
+        "pattern": "^.*$"
+      },
+      "title": {
+        "$id": "#root/title",
+        "title": "Title",
+        "type": "string",
+        "default": "",
+        "examples": [
+          "Slot and Plug Description"
+        ],
+        "pattern": "^.*$"
+      },
+      "description": {
+        "$id": "#root/description",
+        "title": "Description",
+        "type": "string",
+        "default": "",
+        "examples": [
+          "All used slots and plugs shall be described in more detail below."
+        ],
+        "pattern": "^.*$"
+      },
+      "slots": {
+        "$id": "#root/slots",
+        "title": "Slots",
+        "type": "array",
+        "default": [],
+        "items": {
+          "$id": "#root/slots/items",
+          "title": "Items",
+          "type": "object",
+          "required": [
+            "name",
+            "purpose"
+          ],
+          "properties": {
+            "name": {
+              "$id": "#root/slots/items/name",
+              "title": "Name",
+              "description": "Insert the name of the plug interface, e.g. `package-assets`.",
+              "type": "string",
+              "default": "",
+              "examples": [
+                "package-certificates"
+              ],
+              "pattern": "^.*$"
+            },
+            "purpose": {
+              "$id": "#root/slots/items/purpose",
+              "title": "Purpose",
+              "description": "Describe clearly for what purose you need this slot interface, e.g. `Via this slot interface the certificate manager can add and access certificates and keys of the snap`.",
+              "type": "string",
+              "default": "",
+              "examples": [
+                "Via this slot interface the certificate manager can add and access certificates and keys of the snap."
+              ],
+              "pattern": "^.*$"
+            }
+          }
+        }
+  
+      },
+      "plugs": {
+        "$id": "#root/plugs",
+        "title": "Plugs",
+        "type": "array",
+        "default": [],
+        "items": {
+          "$id": "#root/plugs/items",
+          "title": "Items",
+          "type": "object",
+          "required": [
+            "name",
+            "purpose"
+          ],
+          "properties": {
+            "name": {
+              "$id": "#root/plugs/items/name",
+              "title": "Name",
+              "description": "Insert the name of the plug interface, e.g. `network`.",
+              "type": "string",
+              "default": "",
+              "examples": [
+                "network"
+              ],
+              "pattern": "^.*$"
+            },
+            "purpose": {
+              "$id": "#root/plugs/items/purpose",
+              "title": "Purpose",
+              "description": "Describe clearly for what purose you need this plug interface. e.g.: `Used by the App to get network access as a client`.",
+              "type": "string",
+              "default": "",
+              "examples": [
+                "Used by the App to get network access as a client."
+              ],
+              "pattern": "^.*$"
+            }
+          }
+        }
+  
+      }
+    }
+  }

@@ -1,0 +1,176 @@
+{
+    "definitions": {},
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://boschrexroth.com/app-validation/portlist-description.v1.schema.json",
+    "title": "Root",
+    "type": "object",
+    "required": [
+      "$schema",
+      "$id",
+      "type",
+      "title",
+      "description",
+      "ports"
+    ],
+    "properties": {
+      "$schema": {
+        "$id": "#root/$schema",
+        "title": "$schema",
+        "type": "string",
+        "default": "",
+        "examples": [
+          "http://json-schema.org/draft-07/schema#"
+        ],
+        "pattern": "^.*$"
+      },
+      "$id": {
+        "$id": "#root/$id",
+        "title": "$id",
+        "type": "string",
+        "default": "",
+        "examples": [
+          "https://boschrexroth/app-validation/portlist-description.json"
+        ],
+        "pattern": "^.*$"
+      },
+      "type": {
+        "$id": "#root/type",
+        "title": "Type",
+        "type": "string",
+        "default": "",
+        "examples": [
+          "object"
+        ],
+        "pattern": "^.*$"
+      },
+      "title": {
+        "$id": "#root/title",
+        "title": "Title",
+        "type": "string",
+        "default": "",
+        "examples": [
+          "Port Description"
+        ],
+        "pattern": "^.*$"
+      },
+      "description": {
+        "$id": "#root/description",
+        "title": "Description",
+        "type": "string",
+        "default": "",
+        "examples": [
+          "All used Ports shall be described in more detail below. Ports with an outgoing connection do not need to be described. Hint: Debug-interface ports must be closed in release versions."
+        ],
+        "pattern": "^.*$"
+      },
+      "ports": {
+        "$id": "#root/ports",
+        "title": "Ports",
+        "type": "array",
+        "default": [],
+        "items": {
+          "$id": "#root/ports/items",
+          "title": "Items",
+          "type": "object",
+          "required": [
+            "number",
+            "purpose",
+            "application-protocol",
+            "binding",
+            "routing",
+            "service-name",
+            "default-state"
+          ],
+          "properties": {
+            "number": {
+              "$id": "#root/ports/items/number",
+              "title": "Number",
+              "description": "Insert the going in port number.",
+              "type": "integer",
+              "examples": [
+                0
+              ],
+              "default": 0
+            },
+            "purpose": {
+              "$id": "#root/ports/items/purpose",
+              "title": "Purpose",
+              "description": "Describe clearly for what purpose you need the going in port, e.g. `A local MQTT broker is used for communicaiton between the App and an external Snaps on the ctrlX. Running on localhost only. It shall not be visible externally.`",
+              "type": "string",
+              "default": "",
+              "examples": [
+                "A local MQTT broker is used for communicaiton between the App and an external Snaps on the ctrlX. Running on localhost only. It shall not be visible externally."
+              ],
+              "pattern": "^.*$"
+            },
+            "application-protocol": {
+              "$id": "#root/ports/items/application-protocol",
+              "title": "Application-protocol",
+              "description": "Insert the protocol name, like HTTPS, HTTP, OPC UA, MQTT, ...",
+              "type": "string",
+              "default": "",
+              "examples": [
+                "HTTP",
+                "HTTPS",
+                "OPC UA",
+                "MQTT"
+              ],
+              "pattern": "^.*$"
+            },
+            "binding": {
+              "$id": "#root/ports/items/binding",
+              "title": "Binding",
+              "description": "If your service is binded to localhost, select `localhost` If your service is binded to IP, select `IP`.",
+              "type": "string",
+              "enum": [ "localhost", "IP" ],
+              "default": "localhost",
+              "examples": [
+                "localhost",
+                "IP"
+              ],
+              "pattern": "^.*$"
+            },
+            "routing": {
+              "$id": "#root/ports/items/routing",
+              "title": "Routing",
+              "description": "If your service must be accessible from another device(s), select `external`. If you want your service to be available only on the device, select `internal`.",
+              "type": "string",
+              "enum": [ "internal", "external" ],
+              "default": "external",
+              "examples": [
+                "internal",
+                "external"
+              ],
+              "pattern": "^.*$"
+            },
+            "service-name": {
+              "$id": "#root/ports/items/service-name",
+              "title": "Service-name",
+              "description": "The name of the service has to be given in the following way: `/<path to third-party-snap>/<third-party-snap-name>.<service>`, e.g.`my-snap-path/ctrlX-mysnap.mosquitto`.",
+              "type": "string",
+              "default": "",
+              "examples": [
+                "ctrlX-mysnap.mosquitto"
+              ],
+              "pattern": "^.*$"
+            },
+            "default-state": {
+              "$id": "#root/ports/items/default-state",
+              "title": "Default-state",
+              "descripton": "If the port is open in the initial app state select `open`. If the port is closed in the initial app state select `closed`.",
+              "type": "string",
+              "enum": [ "open", "closed" ],
+              "default": "open",
+              "examples": [
+                "open",
+                "closed"
+              ],
+              "pattern": "^.*$"
+            }
+          }
+        }
+  
+      }
+    }
+  }
+  

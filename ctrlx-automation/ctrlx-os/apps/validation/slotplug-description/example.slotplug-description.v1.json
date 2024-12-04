@@ -1,0 +1,19 @@
+{
+    "$schema": "https://boschrexroth.com/app-validation/slotplug-description.v1.schema.json",
+    "$id": "https://boschrexroth.com/app-validation/slotplug-description.v1.json",
+    "type": "",
+    "title": "Slot and Plug Description",
+    "description": "All used slots and plugs shall be described in more detail below.",
+    "slots": [
+      {
+        "name": "Insert the name of the slot interface, e.g. `package-certificates`",
+        "purpose": "Via this slot interface the certificate manager can add and access certificates and keys of the snap."
+      }
+    ],
+    "plugs": [
+      {
+        "name": "Insert the name of the plug interface, e.g. `network`",
+        "purpose": "Describe clearly for what purose you need this plug interface. e.g.: `Used by the App to get network access as a client`.."
+      }
+    ]
+  }

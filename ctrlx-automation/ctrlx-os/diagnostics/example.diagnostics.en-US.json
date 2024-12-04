@@ -1,0 +1,26 @@
+{
+   "$schema": "./diagnostics.v1.schema.json",
+   "product": "example",
+   "mainDiagnostics": {
+      "370A0FFF": {
+         "text": "Configuration changed",
+         "version": 1,
+         "detailedDiagnostics": {
+            "00000001": {
+               "text": "Configuration changed by user",
+               "version": 1
+            }
+         }
+      },
+      "370E0FFF": {
+         "text": "Program crashed",
+         "version": 1,
+         "detailedDiagnostics": {
+            "00000001": {
+               "text": "Program run out of memory",
+               "version": 1
+            }
+         }
+      }
+   }
+}

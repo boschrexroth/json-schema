@@ -1,0 +1,122 @@
+{
+    "definitions": {},
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://boschrexroth.com/app-validation/unixsocket-description.v1.schema.json",
+    "title": "Root",
+    "type": "object",
+    "required": [
+      "$schema",
+      "$id",
+      "type",
+      "title",
+      "description",
+      "sockets"
+    ],
+    "properties": {
+      "$schema": {
+        "$id": "#root/$schema",
+        "title": "$schema",
+        "type": "string",
+        "default": "",
+        "examples": [
+          "http://json-schema.org/draft-07/schema#"
+        ],
+        "pattern": "^.*$"
+      },
+      "$id": {
+        "$id": "#root/$id",
+        "title": "$id",
+        "type": "string",
+        "default": "",
+        "examples": [
+          "https://boschrexroth/app-validation/unixsocket-description.json"
+        ],
+        "pattern": "^.*$"
+      },
+      "type": {
+        "$id": "#root/type",
+        "title": "Type",
+        "type": "string",
+        "default": "",
+        "examples": [
+          "object"
+        ],
+        "pattern": "^.*$"
+      },
+      "title": {
+        "$id": "#root/title",
+        "title": "Title",
+        "type": "string",
+        "default": "",
+        "examples": [
+          "Unix Socket Description"
+        ],
+        "pattern": "^.*$"
+      },
+      "description": {
+        "$id": "#root/description",
+        "title": "Description",
+        "type": "string",
+        "default": "",
+        "examples": [
+          "Unix server sockets shall be described in more detail below. Unix client sockets with an outgoing connection do not need to be described."
+        ],
+        "pattern": "^.*$"
+      },
+      "sockets": {
+        "$id": "#root/sockets",
+        "title": "Sockets",
+        "type": "array",
+        "default": [],
+        "items": {
+          "$id": "#root/sockets/items",
+          "title": "Items",
+          "type": "object",
+          "required": [
+            "name",
+            "purpose",
+            "routing"
+          ],
+          "properties": {
+            "name": {
+              "$id": "#root/sockets/items/name",
+              "title": "Name",
+              "description": "Insert the name of the Unix server socket in the following way: /<path to third-party-snap>/<third-party-snap-name>.<service>.sock, service: e.g. `web`.",
+              "type": "string",
+              "default": "",
+              "examples": [
+                "/path-to-my-snap/my-snap.web"
+              ],
+              "pattern": "^.*$"
+            },
+            "purpose": {
+              "$id": "#root/sockets/items/purpose",
+              "title": "Purpose",
+              "purpose": "Describe clearly for what purpose you need this Unix socket server, e.g. `This Unix server socket is used by the App for serving REST calls from the Snap mapped through the ctrlX Caddy proxy`.",
+              "type": "string",
+              "default": "",
+              "examples": [
+                "This Unix server socket is used by the App for serving REST calls from the Snap mapped through the ctrlX Caddy proxy."
+              ],
+              "pattern": "^.*$"
+            },
+            "routing": {
+              "$id": "#root/sockets/items/routing",
+              "title": "Routing",
+              "description": "If your service must be accessible from another device(s), enter `external`. If you want your service to be available only on the device, enter `internal`.",
+              "type": "string",
+              "enum": [ "internal", "external" ],
+              "default": "internal",
+              "examples": [
+                "internal",
+                "external"
+              ],
+              "pattern": "^.*$"
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  

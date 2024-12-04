@@ -1,0 +1,14 @@
+{
+    "$schema": "https://boschrexroth.com/app-validation/unixsocket-description.v1.schema.json",
+    "$id": "https://boschrexroth.com/app-validation/unixsocket-description.v1.json",
+    "type": "object",
+    "title": "Unix Socket Description",
+    "description": "Unix server sockets shall be described in more detail below. Unix client sockets with an outgoing connection do not need to be described.",
+    "sockets": [
+      {
+        "name": "<path to third-party-snap>/<third-party-snap-name>.<service>.sock, service: e.g. `web`.",
+        "purpose": "This Unix server socket is used by the App for serving REST calls from the Snap mapped through the ctrlX Caddy proxy.",
+        "routing": "internal"
+      }
+    ]
+  }
