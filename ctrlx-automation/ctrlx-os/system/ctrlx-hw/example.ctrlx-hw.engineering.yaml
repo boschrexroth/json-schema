@@ -1,26 +1,16 @@
 # yaml-language-server: $schema=./ctrlx-hw.v1.schema.json
 # rexroth hardware description
 meta:
- id: hardware-variant-description
- specification: '1.3'
-  
+  id: hardware-variant-description
+  specification: '1.4'
+
 # Short name
 name: ctrlX COREvirtual Hardware Description
-  
+
 # Long description
 description: |
   ctrlX COREvirtual for engineering
-  
-# Typeplate describes where to retrieve typeplate infomation
-typeplate:
-  # Raw information from SMBIOS type 11
-  # https://www.dmtf.org/sites/default/files/standards/documents/DSP0134_3.2.0.pdf
-  # E.g. on COREvirtual
-  raw:
-   format: typeplate-data
-   location: 11
-   access-type: smbios
- 
+
 # Matching type plate
 match:
- - typecode: cx_arch02_engineering
+  - typecode: cx_arch02_engineering

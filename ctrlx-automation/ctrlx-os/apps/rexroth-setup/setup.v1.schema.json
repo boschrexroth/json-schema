@@ -145,9 +145,64 @@
           },
           "title": "pki entries",
           "type": "object"
+        },
+        "subscriptions": {
+          "additionalProperties": false,
+          "description": "List of subscriptions organized by application names and own certificate names.",
+          "patternProperties": {
+            "^[-_a-zA-Z0-9.]+": {
+              "$ref": "#/definitions/certificateManagement.subscription.map"
+            }
+          },
+          "title": "Known applications by application id",
+          "type": "object"
         }
       },
       "title": "Certificates and keys",
+      "type": "object"
+    },
+    "certificateManagement.subscription.map": {
+      "additionalProperties": false,
+      "patternProperties": {
+        "^[ -_a-zA-Z0-9.]+$": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/certificateManagement.subscription.entry"
+            },
+            {
+              "$ref": "#/definitions/schema.remove.marker"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "certificateManagement.subscription.entry": {
+      "additionalProperties": false,
+      "description": "Content of a subscription",
+      "properties": {
+        "enabled": {
+          "description": "Enable subscription.",
+          "type": "boolean"
+        },
+        "privateKey": {
+          "description": "Private key to authenticate the request.",
+          "type": "string"
+        },
+        "renewalPeriod": {
+          "description": "Renewal period in days.",
+          "type": "number"
+        },
+        "pki": {
+          "description": "The private key infrastructure to use for renewal.",
+          "type": "string"
+        },
+        "options": {
+          "description": "Generic options.",
+          "type": "object"
+        }
+      },
+      "title": "Subscription to renew a certificate of an application",
       "type": "object"
     },
     "certificateManagement.application": {
@@ -335,6 +390,10 @@
       "properties": {
         "$path": {
           "$ref": "#/definitions/path"
+        },
+        "name": {
+          "description": "Name of the last loaded configuration",
+          "type": "string"
         }
       },
       "description": "Configuration to load",
@@ -370,6 +429,47 @@
     "connectivity": {
       "additionalProperties": false,
       "properties": {
+        "settings": {
+          "type": "object",
+          "description": "Global connectivity settings",
+          "additionalProperties": false,
+          "properties": {
+            "bandwidthPolicies": {
+              "type": "object",
+              "additionalProperties": false,
+              "description": "Bandwidth policies for network interfaces",
+              "patternProperties": {
+                "^[0-9a-zA-Z_-]+$": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/definitions/connectivity.bandwidthPolicy"
+                    },
+                    {
+                      "$ref": "#/definitions/schema.remove.marker"
+                    }
+                  ]
+                }
+              }
+            },
+            "ipConfiguration": {
+              "description": "Settings for IP configuration",
+              "pathMtuDiscoveryMode": {
+                "description": "Path MTU Discovery (PMTUD)",
+                "oneOf": [
+                  {
+                    "const": "disabled"
+                  },
+                  {
+                    "const": "icmp"
+                  },
+                  {
+                    "const": "tcp"
+                  }
+                ]
+              }
+            }
+          }
+        },
         "bridge": {
           "additionalProperties": false,
           "patternProperties": {
@@ -387,13 +487,13 @@
           "description": "Network bridge interfaces, e.g. bridge0",
           "type": "object"
         },
-        "ethernet": {
+        "dan": {
           "additionalProperties": false,
           "patternProperties": {
-            "^[A-Za-z0-9_-]+": {
+            "^[A-Za-z0-9._-]+$": {
               "oneOf": [
                 {
-                  "$ref": "#/definitions/connectivity.ethernet"
+                  "$ref": "#/definitions/connectivity.dan"
                 },
                 {
                   "$ref": "#/definitions/schema.remove.marker"
@@ -401,7 +501,7 @@
               ]
             }
           },
-          "description": "Ethernet interfaces, e.g. eth0",
+          "description": "Double Attached Node (DAN) interfaces, e.g. dan0",
           "type": "object"
         },
         "discoveryServices": {
@@ -444,6 +544,40 @@
             }
           }
         },
+        "ethernet": {
+          "additionalProperties": false,
+          "patternProperties": {
+            "^[A-Za-z0-9_-]+": {
+              "oneOf": [
+                {
+                  "$ref": "#/definitions/connectivity.ethernet"
+                },
+                {
+                  "$ref": "#/definitions/schema.remove.marker"
+                }
+              ]
+            }
+          },
+          "description": "Ethernet interfaces, e.g. eth0",
+          "type": "object"
+        },
+        "vlan": {
+          "additionalProperties": false,
+          "patternProperties": {
+            "^[A-Za-z0-9._-]+$": {
+              "oneOf": [
+                {
+                  "$ref": "#/definitions/connectivity.vlan"
+                },
+                {
+                  "$ref": "#/definitions/schema.remove.marker"
+                }
+              ]
+            }
+          },
+          "description": "VLAN interfaces, e.g. eth0.1",
+          "type": "object"
+        },
         "wifi": {
           "additionalProperties": false,
           "patternProperties": {
@@ -462,8 +596,36 @@
           "type": "object"
         }
       },
-      "title": "Connectivity settings of network interfaces",
+      "title": "Network interfaces and settings",
       "type": "object"
+    },
+    "connectivity.bandwidthPolicy": {
+      "title": "Bandwidth policy",
+      "description": "Bandwidth policy that can be assigned to one or more network interfaces",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "description": "The description of the bandwidth policy",
+          "type": "string"
+        },
+        "rateLimit": {
+          "description": "Rate limit in mbytes/s",
+          "type": "integer"
+        },
+        "burst": {
+          "description": "Burst in kbytes",
+          "type": "integer"
+        },
+        "interfaces": {
+          "description": "Array of interface names",
+          "items": {
+            "description": "Interface name",
+            "type": "string"
+          },
+          "type": "array"
+        }
+      }
     },
     "connectivity.bridge": {
       "additionalProperties": false,
@@ -504,6 +666,76 @@
       },
       "title": "Network bridge interface settings",
       "type": "object"
+    },
+    "connectivity.dan": {
+      "additionalProperties": false,
+      "properties": {
+        "dhcp": {
+          "$ref": "#/definitions/connectivity.itf.dhcp"
+        },
+        "dnsSuffixes": {
+          "$ref": "#/definitions/connectivity.itf.dnsSuffixes"
+        },
+        "enabled": {
+          "$ref": "#/definitions/connectivity.itf.enabled"
+        },
+        "interface1": {
+          "$ref": "#/definitions/connectivity.dan.interface1"
+        },
+        "interface2": {
+          "$ref": "#/definitions/connectivity.dan.interface2"
+        },
+        "ipForwardingEnabled": {
+          "$ref": "#/definitions/connectivity.itf.ipForwardingEnabled"
+        },
+        "ipv4": {
+          "$ref": "#/definitions/connectivity.itf.ipv4"
+        },
+        "ipv6": {
+          "$ref": "#/definitions/connectivity.itf.ipv6"
+        },
+        "mtu": {
+          "$ref": "#/definitions/connectivity.itf.mtu"
+        },
+        "protocol": {
+          "$ref": "#/definitions/connectivity.dan.protocol"
+        },
+        "routing": {
+          "$ref": "#/definitions/connectivity.itf.routing"
+        },
+        "security": {
+          "$ref": "#/definitions/connectivity.wired-security"
+        },
+        "useExternalSettings": {
+          "$ref": "#/definitions/connectivity.itf.useExternalSettings"
+        }
+      },
+      "title": "Double Attached Node (DAN) interface settings",
+      "type": "object"
+    },
+    "connectivity.dan.protocol": {
+      "description": "Protocol for the Double Attached Node (DAN). Either Parallel Redundancy Protocol (prp) or High-availability Seamless Redundancy protocol (hsrv0, hsrv1).",
+      "oneOf": [
+        {
+          "const": "prp"
+        },
+        {
+          "const": "hsrv0"
+        },
+        {
+          "const": "hsrv1"
+        }
+      ]
+    },
+    "connectivity.dan.interface1": {
+      "pattern": "^[A-Za-z0-9_-]+$",
+      "description": "First physical interface to be used for Double Attached Node (DAN) redundancy. Bridges, VLAN and Wifi interfaces may not be used.",
+      "type": "string"
+    },
+    "connectivity.dan.interface2": {
+      "pattern": "^[A-Za-z0-9_-]+$",
+      "description": "Second physical interface to be used for Double Attached Node (DAN) redundancy. Bridges, VLAN and Wifi interfaces may not be used.",
+      "type": "string"
     },
     "connectivity.wired-security": {
       "additionalProperties": false,
@@ -672,7 +904,7 @@
         },
         "routeMetric": {
           "description": "Default metric for automatically added routes",
-          "type": "number"
+          "type": "integer"
         },
         "useDns": {
           "description": "If true, get DNS servers from DHCP server.",
@@ -745,7 +977,7 @@
     "connectivity.itf.mtu": {
       "title": "Maximum Transmission Unit size",
       "description": "Value is used, when DHCP server does not provide MTU or when 'useMtu' is set to false. ctrlX restarts, if network interface is currently connected and MTU gets changed.",
-      "type": "number"
+      "type": "integer"
     },
     "connectivity.itf.ipv6": {
       "additionalProperties": false,
@@ -802,7 +1034,7 @@
         },
         "metric": {
           "description": "Metric, used by the router to make routing decisions",
-          "type": "number"
+          "type": "integer"
         }
       },
       "title": "Network route settings",
@@ -1114,6 +1346,85 @@
       "unevaluatedProperties": false,
       "type": "object"
     },
+    "connectivity.vlan": {
+      "additionalProperties": false,
+      "properties": {
+        "config": {
+          "$ref": "#/definitions/connectivity.vlan.config"
+        },
+        "dhcp": {
+          "$ref": "#/definitions/connectivity.itf.dhcp"
+        },
+        "dnsSuffixes": {
+          "$ref": "#/definitions/connectivity.itf.dnsSuffixes"
+        },
+        "enabled": {
+          "$ref": "#/definitions/connectivity.itf.enabled"
+        },
+        "ipForwardingEnabled": {
+          "$ref": "#/definitions/connectivity.itf.ipForwardingEnabled"
+        },
+        "ipv4": {
+          "$ref": "#/definitions/connectivity.itf.ipv4"
+        },
+        "ipv6": {
+          "$ref": "#/definitions/connectivity.itf.ipv6"
+        },
+        "mtu": {
+          "$ref": "#/definitions/connectivity.itf.mtu"
+        },
+        "parent": {
+          "$ref": "#/definitions/connectivity.vlan.parent"
+        },
+        "routing": {
+          "$ref": "#/definitions/connectivity.itf.routing"
+        },
+        "security": {
+          "$ref": "#/definitions/connectivity.wired-security"
+        },
+        "useExternalSettings": {
+          "$ref": "#/definitions/connectivity.itf.useExternalSettings"
+        },
+        "vlanId": {
+          "$ref": "#/definitions/connectivity.vlan.id"
+        }
+      },
+      "title": "VLAN interface settings",
+      "type": "object"
+    },
+    "connectivity.vlan.config": {
+      "additionalProperties": false,
+      "properties": {
+        "priority": {
+          "title": "Priority of sent (egress) or received (ingress) network data",
+          "oneOf": [
+            {
+              "const": "both",
+              "description": "(ingress and egress)"
+            },
+            {
+              "const": "egress"
+            },
+            {
+              "const": "ingress"
+            },
+            {
+              "const": "none"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "connectivity.vlan.id": {
+      "title": "ID of the VLAN interface (0..4094)",
+      "type": "integer"
+    },
+    "connectivity.vlan.parent": {
+      "pattern": "^[A-Za-z0-9_-]+$",
+      "title": "Parent network interface, e.g. eth0",
+      "type": "string"
+    },
     "connectivity.wifi": {
       "additionalProperties": false,
       "properties": {
@@ -1204,6 +1515,10 @@
           "description": "Description of the backup",
           "type": "string"
         },
+        "$forceReboot": {
+          "description": "If set to true, the device will be shutdown and reboot as last step of the restore activity",
+          "type": "boolean"
+        },
         "apps": {
           "$ref": "#/definitions/apps"
         },
@@ -1270,6 +1585,21 @@
           "description": "One of the timezones, e.g. Europe/Berlin",
           "title": "Timezone settings",
           "type": "string"
+        },
+        "ntpMinPollInterval": {
+          "description": "Minimum NTP poll interval in 2^x seconds. Only used if time synchronization is enabled. The poll interval is used to adjust the requests to the NTP servers according of the accuracy of the responses.",
+          "title": "Minimum NTP poll interval",
+          "type": "integer"
+        },
+        "ntpMaxPollInterval": {
+          "description": "Maximum NTP poll interval in 2^x seconds. Only used if time synchronization is enabled. The maximum value must be greater than 'ntpMinPollInterval'. The poll interval is used to adjust the requests to the NTP servers according of the accuracy of the responses.",
+          "title": "Maximum NTP poll interval",
+          "type": "integer"
+        },
+        "persistenceInterval": {
+          "description": "Interval in minutes to persist the current time",
+          "title": "Time persistence interval",
+          "type": "integer"
         }
       },
       "title": "Date time settings",
@@ -1517,6 +1847,10 @@
         "vendorId": {
           "title": "Vendor ID",
           "type": "integer"
+        },
+        "encryptedPassword": {
+          "description": "The encrypted password value, if the backup has been created using a password.",
+          "type": "string"
         }
       },
       "title": "Remote auth configuration",
@@ -1671,10 +2005,137 @@
           "items": {
             "$ref": "#/definitions/licenseManagement.capability"
           }
+        },
+        "clientSettings": {
+          "title": "Client settings of the license management to access remote license servers.",
+          "$ref": "#/definitions/licenseManagement.clientSettings"
+        },
+        "serverSettings": {
+          "title": "Server settings of the license management to provide licenses to others.",
+          "$ref": "#/definitions/licenseManagement.serverSettings"
+        },
+        "temporaryRightsOfUse": {
+          "title": "License checking can be suspended once, for e.g. urgent device replacement scenarios.",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "activated": {
+              "title": "true: temporaryRightsOfUse have been activated on this device.",
+              "type": "boolean"
+            },
+            "remaining": {
+              "title": "Remaining time in seconds until license checking is reactivated. A value of 0 indicates: license checking is reactivated.",
+              "type": "integer"
+            }
+          }
         }
       },
       "title": "license management information",
       "type": "object"
+    },
+    "licenseManagement.clientSettings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "serverEndpoint": {
+          "title": "Client settings of the license management to access remote license servers.",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "title": "Enables communicating to a configured floating license server.",
+              "type": "boolean"
+            },
+            "host": {
+              "title": "IP address or domain/host name of the floating license server to retrieve licenses from.",
+              "type": "string"
+            },
+            "port": {
+              "title": "IP port of the floating license server.",
+              "type": "integer"
+            },
+            "mtlsConfig": {
+              "$ref": "#/definitions/licenseManagement.mtlsConfig"
+            }
+          }
+        }
+      }
+    },
+    "licenseManagement.serverSettings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "activated": {
+          "title": "The activation state of the server. Note: Activation requires a server license. Setup ignores a non existing license.",
+          "type": "boolean"
+        },
+        "borrowInterval": {
+          "title": "The borrow interval (in seconds) determines the lifespan of the served licenses",
+          "type": "integer"
+        },
+        "renewalInterval": {
+          "title": "The renewal interval (in seconds) is used by clients to determine when to renew their licenses",
+          "type": "integer"
+        },
+        "clientAuthentication": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "enable": {
+              "title": "true: clients authenticate themselves; false: ctrlX OS clients are implicitly authenticated",
+              "type": "boolean"
+            },
+            "authScheme": {
+              "title": "Handling of incoming certificates sent by the client",
+              "oneOf": [
+                {
+                  "const": "MTLS_VERIFY_ALWAYS"
+                },
+                {
+                  "const": "MTLS_TRUST_AND_VERIFY_CA"
+                }
+              ]
+            },
+            "caFiles": {
+              "type": "array",
+              "title": "The list of CA certificates for verifying incoming client requests.",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "licenseManagement.mtlsConfig": {
+      "type": "object",
+      "title": "Client configuration to authenticate to the license server.",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "title": "Enables mutual TLS authentication of the client",
+          "type": "boolean"
+        },
+        "certificateSelector": {
+          "title": "DEVICE: default location of certificate and certificate key, see permanent/own/device.(crt|hsm); CUSTOM: licensing/own/(<certificate>|<key>)",
+          "oneOf": [
+            {
+              "const": "DEVICE"
+            },
+            {
+              "const": "CUSTOM"
+            }
+          ]
+        },
+        "certificate": {
+          "title": "certificate filename for CUSTOM: licensing/own/<certificate>",
+          "type": "string"
+        },
+        "key": {
+          "title": "key filename for CUSTOM: licensing/own/<key>",
+          "type": "string"
+        }
+      }
     },
     "licenseManagement.capability": {
       "additionalProperties": false,
@@ -1883,6 +2344,9 @@
     "system": {
       "additionalProperties": false,
       "properties": {
+        "backupDefaults": {
+          "$ref": "#/definitions/system.backupDefaults"
+        },
         "cpu": {
           "$ref": "#/definitions/system.cpu"
         },
@@ -1925,6 +2389,22 @@
           "type": "boolean"
         }
       }
+    },
+    "system.backupDefaults": {
+      "additionalProperties": false,
+      "properties": {
+        "password": {
+          "description": "The password can be used to set the default password for restore operations. The password can only be read as encrypted password.",
+          "title": "Default password for restore operations.",
+          "type": "string"
+        },
+        "encryptedPassword": {
+          "description": "The encrypted password allows exchanging the default password setting between devices.",
+          "type": "string"
+        }
+      },
+      "title": "backup default settings",
+      "type": "object"
     },
     "system.theming": {
       "additionalProperties": false,

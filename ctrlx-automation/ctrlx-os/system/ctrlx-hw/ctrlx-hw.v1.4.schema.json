@@ -13,7 +13,7 @@
         },
         "description": {
             "type": "string",
-            "title": "Long description of the hardware variant description",
+            "title": "Long descrition of the hardware variant description",
             "description": "Should contain information about the hardware variant(s) this description is valid for."
         },
         "watchdog": {

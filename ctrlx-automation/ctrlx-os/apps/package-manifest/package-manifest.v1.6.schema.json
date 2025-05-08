@@ -1,0 +1,1153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-os/apps/package-manifest/package-manifest.v1.schema.json",
+  "type": "object",
+  "title": "ctrlX OS Package Manifest",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "title": "Definition of schema",
+      "description": "Definition of schema, should point to a valid package-manifest schema definition, e.g.: https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-os/apps/package-manifest/package-manifest.v1.schema.json",
+      "default": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-os/apps/package-manifest/package-manifest.v1.schema.json"
+    },
+    "version": {
+      "type": "string",
+      "title": "Package manifest version",
+      "description": "Version of the package manifest.",
+      "examples": [
+        "1.0.0",
+        "2.1.0",
+        "1.2.10"
+      ],
+      "pattern": "^(\\d+\\.)(\\d+\\.)(\\d+)$"
+    },
+    "id": {
+      "type": "string",
+      "title": "Identifier of the package",
+      "description": "Unique identifier of the package. Must match the following RegEx: ^[0-9a-ZA-Z]. Must match the identifier defined in the snapcraft.yaml.",
+      "examples": [
+        "rexroth-solutions",
+        "rexroth-automation",
+        "rexroth-vpnmanager",
+        "ctrlx-node-red"
+      ]
+    },
+    "required": {
+      "type": "boolean",
+      "title": "App is required app for system and not removable",
+      "description": "Required marks an app as non-removable. This app isn't a system app by default but required for the functionality",
+      "examples": [
+        true,
+        false
+      ],
+      "default": false
+    },
+    "scopes-declaration": {
+      "$ref": "#/$defs/scopes-declaration"
+    },
+    "services": {
+      "$ref": "#/$defs/services"
+    },
+    "menus": {
+      "$ref": "#/$defs/menus"
+    },
+    "commands": {
+      "$ref": "#/$defs/commands"
+    },
+    "documentation": {
+      "$ref": "#/$defs/documentation"
+    },
+    "configuration": {
+      "$ref": "#/$defs/configuration"
+    },
+    "certificatestores": {
+      "type": "array",
+      "title": "List of certificate stores",
+      "description": "Certficate stores of your application",
+      "items": {
+        "$ref": "#/$defs/certificateStore"
+      }
+    },
+    "apps": {
+      "$ref": "#/$defs/apps"
+    },
+    "dependencies": {
+      "type": "object",
+      "additionalProperties": false,
+      "title": "App dependencies",
+      "summary": "Dependencies required by the app providing the package-manifest",
+      "properties": {
+        "dependsOn": {
+          "$ref": "#/$defs/dependencies"
+        }
+      }
+    },
+    "licenses": {
+      "$ref": "#/$defs/licenses"
+    },
+    "uiExtensions": {
+      "$ref": "#/$defs/uiExtensions"
+    }
+  },
+  "$defs": {
+    "i18nTag": {
+      "type": "string",
+      "title": "i18n Tag",
+      "pattern": "^(.*)$",
+      "description": "can be used to supply translations of properties of the object this tag is applied to. The defined tag value must be unique in the scope of the package-manifest."
+    },
+    "services": {
+      "type": "object",
+      "additionalProperties": false,
+      "title": "Services",
+      "description": "Services contains a set of services a package is providing",
+      "properties": {
+        "proxyMapping": {
+          "type": "array",
+          "title": "Proxy mappings",
+          "description": "Proxy mappings are used by the reverse proxy to assign specific routes to a server running on a device.",
+          "items": {
+            "$ref": "#/$defs/proxyMapping"
+          }
+        }
+      }
+    },
+    "scopes-declaration": {
+      "type": "array",
+      "title": "Scopes provided by the package",
+      "description": "Scopes used in the application to control access to specific ressources. The scope declaration is used by the identity management (IDM) to assign permissions for specific users or groups.",
+      "items": {
+        "$ref": "#/$defs/setOfScopes"
+      }
+    },
+    "menus": {
+      "type": "object",
+      "additionalProperties": false,
+      "title": "Menus",
+      "description": "Menus and links a package provides. The declarations will be used by the device admin to generate the corresponding entries in the sidebar or overview.",
+      "properties": {
+        "sidebar": {
+          "type": "array",
+          "title": "Sidebar Menu",
+          "items": {
+            "$ref": "#/$defs/entries"
+          }
+        },
+        "settings": {
+          "type": "array",
+          "title": "Settings Menu",
+          "items": {
+            "$ref": "#/$defs/entries"
+          }
+        },
+        "overview": {
+          "type": "array",
+          "title": "Overview",
+          "items": {
+            "$ref": "#/$defs/entries"
+          }
+        },
+        "system": {
+          "type": "array",
+          "title": "System Menu",
+          "items": {
+            "$ref": "#/$defs/entries"
+          }
+        }
+      }
+    },
+    "entries": {
+      "description": "A navigation entry point of the package",
+      "type": "object",
+      "additionalProperties": false,
+      "title": "Link",
+      "oneOf": [
+        {
+          "required": [
+            "id",
+            "title",
+            "items"
+          ]
+        }
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "title": "Sublinks",
+          "description": "Sub entries of the entry point",
+          "items": {
+            "$ref": "#/$defs/entries"
+          }
+        },
+        "link": {
+          "type": "string",
+          "title": "Link to the ressource. The link includes the prefix of the service",
+          "description": "Relative path of the link",
+          "examples": [
+            "/my-app",
+            "/my-app?access_token=${bearertoken}",
+            "http://${hostname}:1234/",
+            "https://www.google.com/"
+          ]
+        },
+        "target": {
+          "type": "string",
+          "title": "Target",
+          "description": "Specifies where to show the link. Identical to the target property of an anchor element.",
+          "examples": [
+            "_blank",
+            "my-app"
+          ]
+        },
+        "id": {
+          "description": "Identifier of the link. Used to define menu orders.",
+          "type": "string",
+          "title": "Id",
+          "examples": [
+            "my-app"
+          ]
+        },
+        "title": {
+          "description": "The text representation of the entry point",
+          "type": "string",
+          "title": "Title",
+          "examples": [
+            "My App"
+          ]
+        },
+        "description": {
+          "description": "The description of the entry point",
+          "type": "string",
+          "title": "Description",
+          "examples": [
+            "My App providing cool features"
+          ]
+        },
+        "icon": {
+          "description": "An optional icon, see... to represent the entry point",
+          "type": "string",
+          "title": "Icon",
+          "examples": [
+            "bosch-ic-automation"
+          ]
+        },
+        "category": {
+          "description": "The category the entry point belongs to",
+          "type": "string",
+          "title": "Category",
+          "examples": [
+            "0_my_apps"
+          ]
+        },
+        "permissions": {
+          "description": "An optional list of permissions to enable the entry point",
+          "type": "array",
+          "title": "Permissions",
+          "items": {
+            "type": "string",
+            "title": "Permission",
+            "examples": [
+              "my-app.r",
+              "my-app.rw",
+              "my-app.cool-feature.r",
+              "my-app.cool-feature.rw"
+            ],
+            "pattern": "^(.*)$"
+          }
+        },
+        "i18n": {
+          "$ref": "#/$defs/i18nTag"
+        }
+      }
+    },
+    "commands": {
+      "type": "object",
+      "title": "Commands",
+      "description": "Allows to specify commands that integrate into framework operations, e.g. for activeConfiguration. The sub-elements define the scopes that support command integration.",
+      "properties": {},
+      "additionalProperties": {
+        "$ref": "#/$defs/commandScope"
+      }
+    },
+    "commandScope": {
+      "title": "Command Scope",
+      "description": "A command scope containing multiple commands.",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/command"
+      }
+    },
+    "command": {
+      "title": "Command",
+      "description": "A command that is provided and can be executed by another application. A command can have multiple command requests, e.g. to execute the command on multiple services.",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/commandRequest"
+      }
+    },
+    "commandRequest": {
+      "title": "Command",
+      "description": "A command object.",
+      "type": "object",
+      "required": [
+        "id",
+        "subject"
+      ],
+      "properties": {
+        "id": {
+          "title": "Id",
+          "description": "The identifier of this command; must be unique within the enclosing scope.",
+          "type": "string",
+          "examples": [
+            "motion"
+          ]
+        },
+        "subject": {
+          "title": "Subject",
+          "description": "Denotes what will be saved or loaded; used to inform users, e.g. in messages like 'Loading motion settings' or 'Cannot load motion settings'",
+          "type": "string",
+          "examples": [
+            "motion settings"
+          ]
+        },
+        "after": {
+          "type": "array",
+          "description": "Defines a list of command identifiers whose commands if present will always be executed before this command.",
+          "items": {
+            "type": "string"
+          },
+          "examples": [
+            "scheduler",
+            "trace"
+          ]
+        },
+        "url": {
+          "title": "URL",
+          "description": "The request URL. Called as a POST request. URLs starting with a slash are interpreted to be relative to https://<host>. The execution and url elements are mutually exclusive, that is exactly one of them is required.",
+          "type": "string",
+          "examples": [
+            "/automation/api/v1/motion/cfg/save"
+          ]
+        },
+        "execution": {
+          "title": "Execution",
+          "description": "The execution element is deprecated. Use url element instead.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "url"
+          ],
+          "properties": {
+            "method": {
+              "title": "HTTP method",
+              "description": "The HTTP method called for executing this command; one of 'POST' and 'PUT'; the default is 'POST'.",
+              "type": "string",
+              "enum": [
+                "PUT",
+                "POST"
+              ],
+              "examples": [
+                "POST"
+              ],
+              "default": "POST"
+            },
+            "url": {
+              "title": "URL",
+              "description": "The URL used for executing this command",
+              "type": "string",
+              "examples": [
+                "/automation/api/v1/motion/cfg/save"
+              ]
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "setOfScopes": {
+      "type": "object",
+      "additionalProperties": false,
+      "title": "Set of scopes",
+      "description": "A set of scopes declares the scopes which are supported by the web service. The set includes identifer, name, a human-readable description and one or more scopes.",
+      "properties": {
+        "identifier": {
+          "type": "string",
+          "title": "The identifier of the scope set",
+          "description": "The unique identifier of the permission set. Must be derived from the identifier and must not contain spaces. Must be unique.",
+          "examples": [
+            "my-app.web"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "title": "The name of the scope set",
+          "description": "The name of the scope set. Should be unique. Used by the identity management frontend to display the scope set.",
+          "examples": [
+            "My App Scopes"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "title": "Description of the scope set",
+          "description": "The description of the scope set. Used by the identity management frontend to describe the scope set."
+        },
+        "scopes": {
+          "type": "array",
+          "title": "Array of scopes",
+          "description": "Array of scopes. Each scope describes a specific permission for one or more web server resources, e.g. write to a resource using HTTP PUT",
+          "items": {
+            "$ref": "#/$defs/scope"
+          }
+        },
+        "i18n": {
+          "$ref": "#/$defs/i18nTag"
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "title": "Web server scope",
+      "description": "A scope represents a web service resource specific permission and consists of an identifier, a name and a human-readable description.",
+      "properties": {
+        "identifier": {
+          "type": "string",
+          "title": "The identifier of the scope",
+          "description": "The unique identifier of the scope. Must be derived from the id and follow the schema <id>.<service>.<scope_name>.<access_type>",
+          "examples": [
+            "my-app.cool-feature.rw (allow read/write access to all resources",
+            "my-app.cool-feature.r (allow access to all resources on a read-only basis)"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "title": "The name of the scope",
+          "description": "The name of the scope set. Should be unique. Used by the identity management frontend to display the scope. Should describe the what the permission means.",
+          "examples": [
+            "Read/write access (all parameters)",
+            "Read access (all parameters)",
+            "Read access (motion parameters)"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "title": "Description of the scope",
+          "description": "The description of the scope. Used by the identity management frontend to describe the scope set.",
+          "examples": [
+            "This permissions allows to read and modify all automation parameters",
+            "This permissions allows to read all automation parameters",
+            "This permissions allows to read all motion parameters"
+          ]
+        },
+        "i18n": {
+          "$ref": "#/$defs/i18nTag"
+        },
+        "requiredScopes": {
+          "type": "array",
+          "title": "Array of required scopes",
+          "description": "Array of the scopes that might be required in addition to this scope in order to perform a specific action.",
+          "items": {
+            "$ref": "#/$defs/requiredScope"
+          }
+        },
+        "deprecated": {
+          "type": "boolean",
+          "title": "Deprecated scope",
+          "description": "Indicates if the scope is deprecated and discouraged for future use.",
+          "example": false
+        }
+      }
+    },
+    "requiredScope": {
+      "type": "object",
+      "title": "The required scope",
+      "description": "The scope which might be required by another scope in order to perform a specific action.",
+      "properties": {
+        "identifier": {
+          "type": "string",
+          "title": "identifier",
+          "description": "The identifier of the requried scope",
+          "examples": "other-app.required-scope.rw"
+        }
+      }
+    },
+    "proxyMapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "title": "ProxyMapping",
+      "description": "ProxyMapping defines a web service mappings. A service has a name for identification, a relative path where it should be reachable and a socket (network or unix) to bind to",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Name",
+          "description": "A Name for the mapping",
+          "examples": [
+            "my-app.web"
+          ]
+        },
+        "url": {
+          "type": "string",
+          "title": "Url",
+          "description": "Relative path the service is requesting",
+          "examples": [
+            "/my-app"
+          ]
+        },
+        "binding": {
+          "type": "string",
+          "title": "Binding",
+          "description": "A network socket, e.g. :5000 or unix socket e.g. unix://{$SNAP_DATA}/package-run/my-app.web.sock",
+          "examples": [
+            ":5000",
+            "http://localhost:5000",
+            "unix://{$SNAP_DATA}/package-run/my-app.web.sock"
+          ]
+        },
+        "caddyfile": {
+          "type": "string",
+          "title": "Customized caddy file",
+          "description": "Path to customized caddy file, which should be included in the original caddy file",
+          "examples": [
+            "./caddyfile"
+          ]
+        },
+        "options": {
+          "type": "array",
+          "title": "Additional options",
+          "description": "Additional options of the proxy configuration",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "option": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            }
+          },
+          "examples": [
+            {
+              "option": "websocket",
+              "value": ""
+            },
+            {
+              "option": "max_conns",
+              "value": "2"
+            }
+          ]
+        },
+        "restricted": {
+          "type": "array",
+          "title": "Restricted resources",
+          "description": "Resources, to which the access shall be restricted, e.g. API URLs",
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "description": "Path, to which the access shall be restricted"
+                  },
+                  "except": {
+                    "type": "array",
+                    "description": "Excepted subpaths, to which the access is not restricted",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "headersForwarding": {
+                    "type": "array",
+                    "description": "Headers, which are created by idmconnector and forwarded to endpoint",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "path"
+                ]
+              },
+              {
+                "type": "string",
+                "description": "Path, which is restricted by identity manager"
+              }
+            ]
+          },
+          "examples": [
+            "/my-app-1/api/v1.0",
+            {
+              "path": "/my-app-2/api/v1.0",
+              "except": [
+                "/my-app-2/api/v1.0/except-path-1",
+                "/my-app-2/api/v1.0/except-path-2"
+              ],
+              "headersForwarding": [
+                "X-Auth-Name",
+                "X-Auth-ID",
+                "X-Auth-Scopes",
+                "X-Auth-Expires",
+                "X-Auth-Issued",
+                "X-Auth-PlcHandle",
+                "X-Auth-RemoteAuth",
+                "X-Auth-Nonce"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "documentation": {
+      "type": "array",
+      "title": "Documentation",
+      "description": "Contains documents like API references, e.g.",
+      "items": {
+        "$ref": "#/$defs/document"
+      }
+    },
+    "document": {
+      "type": "object",
+      "additionalProperties": false,
+      "title": "Document",
+      "description": "Specifies a reference to a document",
+      "properties": {
+        "type": {
+          "type": "string",
+          "title": "Type of the document",
+          "description": "Type of the document. Can be used for assignment purposes, e.g.",
+          "enum": [
+            "api"
+          ],
+          "examples": [
+            "api"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "title": "Name of the document",
+          "description": "Name or title of the document. Can be used in headlines, e.g.",
+          "examples": [
+            "My-App API"
+          ]
+        },
+        "url": {
+          "type": "string",
+          "title": "URL of the document",
+          "description": "Specifies the path to the document resource.",
+          "examples": [
+            "/my-app/doc/api"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "title": "Description of the document",
+          "description": "Short description of the content of the document.",
+          "examples": [
+            "Provides my-app related functionalities on ctrlX devices."
+          ]
+        },
+        "i18n": {
+          "$ref": "#/$defs/i18nTag"
+        }
+      }
+    },
+    "configuration": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Configuration topics",
+      "properties": {
+        "appDirectories": {
+          "type": "array",
+          "description": "Describes app directories and specifies access to them inside the configuration",
+          "items": {
+            "$ref": "#/$defs/appDirectory"
+          }
+        },
+        "appPrivateFiles": {
+          "type": "array",
+          "description": "Defines files which are ignored on saving and loading. The files are matched case-insensitively using regular expressions. Since XCR-V-0112.",
+          "items": {
+            "type": "string",
+            "title": "Regular expression",
+            "description": "A regular expression following the RE2 syntax (https://golang.org/s/re2syntax)",
+            "examples": [
+              "^my-app/[^/]+\\.bak$",
+              "^my-app/tmp/",
+              "^my-app/tmp"
+            ]
+          }
+        }
+      }
+    },
+    "appDirectory": {
+      "type": "object",
+      "additionalProperties": false,
+      "title": "App directory",
+      "description": "Describes an app configuration directory stored as part of a configuration.",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Path of the app directory in the configuration",
+          "description": "Path of the app directory. Subdirectories are separated with /, no leading or trailing /",
+          "examples": [
+            "my-app",
+            "my-app/cool-feature"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "title": "Title",
+          "description": "Short description of the content of the directory. Will be displayed as part of a configuration.",
+          "examples": [
+            "My app",
+            "My cool feature"
+          ]
+        },
+        "icon": {
+          "type": "string",
+          "title": "Icon",
+          "description": "An optional icon which represents the app.",
+          "examples": [
+            "my-icon"
+          ]
+        },
+        "copyOnLoad": {
+          "type": "boolean",
+          "title": "Copy on load",
+          "description": "An app is responsible for persisting its configuration state to the app data folder, even for the load command. With copyOnLoad, the app is able to delegate this task to the Solutions app.",
+          "examples": [
+            true,
+            false
+          ],
+          "default": false
+        },
+        "writeProtected": {
+          "type": "boolean",
+          "title": "Write-protection of app directories",
+          "description": "An app can protect its directories in the active configuration against write-access, e.g. via WebDAV. Since XCR-V-0112.",
+          "examples": [
+            true,
+            false
+          ],
+          "default": true
+        },
+        "scopes": {
+          "type": "array",
+          "title": "Array of scopes",
+          "description": "Array of scopes. Each scope describes a specific permission for one or more web server resources, e.g. write to a resource using HTTP PUT",
+          "items": {
+            "$ref": "#/$defs/scope"
+          }
+        },
+        "i18n": {
+          "$ref": "#/$defs/i18nTag"
+        }
+      }
+    },
+    "certificateStore": {
+      "type": "object",
+      "title": "Store for Certificates and Keys",
+      "description": "certificate store enables your application to manage certificates and keys using Device Admin",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "Id of your store",
+          "description": "Id of your store, should contain snap name as prefix, e.g. ctrlx-helloworld.certificates",
+          "example": "ctrlx-helloworld.certificates"
+        },
+        "title": {
+          "type": "string",
+          "title": "Title of certificate store",
+          "description": "Title of your certificate store that is displayed in ctrlX Device Admin UI",
+          "example": "Hello World"
+        },
+        "description": {
+          "type": "string",
+          "title": "Description of your certificate store",
+          "description": "Describes the content and usage of the certificates in the store",
+          "example": "Certficates & Keys to connect to the World"
+        },
+        "scopesR": {
+          "type": "array",
+          "title": "Scopes for viewing the certificate store",
+          "description": "A list of scopes that allow the user to have read access to this certificate store",
+          "items": {
+            "type": "string",
+            "title": "Permission",
+            "examples": [
+              "my-app.r",
+              "my-app.cool-feature.r"
+            ],
+            "pattern": "^(.*)$"
+          }
+        },
+        "scopesRWX": {
+          "type": "array",
+          "title": "Scopes for managing the certificate store",
+          "description": "A list of scopes that allow the user to have full access to this certificate store",
+          "items": {
+            "type": "string",
+            "title": "Permission",
+            "examples": [
+              "my-app.rw",
+              "my-app.cool-feature.rw"
+            ],
+            "pattern": "^(.*)$"
+          }
+        },
+        "i18n": {
+          "$ref": "#/$defs/i18nTag"
+        }
+      }
+    },
+    "apps": {
+      "type": "object",
+      "title": "Configurations for specific rexroth apps",
+      "description": "Contains configurations for specific rexroth apps",
+      "additionalProperties": false,
+      "properties": {
+        "rexroth-remoteagent": {
+          "$ref": "#/$defs/rexroth-remoteagent"
+        },
+        "rexroth-setup": {
+          "$ref": "#/$defs/rexroth-setup"
+        }
+      }
+    },
+    "rexroth-remoteagent": {
+      "type": "object",
+      "title": "Commands for remote device administration",
+      "description": "Contains allowed commands for remote device administration",
+      "additionalProperties": false,
+      "properties": {
+        "commands": {
+          "type": "array",
+          "title": "Remote device administration commands",
+          "description": "Remote device administration commands are used to execute commands on the device from the Nexeed Device Portal",
+          "items": {
+            "type": "string"
+          },
+          "examples": [
+            [
+              "BACKUP",
+              "RESTORE",
+              "REBOOT"
+            ]
+          ]
+        }
+      }
+    },
+    "rexroth-setup": {
+      "type": "object",
+      "description": "Provides information for ctrlX Setup regarding the current app, e.g. settings to be saved and restored.",
+      "properties": {
+        "settings": {
+          "type": "array",
+          "description": "App settings to be saved and restored by ctrlX Setup",
+          "items": {
+            "$ref": "#/$defs/setupSetting"
+          }
+        }
+      }
+    },
+    "setupSetting": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the setting. Must be unique within the app's settings list. Serves as key in the ctrlx-setup.json file. Required for all types except 'snapshot'. Note that the name '$path' is reserved.",
+          "example": "myAppSetting"
+        },
+        "description": {
+          "type": "string",
+          "description": "Short localized description of the setting.",
+          "example": "Description of myAppSetting"
+        },
+        "url": {
+          "type": "string",
+          "description": "URL used to read (GET) and update (PUT) the setting. A URL starting with a slash is interpreted to be relative to https: //<host>. Required for all types except 'snapshot'.",
+          "example": "/myapp/api/v1/my-app-setting"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of the setting. One of 'text', 'json', 'file', 'encryptedFile' and 'snapshot'. The default is 'text'.",
+          "enum": [
+            "text",
+            "json",
+            "file",
+            "encryptedFile",
+            "snapshot"
+          ],
+          "example": "json"
+        }
+      }
+    },
+    "dependencies": {
+      "type": "object",
+      "additionalProperties": false,
+      "title": "Map containing dependencies of the app",
+      "description": "Defines all dependencies of the app. The map key is the unique app id. Only direct dependencies should be modeled here.",
+      "patternProperties": {
+        "^[a-z0-9-]*[a-z][a-z0-9-]*$": {
+          "type": "string",
+          "title": "Version range defined as string",
+          "description": "Definition of the version range using npmjs syntax, see https://semver.npmjs.com/ for more details."
+        }
+      }
+    },
+    "license": {
+      "type": "object",
+      "additionalProperties": false,
+      "title": "",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "Identifier of the license",
+          "examples": [
+            "SWL_XCR_ENGINEERING_4H"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "title": "Human readable title of the firewall",
+          "examples": [
+            "ctrlX OS - Firewall License"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "title": "Description of the license",
+          "examples": [
+            "Unlock the firewall functionality"
+          ]
+        },
+        "required": {
+          "type": "boolean",
+          "title": "Indicates if an licenses is required to operate the application or unlocks optional functionalities",
+          "examples": [
+            true
+          ]
+        },
+        "i18n": {
+          "$ref": "#/$defs/i18nTag"
+        }
+      }
+    },
+    "licenses": {
+      "type": "array",
+      "title": "Contains license informations for specific rexroth apps",
+      "description": "Licenses are used to control the functionality of the package. Missing licenses results in no or not full availibility",
+      "items": {
+        "$ref": "#/$defs/license"
+      }
+    },
+    "uiExtensions": {
+      "type": "object",
+      "title": "Contains ui extensions for the home screen",
+      "additionalProperties": false,
+      "description": "",
+      "properties": {
+        "header": {
+          "$ref": "#/$defs/uiExtensionHeaderItems"
+        },
+        "dashboard": {
+          "$ref": "#/$defs/uiExtensionDashboardItems"
+        }
+      }
+    },
+    "uiExtensionHeaderItems": {
+      "type": "array",
+      "title": "Header items",
+      "description": "Web components that should be displayed in the global header.",
+      "items": {
+        "$ref": "#/$defs/uiExtensionHeaderItem"
+      }
+    },
+    "uiExtensionHeaderItem": {
+      "type": "object",
+      "title": "",
+      "additionalProperties": false,
+      "description": "",
+      "properties": {
+        "order": {
+          "type": "integer",
+          "title": "Order",
+          "description": "Order of the item in the header. Lower numbers are displayed first.",
+          "examples": [
+            1,
+            2,
+            3
+          ]
+        },
+        "src": {
+          "type": "string",
+          "title": "Source",
+          "description": "The url of the web component's implementation file.",
+          "examples": [
+            "widgets.js"
+          ]
+        },
+        "tag": {
+          "type": "string",
+          "title": "Tag",
+          "description": "The tag name that creates a new instance of the web component.",
+          "examples": [
+            "my-widget"
+          ]
+        }
+      }
+    },
+    "uiExtensionDashboardItems": {
+      "type": "array",
+      "title": "Dashboard items",
+      "description": "Web components that should be displayed in the dashboard.",
+      "items": {
+        "$ref": "#/$defs/dashboardWidgetExtension"
+      }
+    },
+    "dashboardWidgetExtension": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "order": {
+          "type": "integer",
+          "title": "Order",
+          "description": "Order of the item in the header. Lower numbers are displayed first.",
+          "examples": [
+            1,
+            2,
+            3
+          ]
+        },
+        "src": {
+          "type": "string",
+          "title": "Source",
+          "description": "The url of the web component's implementation file.",
+          "examples": [
+            "widgets.js"
+          ]
+        },
+        "tag": {
+          "type": "string",
+          "title": "Tag",
+          "description": "The tag name that creates a new instance of the web component.",
+          "examples": [
+            "my-widget"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "description": "The widget's title as shown in the widget catalog.",
+          "example": "Axes",
+          "readOnly": true
+        },
+        "description": {
+          "type": "string",
+          "description": "The widget's description as shown in the widget catalog.",
+          "example": "Shows the status of your axes",
+          "readOnly": true
+        },
+        "icon": {
+          "type": "string",
+          "description": "The icon to be displayed in the widget catalog.",
+          "example": "Bosch-Ic-settings",
+          "readOnly": true
+        },
+        "image": {
+          "type": "string",
+          "description": "The path to the image to be displayed in the widget catalog.",
+          "example": "/motion/axes.svg",
+          "readOnly": true
+        },
+        "initialSize": {
+          "description": "The widget's initial grid size",
+          "$ref": "#/$defs/dashboardWidgetSize"
+        },
+        "minSize": {
+          "description": "The widget's minimum grid size",
+          "$ref": "#/$defs/dashboardWidgetSize"
+        },
+        "maxSize": {
+          "description": "The widget's maximum grid size",
+          "$ref": "#/$defs/dashboardWidgetSize"
+        },
+        "permissions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of permissions to view or interact with the widget.",
+          "example": [
+            "rexroth-deviceadmin.package-manager.r",
+            "rexroth-deviceadmin.package-manager.rw"
+          ],
+          "readOnly": true
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of categories the widget is displayed",
+          "example": [
+            "System",
+            "Other Category"
+          ]
+        },
+        "i18n": {
+          "$ref": "#/$defs/i18nTag"
+        },
+        "settingsTag": {
+          "type": "string",
+          "description": "The tag name that creates a new instance of the web component for the settings.",
+          "example": "my-widget-settings",
+          "readOnly": true
+        },
+        "initialConfig": {
+          "$ref": "#/$defs/initialConfigTag"
+        }
+      }
+    },
+    "dashboardWidgetSize": {
+      "type": "object",
+      "properties": {
+        "cols": {
+          "type": "number",
+          "description": "Number of columns in the dashboard grid.",
+          "example": 3,
+          "readOnly": true
+        },
+        "rows": {
+          "type": "number",
+          "description": "Number of rows in the dashboard grid.",
+          "example": 3,
+          "readOnly": true
+        }
+      }
+    },
+    "initialConfigTag": {
+      "type": "object",
+      "readOnly": true,
+      "additionalProperties": false,
+      "properties": {
+        "specificConfig": {
+          "$ref": "#/$defs/specificConfigTag"
+        }
+      }
+    },
+    "specificConfigTag": {
+      "type": "object",
+      "additionalProperties": true,
+      "readOnly": true,
+      "description": "The specific configuration of the widget. The content is defined by the widget developer."
+    }
+  }
+}

@@ -7,7 +7,7 @@
     "ports": [
       {
         "number": 0,
-        "purpose": "Describe clearly for what purpose you need the going in port, e.g. `A local MQTT broker is used for communication between the App and an external Snaps on the ctrlX OS. Running on localhost only. It shall not be visible externally.`",
+        "purpose": "Describe clearly for what purpose you need the going in port, e.g. `A local MQTT broker is used for communicaiton between the App and an external Snaps on the ctrlX. Running on localhost only. It shall not be visible externally.`",
         "application-protocol": "MQTT",
         "binding": "localhost",
         "routing": "external",

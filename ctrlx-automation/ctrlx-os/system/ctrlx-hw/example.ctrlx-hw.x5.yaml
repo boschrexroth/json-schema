@@ -2,7 +2,7 @@
 # rexroth hardware description
 meta:
   id: hardware-variant-description
-  specification: '1.3'
+  specification: '1.4'
 name: ctrlX X5 hardware definition
 description: |
   ctrlX CORE X5 -- future-proof automation
@@ -16,6 +16,16 @@ watchdog:
   identity: ctrlx-watchdog
 match:
   - hardware-revision-0: cx_x5p_a
+volumes:
+  image-update:
+    schema: gpt
+    structure:
+      - name: IMAGEUPDATE
+        filesystem: vfat
+        type: 0C
+        content:
+          - source: rescue/EFI/boot/bootx64.efi
+            target: EFI/boot/bootx64.efi
 actions:
   fpga-update:
     command: |
@@ -28,10 +38,3 @@ actions:
       updater -pcfile __PCFWL__
     post-actions:
       - reboot ctrlx-pwrcontroller-reset
-
-  prepare-update:
-    input:
-      - target
-    command:
-      flash-rescue ${target}
-    type: on-demand

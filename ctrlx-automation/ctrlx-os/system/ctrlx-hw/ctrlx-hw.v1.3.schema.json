@@ -25,6 +25,12 @@
         "match": {
             "$ref": "#/$defs/Match"
         },
+        "partitions": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/Partition"
+            }
+        },
         "actions": {
             "type": "object",
             "additionalProperties": {
@@ -106,8 +112,7 @@
                             "type": "string",
                             "enum": [
                                 "file",
-                                "i2c",
-                                "smbios"
+                                "i2c"
                             ],
                             "default": "file"
                         },
@@ -127,6 +132,24 @@
                 "type": "object",
                 "additionalProperties": {
                     "type": "string"
+                }
+            }
+        },
+        "Partition": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "title": "Display name of the partition"
+                },
+                "location": {
+                    "type": "string",
+                    "title": "Path to the partition"
+                },
+                "filesystem-label": {
+                    "type": "string",
+                    "title": "Filesystem partition label"
                 }
             }
         },

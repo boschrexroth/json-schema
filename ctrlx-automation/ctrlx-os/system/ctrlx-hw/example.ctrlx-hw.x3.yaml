@@ -1,8 +1,8 @@
 # yaml-language-server: $schema=./ctrlx-hw.v1.schema.json
 # rexroth hardware description
 meta:
- id: hardware-variant-description
- specification: '1.3'
+  id: hardware-variant-description
+  specification: '1.4'
 name: ctrlX X3 Hardware Description
 description: |
   ctrlX X3 -- control hardware within budget
@@ -22,10 +22,15 @@ typeplate:
   hardware-revision-0: /sys/firmware/devicetree/base/rexroth,hardware-revision
 watchdog:
   identity: ctrlx-watchdog
-actions:
-  prepare-update:
-    input:
-      - target
-    command:
-      flash-rescue ${target}
-    type: on-demand
+volumes:
+  image-update:
+    schema: mbr
+    structure:
+      - name: IMAGEUPDATE
+        filesystem: vfat
+        type: 0C
+        content:
+          - source: rescue/rescue.itb
+            target: rescue.itb
+          - source: rescue/boot
+            target: boot
