@@ -1,156 +1,308 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema",
     "$id": "https://json-schema.boschrexroth.com/ctrlx-automation/ctrlx-os/apps/fossinfo/fossinfo.v1.schema.json",
-    "anyOf": [
-        {
-            "$ref": "#/$defs/component"
-        },
-        {
-            "$ref": "#/$defs/components"
-        }
-    ],
-    "$defs": {
-        "components": {
-            "description": "root element of fossinfo.json files",
-            "type": "object",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$ref": "#/definitions/components",
+    "definitions": {
+        "component": {
+            "additionalProperties": false,
             "properties": {
-                "$schema": {
-                    "title": "Link to fossinfo schema",
-                    "description": "The fossinfo file of an app is used to extend open source component list of the control. HINT: The fossinfo file is expected at: package-assets/<package-name>/<package-name>.fossinfo.json. IMPORTANT compatibility issue: In controls with app.deviceadmin <= 1.8, the final fossinfo file must only contain the components array as root element.",
+                "copyright": {
+                    "$ref": "#/definitions/copyright"
+                },
+                "cpe": {
+                    "description": "The cpe contains the common platform enumeration of the component. You may alternatively use a purl. See: https://cpe.mitre.org/ and https://nvd.nist.gov/products. Remark: Open source components with IntegrationMechanism npm or go and undefined purl or cpe will get a default purl.",
                     "type": "string"
                 },
-                "components": {
+                "fulfilled": {
+                    "description": "The list of fulfilled obligations",
                     "type": "array",
-                    "title": "List of OSS components",
-                    "description": "IMPORTANT compatibility issue: In controls with app.deviceadmin <= 1.8, the final fossinfo file must only contain this array.",
                     "items": {
-                        "$ref": "#/$defs/component"
+                        "$ref": "#/definitions/obligation"
                     }
-                }
-            },
-            "required": [
-                "components"
-            ],
-            "additionalProperties": false
-        },
-        "component": {
-            "type": "object",
-            "summary": "The OSS component",
-            "properties": {
-                "$schema": {
-                    "type": "string",
-                    "description": "Reference to the json schema in use."
                 },
-                "name": {
-                    "type": "string",
-                    "title": "OSS component name",
-                    "description": "Hint: Must not contain leading and trailing whitespaces",
-                    "pattern": "^\\S.*\\S$"
-                },
-                "version": {
-                    "type": "string",
-                    "title": "OSS component version",
-                    "description": "If a version isn't available, use the date of the download. Hint: Must not contain leading and trailing whitespaces",
-                    "pattern": "^\\S.*\\S$"
+                "unconfirmed": {
+                    "description": "The list of unconfirmed obligations",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/obligation"
+                    }
                 },
                 "homepage": {
-                    "type": "string",
-                    "title": "OSS component homepage",
                     "description": "Hint: Must not contain leading and trailing whitespaces",
-                    "pattern": "^\\S.*\\S$"
-                },
-                "copyright": {
-                    "$ref": "#/$defs/copyright"
-                },
-                "licenses": {
-                    "title": "OSS component licenses",
-                    "description": "At least one license is required.",
-                    "type": "array",
-                    "minLength": 1,
-                    "items": {
-                        "$ref": "#/$defs/license"
-                    }
-                },
-                "usages": {
-                    "title": "OSS component usages",
-                    "description": "If multiple usage forms have been applied.",
-                    "type": "array",
-                    "items": {
-                        "usage": {
-                            "$ref": "#/$defs/usage"
-                        },
-                        "integrationMechanism": {
-                            "$ref": "#/$defs/integrationMechanism"
-                        }
-                    }
-                },
-                "usage": {
-                    "$ref": "#/$defs/usage"
+                    "pattern": "^\\S.*\\S$",
+                    "title": "OSS component homepage",
+                    "type": "string"
                 },
                 "integrationMechanism": {
-                    "$ref": "#/$defs/integrationMechanism"
+                    "$ref": "#/definitions/integrationMechanism"
+                },
+                "licenses": {
+                    "description": "At least one license is required.",
+                    "items": {
+                        "$ref": "#/definitions/license"
+                    },
+                    "minLength": 1,
+                    "title": "OSS component licenses",
+                    "type": "array"
+                },
+                "mergedFrom": {
+                    "description": "The fossinfo filename where the component comes from",
+                    "type": "string"
+                },
+                "purl": {
+                    "description": "The purl contains the official package URL of the component. See: https://github.com/package-url/purl-spec You may alternatively use the cpe. Remark: Open source components with IntegrationMechanism npm or go and undefined purl or cpe will get a default purl.",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Hint: Must not contain leading and trailing whitespaces",
+                    "pattern": "^\\S.*\\S$",
+                    "title": "OSS component name",
+                    "type": "string"
+                },
+                "usage": {
+                    "$ref": "#/definitions/usage"
+                },
+                "usages": {
+                    "description": "If multiple usage forms have been applied.",
+                    "items": {
+                        "integrationMechanism": {
+                            "$ref": "#/definitions/integrationMechanism"
+                        },
+                        "usage": {
+                            "$ref": "#/definitions/usage"
+                        }
+                    },
+                    "title": "OSS component usages",
+                    "type": "array"
+                },
+                "version": {
+                    "description": "If a version isn't available, use the date of the download. Hint: Must not contain leading and trailing whitespaces",
+                    "pattern": "^\\S.*\\S$",
+                    "title": "OSS component version",
+                    "type": "string"
                 }
             },
             "required": [
                 "name",
                 "licenses"
             ],
-            "additionalProperties": false
+            "summary": "The OSS component",
+            "type": "object"
         },
-        "license": {
-            "type": "object",
+        "components": {
+            "additionalProperties": false,
+            "description": "root element of fossinfo.json files",
             "properties": {
-                "name": {
-                    "title": "License name",
-                    "type": "string",
-                    "description": "Hint: Must not contain leading and trailing whitespaces",
-                    "pattern": "^\\S.*\\S$"
+                "$schema": {
+                    "description": "The fossinfo file of an app is used to extend open source component list of the control. HINT: The fossinfo file is expected at: package-assets/<package-name>/<package-name>.fossinfo.json. IMPORTANT compatibility issue: In controls with app.deviceadmin <= 1.8, the final fossinfo file must only contain the components array as root element.",
+                    "title": "Link to fossinfo schema",
+                    "type": "string"
                 },
-                "version": {
-                    "title": "Version or date of the license",
-                    "type": "string",
-                    "description": "Hint: Must not contain leading and trailing whitespaces",
-                    "pattern": "^\\S.*\\S$"
-                },
-                "spdx": {
-                    "title": "Official identifier of the license",
-                    "description": "See also https://spdx.org/licenses. Hint: Must not contain leading and trailing whitespaces",
-                    "type": "string",
-                    "pattern": "^\\S.*\\S$"
+                "components": {
+                    "description": "IMPORTANT compatibility issue: In controls with app.deviceadmin <= 1.8, the final fossinfo file must only contain this array.",
+                    "items": {
+                        "$ref": "#/definitions/component"
+                    },
+                    "title": "List of OSS components",
+                    "type": "array"
+                }
+            },
+            "required": [
+                "components"
+            ],
+            "type": "object"
+        },
+        "copyright": {
+            "properties": {
+                "notice": {
+                    "description": "Eg. notice file contents of apache 2.0 licensed components. Use \\n as line separator.",
+                    "title": "Copyright notice",
+                    "type": "string"
                 },
                 "text": {
-                    "title": "License text",
+                    "title": "Copyright text",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "text"
+            ],
+            "title": "Copyright information",
+            "type": "object"
+        },
+        "integrationMechanism": {
+            "anyOf": [
+                {
+                    "const": "LinkedDynamically",
+                    "description": "The OSS library and the proprietary code are compiled separately. The generated objects are kept separately (in separate directories). The OSS library is linked at runtime to form a joint object code. In case of Java: the OSS library is integrated via import mechanism in Java (classloader).",
+                    "title": "DLL, Assembly"
+                },
+                {
+                    "const": "LinkedStatically",
+                    "description": "The OSS library and the proprietary code components are compiled separately, and the generated objects are linked during an offline process to create a single executable to be distributed.",
+                    "title": "OSS library integrated in an executable"
+                },
+                {
+                    "const": "Snippet",
+                    "description": "The OSS component is compiled together with the proprietary source code. A single executable is distributed.",
+                    "title": "Parts of the OSS sources in properietary sources"
+                },
+                {
+                    "const": "CallOfLinuxKernelServiceViaSystemCall",
+                    "description": "The only connection of an application in the user space to the OSS kernel component is the call of a kernel service via a system call. The application and the OSS kernel components are kept separately (in separate directories).",
+                    "title": "Use system calls to OSS kernel component"
+                },
+                {
+                    "const": "SeparateComponent",
+                    "description": "There is no connection between the OSS component and the product at all. The OSS component is distributed along with the product. The only connection to the OSS is the call of an executable. The components communicate via the inter process communication mechanisms only (e.g. via file, signal, socket, message queue, pipe, named pipe, semaphore, shared memory, memory mapped files). A further investigation would be needed for message passing. The OSS component is kept separately from the product (in separate directories).",
+                    "title": "Delivery of OSS component"
+                },
+                {
+                    "const": "Npm",
+                    "description": "Npm module. Use sources as npm dependency without any modification.",
+                    "title": "Integrated as npm package"
+                },
+                {
+                    "const": "Go",
+                    "description": "Golang module. Use sources as golang dependency without any modification.",
+                    "title": "Integrated as golang module"
+                }
+            ],
+            "description": "Integration types may affect the required obligations.",
+            "title": "OSS component integration",
+            "type": "string"
+        },
+        "license": {
+            "properties": {
+                "name": {
+                    "description": "Hint: Must not contain leading and trailing whitespaces",
+                    "pattern": "^\\S.*\\S$",
+                    "title": "License name",
+                    "type": "string"
+                },
+                "spdx": {
+                    "description": "See also https://spdx.org/licenses. Hint: Must not contain leading and trailing whitespaces",
+                    "pattern": "^\\S.*\\S$",
+                    "title": "Official identifier of the license",
+                    "type": "string"
+                },
+                "text": {
                     "description": "OSS component license text. Use \\n as line separator.",
+                    "title": "License text",
+                    "type": "string"
+                },
+                "version": {
+                    "description": "Hint: Must not contain leading and trailing whitespaces",
+                    "pattern": "^\\S.*\\S$",
+                    "title": "Version or date of the license",
                     "type": "string"
                 }
             },
             "required": [
                 "name",
                 "text"
-            ]
+            ],
+            "type": "object"
         },
-        "copyright": {
+        "obligation": {
             "type": "object",
-            "title": "Copyright informations",
+            "additionalProperties": false,
             "properties": {
-                "text": {
-                    "title": "Copyright text",
-                    "type": "string"
+                "type": {
+                    "description" : "type of obligation",
+                    "$ref": "#/definitions/obligationType"
                 },
-                "notice": {
-                    "title": "Copyright notice",
-                    "description": "Eg. notice file contents of apache 2.0 licensed components. Use \\n as line separator.",
+                "description": {
                     "type": "string"
                 }
             },
-            "required": [
-                "text"
+            "required": ["type"]
+        },
+        "obligationType": {
+            "anyOf": [
+                {
+                    "const": "AskForRedistribution",
+                    "description": "Ask the author for approval of redistribution."
+                },
+                {
+                    "const": "DoNotModify",
+                    "description": "Do not add, remove or change the source code."
+                },
+                {
+                    "const": "ExecuteOnNamedDevice",
+                    "description": "Redistribution and use are permitted, provided that this software is executing solely and exclusively on the named device (hardware)."
+                },
+                {
+                    "const": "KeepIntactAllNotices",
+                    "description": "Do not remove the copyright notice, license text, disclaimer(s), trademark, patent or attribution from the code."
+                },
+                {
+                    "const": "NameRestriction",
+                    "description": "Be aware of naming restrictions for the licensed software if the code is modified."
+                },
+                {
+                    "const": "NoticeInAdvertisement",
+                    "description": "Provide a notice of the open source usage in advertisement material."
+                },
+                {
+                    "const": "NoticeInAllMaterials",
+                    "description": "Any documentation, advertising materials, and other materials related to such distribution and use, acknowledge that the software was developed by the copyright holder."
+                },
+                {
+                    "const": "NoticeInDocumentation",
+                    "description": "This license requires a notice (acknowledgment) in the product documentation that the licensed software is being used."
+                },
+                {
+                    "const": "NoticeInEndUserDocumentation",
+                    "description": "End-user documentation must display the corresponding acknowledgement. Alternately, this acknowledgement my appear in the software itself."
+                },
+                {
+                    "const": "NoUseInEndorsements",
+                    "description": "Do not use the name of the organization that owns the licensed software nor the names of its contributors nor the name of the licensed software, logo, trademarks and so one to endorse or promote the product."
+                },
+                {
+                    "const": "ProvideCopyrightNotice",
+                    "description": "The copyright with the correct year and the name of all copyright holders are available in all copies of the software."
+                },
+                {
+                    "const": "ProvideCopyrightNoticeAndLicenseText",
+                    "description": "The full license text and copyright with the correct year and the name of all copyright holders are available in all copies of the software."
+                },
+                {
+                    "const": "ProvideLink",
+                    "description": "A link or URL to a given location is available in all copies of the software."
+                },
+                {
+                    "const": "OnlyForMicrosoftWindowsOperatingSystemProduct",
+                    "description": "The code can only be used on Windows platforms."
+                },
+                {
+                    "const": "ProvideProminentNoticesOfChanges",
+                    "description": "Mark plainly the altered source versions as such, so that these are not be misrepresented as being the original software."
+                },
+                {
+                    "const": "ProvideNoticeFileContent",
+                    "description": "If the Work includes a \"NOTICE\" text file as part of its distribution, then provide a readable copy of the file."
+                },
+                {
+                    "const": "ProvideWrittenOffer",
+                    "description": "This license requires the product documentation to include instructions regarding how to obtain source code for the licensed software, including any modifications to it (WrittenOffer)."
+                },
+                {
+                    "const": "PatentRetaliationClause",
+                    "description": "The license grants in-bound patent license. The license has a patent retaliation clause. In case of contribution patent license should also be granted."
+                },
+                {
+                    "const": "SendPostcard",
+                    "description": "Send a picture postcard to the author. Use a nice stamp an mention your name, street address, e-mail address and any comment you like to say."
+                },
+                {
+                    "const": "UsageConfirmedForCommercialProducts",
+                    "description": "Using the open source in commercial products has explicitly been confirmed. See also: https://connect.bosch.com/wikis/home?lang=de-de#!/wiki/We02f74c5aa95_4f46_afbc_00d511e4a6d3/page/Licenses"
+                }
             ]
         },
         "usage": {
-            "title": "OSS component usage",
-            "type": "string",
-            "description": "Usages may affect the required obligations.",
             "anyOf": [
                 {
                     "const": "AsIs",
@@ -160,49 +312,10 @@
                     "const": "Modified",
                     "description": "The OSS component has been modified."
                 }
-            ]
-        },
-        "integrationMechanism": {
-            "title": "OSS component integration",
-            "description": "Integration types may affect the required obligations.",
-            "type": "string",
-            "anyOf": [
-                {
-                    "const": "LinkedDynamically",
-                    "title": "DLL, Assembly",
-                    "description": "The OSS library and the proprietary code are compiled separately. The generated objects are kept separately (in separate directories). The OSS library is linked at runtime to form a joint object code. In case of Java: the OSS library is integrated via import mechanism in Java (classloader)."
-                },
-                {
-                    "const": "LinkedStatically",
-                    "title": "OSS library integrated in an executable",
-                    "description": "The OSS library and the proprietary code components are compiled separately, and the generated objects are linked during an offline process to create a single executable to be distributed."
-                },
-                {
-                    "const": "Snippet",
-                    "title": "Parts of the OSS sources in properietary sources",
-                    "description": "The OSS component is compiled together with the proprietary source code. A single executable is distributed."
-                },
-                {
-                    "const": "CallOfLinuxKernelServiceViaSystemCall",
-                    "title": "Use system calls to OSS kernel component",
-                    "description": "The only connection of an application in the user space to the OSS kernel component is the call of a kernel service via a system call. The application and the OSS kernel components are kept separately (in separate directories)."
-                },
-                {
-                    "const": "SeparateComponent",
-                    "title": "Delivery of OSS component",
-                    "description": "There is no connection between the OSS component and the product at all. The OSS component is distributed along with the product. The only connection to the OSS is the call of an executable. The components communicate via the inter process communication mechanisms only (e.g. via file, signal, socket, message queue, pipe, named pipe, semaphore, shared memory, memory mapped files). A further investigation would be needed for message passing. The OSS component is kept separately from the product (in separate directories)."
-                },
-                {
-                    "const": "Npm",
-                    "title": "Integrated as npm package",
-                    "description": "Npm module. Use sources as npm dependency without any modification."
-                },
-                {
-                    "const": "Go",
-                    "title": "Integrated as golang module",
-                    "description": "Golang module. Use sources as golang dependency without any modification."
-                }
-            ]
+            ],
+            "description": "Usages may affect the required obligations.",
+            "title": "OSS component usage",
+            "type": "string"
         }
     }
 }
